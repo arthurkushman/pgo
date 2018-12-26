@@ -3,14 +3,17 @@ package pgo
 import (
 	"time"
 	"regexp"
+	"strconv"
 )
 
+var specCases map[string]interface{}
+
 type GoDate struct {
-	parsedSymbols []string
+	parsedSymbols   []string
 	inputDateFormat string
-	t time.Time
-	unix int64
-	phpToGoFormat map[string]string
+	t               time.Time
+	unix            int64
+	phpToGoFormat   map[string]string
 }
 
 const phpDateFormatSymbols = "[\\D]"
@@ -31,7 +34,7 @@ func Date(args ...interface{}) string {
 			break
 		case 1:
 			param, ok := p.(int64)
-			isOk(ok, "You must provide timestamp as time.Time type")
+			isOk(ok, "You must provide timestamp as int64 type")
 			date.unix = param
 			break
 		}
@@ -54,6 +57,13 @@ func (date *GoDate) parse() string {
 	for _, v := range date.parsedSymbols {
 		if val, ok := date.phpToGoFormat[v]; ok {
 			convertedString += val
+		} else if sVal, ok := specCases[v]; ok {
+			v, ok := sVal.(int)
+			if ok {
+				convertedString += strconv.Itoa(v)
+			} else {
+				convertedString += sVal.(string)
+			}
 		} else {
 			convertedString += v
 		}
@@ -82,5 +92,14 @@ func (date *GoDate) initMapping() {
 		"s": "05",
 		"D": "Mon",
 		"M": "Jan",
+	}
+
+	_, isoWeek := date.t.ISOWeek();
+	specCases = map[string]interface{}{
+		"l": date.t.Weekday().String(),
+		// todo: escape double conversion for week day and day, day of year
+		"N": isoWeek,
+		"z": date.t.YearDay(),
+		"j": date.t.Day(),
 	}
 }
