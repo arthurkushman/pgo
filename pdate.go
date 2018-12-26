@@ -29,7 +29,7 @@ func Date(args ...interface{}) string {
 		switch i {
 		case 0:
 			param, ok := p.(string)
-			isOk(ok, "You must provide format string parameter")
+			isOk(ok, "You must provide format string parameter as string")
 			date.inputDateFormat = param
 			break
 		case 1:
