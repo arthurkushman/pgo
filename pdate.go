@@ -3,7 +3,6 @@ package pgo
 import (
 	"time"
 	"regexp"
-	"fmt"
 )
 
 type GoDate struct {
@@ -28,7 +27,6 @@ func Date(args ...interface{}) string {
 		case 0:
 			param, ok := p.(string)
 			isOk(ok, "You must provide format string parameter")
-			fmt.Print(param)
 			date.inputDateFormat = param
 			break
 		case 1:
