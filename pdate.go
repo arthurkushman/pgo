@@ -80,5 +80,7 @@ func (date *GoDate) initMapping() {
 		"H": "15",
 		"i": "04",
 		"s": "05",
+		"D": "Mon",
+		"M": "Jan",
 	}
 }
