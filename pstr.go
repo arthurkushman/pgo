@@ -1,0 +1,5 @@
+package pgo
+
+func StrReplace() {
+
+}
