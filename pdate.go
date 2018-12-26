@@ -46,7 +46,7 @@ func Date(args ...interface{}) string {
 	}
 
 	date.initMapping()
-	return date.parse()
+	return date.t.Format(date.parse())
 }
 
 func (date *GoDate) parse() string {
@@ -54,7 +54,11 @@ func (date *GoDate) parse() string {
 
 	var convertedString string
 	for _, v := range date.parsedSymbols {
-		convertedString += v
+		if val, ok := date.phpToGoFormat[v]; ok {
+			convertedString += val
+		} else {
+			convertedString += v
+		}
 	}
 
 	return convertedString
