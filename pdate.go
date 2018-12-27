@@ -47,7 +47,7 @@ func Date(args ...interface{}) string {
 	}
 
 	date.initMapping()
-	return date.t.Format(date.parse())
+	return date.parse()
 }
 
 func (date *GoDate) parse() string {
@@ -56,7 +56,7 @@ func (date *GoDate) parse() string {
 	var convertedString string
 	for _, v := range date.parsedSymbols {
 		if val, ok := date.phpToGoFormat[v]; ok {
-			convertedString += val
+			convertedString += date.t.Format(val)
 		} else if sVal, ok := specCases[v]; ok {
 			v, ok := sVal.(int)
 			if ok {
@@ -65,7 +65,7 @@ func (date *GoDate) parse() string {
 				convertedString += sVal.(string)
 			}
 		} else {
-			convertedString += v
+			convertedString += date.t.Format(v)
 		}
 	}
 
@@ -97,9 +97,9 @@ func (date *GoDate) initMapping() {
 	_, isoWeek := date.t.ISOWeek();
 	specCases = map[string]interface{}{
 		"l": date.t.Weekday().String(),
-		// todo: escape double conversion for week day and day, day of year
-		"N": isoWeek,
+		"N": int(date.t.Weekday()),
 		"z": date.t.YearDay(),
 		"j": date.t.Day(),
+		"W": isoWeek,
 	}
 }
