@@ -19,5 +19,13 @@ func TestStrReplace(t *testing.T) {
 }
 
 func TestStrReplaceArray(t *testing.T) {
+	subject := "The quick brown fox jumped over the lazy dog"
 
+	subject = pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
+
+	result := "The quick brown cat jumped over the lazy elephant"
+
+	if subject != result {
+		t.Fatalf("want %s, got %s", result, subject)
+	}
 }
