@@ -1,8 +1,8 @@
 package pgo_test
 
 import (
-	"testing"
 	"pgo"
+	"testing"
 )
 
 func TestStrReplace(t *testing.T) {

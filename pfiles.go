@@ -8,13 +8,13 @@ import (
 // const mapping php -> go
 const (
 	FileAppend = os.ModeAppend
-	LockEx = os.ModeExclusive
+	LockEx     = os.ModeExclusive
 )
 
 // fileName name of file to where put data
 // flags[0] - offset
 // flags[1] - maxLen
-func FileGetContents(fileName string, args... interface{}) (string, error) {
+func FileGetContents(fileName string, args ...interface{}) (string, error) {
 	// write with both offset/maxLen
 	if args[0].(int) > 0 && args[1].(int) > 0 {
 
@@ -36,7 +36,7 @@ func FileGetContents(fileName string, args... interface{}) (string, error) {
 
 // fileName name of file to where put data
 // flags[0] - flags how to put this data FileAppend | LockEx
-func FilePutContents(fileName, data string, flags... interface{}) (int, error) {
+func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 	if flags[0] != nil {
 		f, err := os.OpenFile(fileName, flags[0].(int), 0644)
 		if err != nil {

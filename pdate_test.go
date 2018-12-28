@@ -1,10 +1,10 @@
 package pgo_test
 
 import (
-	"testing"
 	"pgo"
-	"time"
 	"strconv"
+	"testing"
+	"time"
 )
 
 func TestDate(t *testing.T) {

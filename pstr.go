@@ -6,7 +6,7 @@ type ReplaceParams struct {
 	search  interface{}
 	replace interface{}
 	subject string
-	count int
+	count   int
 }
 
 // Replace all occurrences of the search string with the replacement string

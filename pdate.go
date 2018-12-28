@@ -1,9 +1,9 @@
 package pgo
 
 import (
-	"time"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 var specCases map[string]interface{}
@@ -94,7 +94,7 @@ func (date *GoDate) initMapping() {
 		"M": "Jan",
 	}
 
-	_, isoWeek := date.t.ISOWeek();
+	_, isoWeek := date.t.ISOWeek()
 	specCases = map[string]interface{}{
 		"l": date.t.Weekday().String(),
 		"N": int(date.t.Weekday()),
