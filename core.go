@@ -1,18 +1,13 @@
 package pgo
 
 type PDate interface {
-	Date() string
+	Date(args ...interface{}) string
 	parse() string
 	convert()
 }
 
 type PStr interface {
-	StrReplace() string
-}
-
-type PRegExp interface {
-	PregReplace() string
-	PregMatch() []string
+	StrReplace(args ...interface{}) string
 }
 
 func isOk(ok bool, msg string) {
