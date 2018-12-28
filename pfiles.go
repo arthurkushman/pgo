@@ -11,6 +11,7 @@ const (
 	LockEx     = os.ModeExclusive
 )
 
+// FileGetContents reads files, http requests streams
 // fileName name of file to where put data
 // flags[0] - offset
 // flags[1] - maxLen
@@ -34,6 +35,7 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 	return string(data), err
 }
 
+// FilePutContents write files with offset/limit
 // fileName name of file to where put data
 // flags[0] - flags how to put this data FileAppend | LockEx
 func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {

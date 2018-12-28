@@ -2,7 +2,7 @@ package pgo
 
 import "strings"
 
-type ReplaceParams struct {
+type replaceParams struct {
 	search  interface{}
 	replace interface{}
 	subject string
@@ -13,7 +13,7 @@ type ReplaceParams struct {
 // If search and replace are arrays, then str_replace() takes a value from each array
 // and uses them to search and replace on subject.
 func StrReplace(args ...interface{}) string {
-	var replaceParams ReplaceParams
+	var replaceParams replaceParams
 
 	countSlices := 0
 	replaceParams.count = -1
@@ -63,11 +63,11 @@ func StrReplace(args ...interface{}) string {
 	return replaceParams.doReplace()
 }
 
-func (params *ReplaceParams) doReplace() string {
+func (params *replaceParams) doReplace() string {
 	return strings.Replace(params.subject, params.search.(string), params.replace.(string), params.count)
 }
 
-func (params *ReplaceParams) doReplaceSlices() string {
+func (params *replaceParams) doReplaceSlices() string {
 	search := params.search.([]string)
 	replace := params.replace.([]string)
 
