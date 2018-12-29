@@ -16,18 +16,15 @@ const (
 // flags[0] - offset
 // flags[1] - maxLen
 func FileGetContents(fileName string, args ...interface{}) (string, error) {
+	var argsLen = len(args)
+
 	// write with both offset/maxLen
-	if args[0].(int) > 0 && args[1].(int) > 0 {
+	if argsLen == 2 && args[0].(int) > 0 && args[1].(int) > 0 {
 
 	}
 
 	// write with offset
-	if args[0].(int) > 0 && args[1] == nil {
-
-	}
-
-	// write with maxLen
-	if args[1].(int) > 0 && args[0] == nil {
+	if argsLen == 1 && args[0].(int) > 0 {
 
 	}
 
@@ -39,7 +36,7 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 // fileName name of file to where put data
 // flags[0] - flags how to put this data FileAppend | LockEx
 func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
-	if flags[0] != nil {
+	if len(flags) > 0 && flags[0] != nil {
 		f, err := os.OpenFile(fileName, flags[0].(int), 0644)
 		if err != nil {
 			panic(err)
