@@ -3,6 +3,7 @@ package pgo_test
 import (
 	"testing"
 	"pgo"
+	"math"
 )
 
 const (
@@ -51,6 +52,26 @@ func TestFileGetContents(t *testing.T) {
 	if len(sOff) != n-off {
 		t.Fatalf("want %d bytes of data, got %d", len(sOff), n-off)
 	}
+}
+
+func TestFileGetContentsPanics(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic with offset")
+		}
+	}()
+
+	// panic with non existent file
+	pgo.FileGetContents("non-existent.txt", math.MaxInt64)
+
+	// panic with non existent, but with limit
+	pgo.FileGetContents("non-existent.txt", math.MaxInt64, math.MaxInt64)
+
+	// panic with existent but out of range offset
+	pgo.FileGetContents(fileName, math.MaxInt64)
+
+	// panic with existent but out of range offset with limit
+	pgo.FileGetContents(fileName, math.MaxInt64, math.MaxInt64)
 }
 
 func TestFilePutContents(t *testing.T) {
