@@ -41,6 +41,16 @@ func TestFileGetContents(t *testing.T) {
 	if len(ss) != lim {
 		t.Fatalf("want %d bytes of data, got %d", n, len(str))
 	}
+
+	sOff, errOff := pgo.FileGetContents(fileName, off)
+
+	if errOff != nil {
+		panic(errOff)
+	}
+
+	if len(sOff) != n-off {
+		t.Fatalf("want %d bytes of data, got %d", len(sOff), n-off)
+	}
 }
 
 func TestFilePutContents(t *testing.T) {

@@ -39,8 +39,30 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 
 	// write with offset
 	if argsLen == 1 && args[0].(int) > 0 {
-		buf := make([]byte, args[0].(int))
-		_, e := initReader(fileName).Read(buf)
+		offset := args[0].(int)
+
+		f, fErr := os.Open(fileName)
+
+		if fErr != nil {
+			panic(fErr)
+		}
+
+		reader := bufio.NewReader(f)
+
+		fInfo, fiErr := f.Stat()
+
+		if fiErr != nil {
+			panic(fiErr)
+		}
+
+		buf := make([]byte, int(fInfo.Size()) - offset)
+		_, err := reader.Discard(args[0].(int)) // skipping an offset from user input
+
+		if err != nil {
+			panic(err)
+		}
+
+		_, e := reader.Read(buf)
 
 		return string(buf), e
 	}

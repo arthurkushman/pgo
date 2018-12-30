@@ -27,9 +27,14 @@ subject := "The quick brown fox jumped over the lazy dog"
 pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
 ```
 
-or write to files with offset/limit: 
+or read files with offset/limit: 
 ```go
 pgo.FileGetContents("somefile.txt", 0, 1024)
+```
+
+reflexively write to files with:
+```go
+pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
 ```
 
 See more examples from *_test.go files.
