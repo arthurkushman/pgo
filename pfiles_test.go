@@ -19,7 +19,7 @@ func TestFileGetContents(t *testing.T) {
 	}
 
 	// reading full file with limit
-	str, er := pgo.FileGetContents(fileName, 0, n)
+	str, er := pgo.FileGetContents(fileName, nil, 0, n)
 
 	if er != nil {
 		panic(er)
@@ -33,7 +33,7 @@ func TestFileGetContents(t *testing.T) {
 	off := n / 3
 	lim := n/2 - off - 1
 
-	ss, er := pgo.FileGetContents(fileName, off, lim)
+	ss, er := pgo.FileGetContents(fileName, nil, off, lim)
 
 	if er != nil {
 		panic(er)
@@ -43,7 +43,7 @@ func TestFileGetContents(t *testing.T) {
 		t.Fatalf("want %d bytes of data, got %d", n, len(str))
 	}
 
-	sOff, errOff := pgo.FileGetContents(fileName, off)
+	sOff, errOff := pgo.FileGetContents(fileName, nil, off)
 
 	if errOff != nil {
 		panic(errOff)
@@ -51,6 +51,18 @@ func TestFileGetContents(t *testing.T) {
 
 	if len(sOff) != n-off {
 		t.Fatalf("want %d bytes of data, got %d", len(sOff), n-off)
+	}
+}
+
+func TestFileGetContentsHttp(t *testing.T) {
+	str, err := pgo.FileGetContents("http://google.com")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if str == "" {
+		t.Fatalf("want non-empty string, got %s", str)
 	}
 }
 

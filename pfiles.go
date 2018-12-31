@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"bufio"
+	"regexp"
 )
 
 // const mapping php -> go
@@ -12,19 +13,49 @@ const (
 	LockEx     = os.O_EXCL
 )
 
+// Context is the opts for http/net requests
+type Context struct {
+	Headers       map[string]string
+	RequestMethod string
+}
+
 // FileGetContents reads files, http requests streams
 // fileName name of file to where put data
 // flags[0] - offset
 // flags[1] - maxLen
-func FileGetContents(fileName string, args ...interface{}) (string, error) {
+func FileGetContents(path string, args ...interface{}) (string, error) {
 	var argsLen = len(args)
 
-	// write with both offset/maxLen
-	if argsLen == 2 && args[0].(int) > 0 && args[1].(int) > 0 {
-		offset := args[0].(int)
-		limit := args[1].(int)
+	// determine if there is only an http get request
+	match, _ := regexp.MatchString("http(s?)\\:", path)
+	if argsLen == 0 && match {
+		context := &Context{
+			RequestMethod:Get,
+		}
 
-		reader := initReader(fileName)
+		return context.doRequest(path)
+	}
+
+	if argsLen > 0 && args[0] != nil { // context has been passed - send http request
+		context, ok := args[0].(Context)
+
+		if !ok {
+			printError("Context param must be of type Context, %T passed", args[0])
+		}
+
+		return context.doRequest(path)
+	}
+
+	// write with both offset/maxLen
+	if argsLen == 3 {
+		offset, okOff := args[1].(int)
+		limit, okLim := args[2].(int)
+
+		if !okOff || !okLim {
+			printError("Error on passing params with wrong types to FileGetContents: offset %T and limit %T", args[1], args[2])
+		}
+
+		reader := initReader(path)
 		_, err := reader.Discard(offset) // skipping an offset from user input
 
 		if err != nil {
@@ -38,10 +69,14 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 	}
 
 	// write with offset
-	if argsLen == 1 && args[0].(int) > 0 {
-		offset := args[0].(int)
+	if argsLen == 2 {
+		offset, ok := args[1].(int)
 
-		f, fErr := os.Open(fileName)
+		if !ok {
+			printError("Error on passing params to FileGetContents: offset %v", ok)
+		}
+
+		f, fErr := os.Open(path)
 
 		if fErr != nil {
 			panic(fErr)
@@ -55,8 +90,8 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 			panic(fiErr)
 		}
 
-		buf := make([]byte, int(fInfo.Size()) - offset)
-		_, err := reader.Discard(args[0].(int)) // skipping an offset from user input
+		buf := make([]byte, int(fInfo.Size())-offset)
+		_, err := reader.Discard(offset) // skipping an offset from user input
 
 		if err != nil {
 			panic(err)
@@ -67,7 +102,7 @@ func FileGetContents(fileName string, args ...interface{}) (string, error) {
 		return string(buf), e
 	}
 
-	data, err := ioutil.ReadFile(fileName)
+	data, err := ioutil.ReadFile(path)
 	return string(data), err
 }
 
@@ -84,8 +119,12 @@ func initReader(fileName string) *bufio.Reader {
 // fileName name of file to where put data
 // flags[0] - flags how to put this data FileAppend | LockEx
 func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
-	if len(flags) > 0 && flags[0] != nil {
-		f, err := os.OpenFile(fileName, flags[0].(int) | os.O_WRONLY, 0644)
+	if len(flags) > 0 {
+		v, ok := flags[0].(int)
+
+		isOk(ok, "Type of 3d parameter must be an int, got %T", flags[0])
+
+		f, err := os.OpenFile(fileName, v|os.O_WRONLY, 0644)
 		defer f.Close()
 
 		if err != nil {
