@@ -79,7 +79,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		f, fErr := os.Open(path)
 
 		if fErr != nil {
-			panic(fErr)
+			printError(fErr.Error())
 		}
 
 		reader := bufio.NewReader(f)
@@ -94,7 +94,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		_, err := reader.Discard(offset) // skipping an offset from user input
 
 		if err != nil {
-			panic(err)
+			printError(err.Error())
 		}
 
 		_, e := reader.Read(buf)

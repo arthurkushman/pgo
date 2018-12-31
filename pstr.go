@@ -13,40 +13,40 @@ type replaceParams struct {
 // If search and replace are arrays, then str_replace() takes a value from each array
 // and uses them to search and replace on subject.
 func StrReplace(args ...interface{}) string {
-	var replaceParams replaceParams
+	var rParams replaceParams
 
 	countSlices := 0
-	replaceParams.count = -1
+	rParams.count = -1
 	for i, p := range args {
 		switch i {
 		case 0:
 			param, ok := p.(string)
-			replaceParams.search = param
+			rParams.search = param
 			if !ok {
 				param, ok := p.([]string)
 				isOk(ok, "You must provide search parameter as []string or string")
 				countSlices++
-				replaceParams.search = param
+				rParams.search = param
 			}
 			break
 		case 1:
 			param, ok := p.(string)
-			replaceParams.replace = param
+			rParams.replace = param
 			if !ok {
 				param, ok := p.([]string)
 				isOk(ok, "You must provide replace parameter as []string or string")
 				countSlices++
-				replaceParams.replace = param
+				rParams.replace = param
 			}
 			break
 		case 2:
 			param, ok := p.(string)
-			replaceParams.subject = param
+			rParams.subject = param
 			isOk(ok, "3d parameter must be passed as string")
 			break
 		case 3:
 			param, ok := p.(int)
-			replaceParams.count = param
+			rParams.count = param
 			isOk(ok, "4th parameter must be passed as int")
 			break
 		}
@@ -57,10 +57,10 @@ func StrReplace(args ...interface{}) string {
 	}
 
 	if countSlices == 2 {
-		return replaceParams.doReplaceSlices()
+		return rParams.doReplaceSlices()
 	}
 
-	return replaceParams.doReplace()
+	return rParams.doReplace()
 }
 
 func (params *replaceParams) doReplace() string {
