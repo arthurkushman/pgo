@@ -23,7 +23,7 @@ func isOk(ok bool, msg string, args ...interface{}) {
 
 func printError(msg string, args ...interface{}) {
 	fmt.Printf(msg, args...)
-	if os.Getenv("GO_ENV") != "dev" {
+	if os.Getenv("PGO_ENV") != "dev" {
 		os.Exit(1)
 	}
 }
