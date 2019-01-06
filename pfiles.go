@@ -5,6 +5,8 @@ import (
 	"os"
 	"bufio"
 	"regexp"
+	"fmt"
+	"errors"
 )
 
 // const mapping php -> go
@@ -52,14 +54,15 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		limit, okLim := args[2].(int)
 
 		if !okOff || !okLim {
-			printError("Error on passing params with wrong types to FileGetContents: offset %T and limit %T", args[1], args[2])
+			errMsg := fmt.Sprintf("Error on passing params with wrong types to FileGetContents: offset %T and limit %T", args[1], args[2])
+			return "", errors.New(errMsg)
 		}
 
 		reader := initReader(path)
 		_, err := reader.Discard(offset) // skipping an offset from user input
 
 		if err != nil {
-			panic(err)
+			return "", err
 		}
 
 		buf := make([]byte, limit)
@@ -73,7 +76,8 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		offset, ok := args[1].(int)
 
 		if !ok {
-			printError("Error on passing params to FileGetContents: offset %v", ok)
+			errMsg := fmt.Sprintf("Error on passing params to FileGetContents: offset %v", ok)
+			return "", errors.New(errMsg)
 		}
 
 		f, fErr := os.Open(path)
@@ -87,7 +91,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		fInfo, fiErr := f.Stat()
 
 		if fiErr != nil {
-			panic(fiErr)
+			return "", fiErr
 		}
 
 		buf := make([]byte, int(fInfo.Size())-offset)
@@ -122,13 +126,15 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 	if len(flags) > 0 {
 		v, ok := flags[0].(int)
 
-		isOk(ok, "Type of 3d parameter must be an int, got %T", flags[0])
+		if !ok {
+			return -1, errors.New(fmt.Sprintf("Type of 3d parameter must be an int, got %T", flags[0]))
+		}
 
 		f, err := os.OpenFile(fileName, v|os.O_WRONLY, 0644)
 		defer f.Close()
 
 		if err != nil {
-			panic(err)
+			return -1, err
 		}
 
 		return f.WriteString(data)
