@@ -19,6 +19,13 @@ func TestFileGetContents(t *testing.T) {
 		panic(err)
 	}
 
+	// base case - readAll
+	strBase, er := pgo.FileGetContents(fileName)
+
+	if len(strBase) != n {
+		t.Fatalf("want %d bytes of data, got %d", n, len(strBase))
+	}
+
 	// reading full file with limit
 	str, er := pgo.FileGetContents(fileName, nil, 0, n)
 
@@ -157,5 +164,19 @@ func TestFilePutContents(t *testing.T) {
 
 	if n2 == n1*2 {
 		t.Fatalf("want %d bytes of data, got %d", n2, n1*2)
+	}
+}
+
+func TestFilePutContentsErrors(t *testing.T) {
+	n1, err1 := pgo.FilePutContents(fileName, strToWrite, "")
+
+	if n1 != -1 && err1.Error() != "Type of 3d parameter must be an int, got string" {
+		t.Fatal("execution of FilePutContents has not been failed with error")
+	}
+
+	n2, err2 := pgo.FilePutContents("fakefile.out", "", 0x1212) // setting fake flags to invoke error from os.OpenFile
+
+	if n2 != -1 && err2 == nil {
+		t.Fatal("execution of FilePutContents has not been failed with error")
 	}
 }
