@@ -1,6 +1,9 @@
 package pgo
 
-import "strings"
+import (
+	"strings"
+	"errors"
+)
 
 type replaceParams struct {
 	search  interface{}
@@ -12,7 +15,7 @@ type replaceParams struct {
 // Replace all occurrences of the search string with the replacement string
 // If search and replace are arrays, then str_replace() takes a value from each array
 // and uses them to search and replace on subject.
-func StrReplace(args ...interface{}) string {
+func StrReplace(args ...interface{}) (string, error) {
 	var rParams replaceParams
 
 	countSlices := 0
@@ -53,14 +56,14 @@ func StrReplace(args ...interface{}) string {
 	}
 
 	if countSlices == 1 {
-		panic("Both slices must be provided for search and replace")
+		 return rParams.subject, errors.New("both slices must be provided for search and replace")
 	}
 
 	if countSlices == 2 {
-		return rParams.doReplaceSlices()
+		return rParams.doReplaceSlices(), nil
 	}
 
-	return rParams.doReplace()
+	return rParams.doReplace(), nil
 }
 
 func (params *replaceParams) doReplace() string {
