@@ -63,7 +63,7 @@ func TestFileGetContents(t *testing.T) {
 }
 
 func TestFileGetContentsHttp(t *testing.T) {
-	str, err := pgo.FileGetContents("http://google.com")
+	str, err := pgo.FileGetContents(defaultDomain)
 
 	if err != nil {
 		panic(err.Error())
