@@ -19,6 +19,11 @@ func TestDate(t *testing.T) {
 	if time.Now().Format("Mon, Jan") != pgo.Date("D, M") {
 		t.Fatal("Time formats of week days and month in map doesn't match")
 	}
+
+	// test with unix timestamp passed as 2nd param
+	if pgo.Date("Y-m-d H:i:s", time.Now().Unix()) == "" {
+		t.Fatal("Time didn't parsed properly with unix timestamp")
+	}
 }
 
 func TestSpecCases(t *testing.T) {
