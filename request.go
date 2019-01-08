@@ -1,9 +1,9 @@
 package pgo
 
 import (
-	"net/http"
 	"bytes"
 	"io/ioutil"
+	"net/http"
 )
 
 const (

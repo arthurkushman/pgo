@@ -1,14 +1,14 @@
 package pgo_test
 
 import (
-	"testing"
-	"pgo"
 	"math"
+	"pgo"
+	"testing"
 )
 
 const (
-	strToWrite = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-	fileName   = "example.txt"
+	strToWrite    = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+	fileName      = "example.txt"
 	defaultDomain = "http://localhost"
 )
 
@@ -109,8 +109,8 @@ func TestFileGetContentsInvalidTypes(t *testing.T) {
 func TestFileGetContentsHttpGetRequest(t *testing.T) {
 	content, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
 		Headers: map[string]string{
-			"Accept":"text/html",
-			"Cache-Control":"max-age=0",
+			"Accept":        "text/html",
+			"Cache-Control": "max-age=0",
 		},
 		RequestMethod: "GET",
 	})
@@ -123,8 +123,8 @@ func TestFileGetContentsHttpGetRequest(t *testing.T) {
 func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
 	_, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
 		Headers: map[string]string{
-			"Accept":"text/html",
-			"Cache-Control":"max-age=0",
+			"Accept":        "text/html",
+			"Cache-Control": "max-age=0",
 		},
 		RequestMethod: "INVALID()", // put an invalid http method with token hack - to invoke err msg
 	})
@@ -134,7 +134,7 @@ func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
 	}
 
 	_, er := pgo.FileGetContents("https://abrakadabra.comz.ru", &pgo.Context{ // providing fake domain with ssl
-		Headers: map[string]string{},
+		Headers:       map[string]string{},
 		RequestMethod: "OPTIONS",
 	})
 

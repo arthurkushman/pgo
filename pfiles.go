@@ -1,12 +1,12 @@
 package pgo
 
 import (
+	"bufio"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
-	"bufio"
 	"regexp"
-	"fmt"
-	"errors"
 )
 
 // const mapping php -> go
@@ -32,7 +32,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 	match, _ := regexp.MatchString("http(s?)\\:", path)
 	if argsLen == 0 && match {
 		context := &Context{
-			RequestMethod:Get,
+			RequestMethod: Get,
 		}
 
 		return context.doRequest(path)

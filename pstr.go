@@ -1,8 +1,8 @@
 package pgo
 
 import (
-	"strings"
 	"errors"
+	"strings"
 )
 
 type replaceParams struct {
@@ -56,7 +56,7 @@ func StrReplace(args ...interface{}) (string, error) {
 	}
 
 	if countSlices == 1 {
-		 return rParams.subject, errors.New("both slices must be provided for search and replace")
+		return rParams.subject, errors.New("both slices must be provided for search and replace")
 	}
 
 	if countSlices == 2 {
