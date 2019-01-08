@@ -15,7 +15,7 @@ func (c *Context) doRequest(path string) (string, error) {
 	req, reqErr := http.NewRequest(c.RequestMethod, path, bytes.NewBuffer([]byte{}))
 
 	if reqErr != nil {
-		printError(reqErr.Error())
+		return "", reqErr
 	}
 
 	// setting headers
@@ -27,7 +27,7 @@ func (c *Context) doRequest(path string) (string, error) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		printError(err.Error())
+		return "", err
 	}
 
 	defer resp.Body.Close()
@@ -35,7 +35,7 @@ func (c *Context) doRequest(path string) (string, error) {
 	content, cErr := ioutil.ReadAll(resp.Body)
 
 	if cErr != nil {
-		printError(cErr.Error())
+		return string(content), cErr
 	}
 
 	return string(content), nil
