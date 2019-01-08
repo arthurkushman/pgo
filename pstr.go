@@ -12,7 +12,7 @@ type replaceParams struct {
 	count   int
 }
 
-// Replace all occurrences of the search string with the replacement string
+// StrReplace replaces all occurrences of the search string with the replacement string
 // If search and replace are arrays, then str_replace() takes a value from each array
 // and uses them to search and replace on subject.
 func StrReplace(args ...interface{}) (string, error) {

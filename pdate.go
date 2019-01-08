@@ -8,7 +8,7 @@ import (
 
 var specCases map[string]interface{}
 
-type GoDate struct {
+type goDate struct {
 	parsedSymbols   []string
 	inputDateFormat string
 	t               time.Time
@@ -18,8 +18,11 @@ type GoDate struct {
 
 const phpDateFormatSymbols = "[\\D]"
 
+// Date returns formatted output of system data/time
+// 1st argument formatted string e.g.: Y-m-d H:i:s
+// 2nd argument int64 unix timestamp
 func Date(args ...interface{}) string {
-	var date GoDate
+	var date goDate
 
 	if len(args) == 0 {
 		panic("At least 1st parameter format must be passed")
@@ -50,7 +53,7 @@ func Date(args ...interface{}) string {
 	return date.parse()
 }
 
-func (date *GoDate) parse() string {
+func (date *goDate) parse() string {
 	date.convert()
 
 	var convertedString string
@@ -72,7 +75,7 @@ func (date *GoDate) parse() string {
 	return convertedString
 }
 
-func (date *GoDate) convert() {
+func (date *goDate) convert() {
 	r, _ := regexp.Compile(phpDateFormatSymbols)
 
 	for _, chSlice := range r.FindAllStringSubmatch(date.inputDateFormat, -1) {
@@ -82,7 +85,7 @@ func (date *GoDate) convert() {
 	}
 }
 
-func (date *GoDate) initMapping() {
+func (date *goDate) initMapping() {
 	date.phpToGoFormat = map[string]string{
 		"Y": "2006",
 		"m": "02",
