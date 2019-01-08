@@ -113,6 +113,29 @@ func TestFileGetContentsHttpGetRequest(t *testing.T) {
 	}
 }
 
+func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
+	_, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
+		Headers: map[string]string{
+			"Accept":"text/html",
+			"Cache-Control":"max-age=0",
+		},
+		RequestMethod: "INVALID()", // put an invalid http method with token hack - to invoke err msg
+	})
+
+	if err == nil {
+		t.Fatal("Request has not been failed with error")
+	}
+
+	_, er := pgo.FileGetContents("https://abrakadabra.comz.ru", &pgo.Context{ // providing fake domain with ssl
+		Headers: map[string]string{},
+		RequestMethod: "OPTIONS",
+	})
+
+	if er == nil {
+		t.Fatal("Request has not been failed with error")
+	}
+}
+
 func TestFilePutContents(t *testing.T) {
 	// test write to file with append without options
 	n1, err := pgo.FilePutContents(fileName, strToWrite)
