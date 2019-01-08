@@ -39,7 +39,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 	}
 
 	if argsLen > 0 && args[0] != nil { // context has been passed - send http request
-		context, ok := args[0].(Context)
+		context, ok := args[0].(*Context)
 
 		if !ok {
 			printError("Context param must be of type Context, %T passed", args[0])
@@ -76,7 +76,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		offset, ok := args[1].(int)
 
 		if !ok {
-			errMsg := fmt.Sprintf("Error on passing params to FileGetContents: offset %v", ok)
+			errMsg := fmt.Sprintf("Error on passing params to FileGetContents: offset %T", args[1])
 			return "", errors.New(errMsg)
 		}
 

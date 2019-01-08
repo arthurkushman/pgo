@@ -9,6 +9,7 @@ import (
 const (
 	strToWrite = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	fileName   = "example.txt"
+	defaultDomain = "http://localhost"
 )
 
 func TestFileGetContents(t *testing.T) {
@@ -74,16 +75,42 @@ func TestFileGetContentsPanics(t *testing.T) {
 	}()
 
 	// panic with non existent file
-	pgo.FileGetContents("non-existent.txt", math.MaxInt64)
+	pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64)
 
 	// panic with non existent, but with limit
-	pgo.FileGetContents("non-existent.txt", math.MaxInt64, math.MaxInt64)
+	pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64, math.MaxInt64)
 
 	// panic with existent but out of range offset
-	pgo.FileGetContents(fileName, math.MaxInt64)
+	pgo.FileGetContents(fileName, nil, math.MaxInt64)
 
-	// panic with existent but out of range offset with limit
-	pgo.FileGetContents(fileName, math.MaxInt64, math.MaxInt64)
+	// panic with existent but out of range offset and limit
+	pgo.FileGetContents(fileName, nil, math.MaxInt64, math.MaxInt64)
+}
+
+func TestFileGetContentsInvalidTypes(t *testing.T) {
+	content, err := pgo.FileGetContents(fileName, nil, "", "")
+	if content != "" && err.Error() != "Error on passing params with wrong types to FileGetContents: offset string and limit string" {
+		t.Fatalf("Want an empty string, got: %s", content)
+	}
+
+	content2, err2 := pgo.FileGetContents(fileName, nil, "")
+	if content2 != "" && err2.Error() != "Error on passing params to FileGetContents: offset string" {
+		t.Fatalf("Want an empty string, got: %s", content2)
+	}
+}
+
+func TestFileGetContentsHttpGetRequest(t *testing.T) {
+	content, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
+		Headers: map[string]string{
+			"Accept":"text/html",
+			"Cache-Control":"max-age=0",
+		},
+		RequestMethod: "GET",
+	})
+
+	if err != nil {
+		t.Fatalf("Request failed with content: %s", content)
+	}
 }
 
 func TestFilePutContents(t *testing.T) {
