@@ -18,6 +18,19 @@ func TestStrReplace(t *testing.T) {
 	}
 }
 
+func TestStrIReplace(t *testing.T) {
+	subject := "The quick brown fox jumped over the lazy dog"
+
+	subject, _ = pgo.StrIReplace("Fox", "cat", subject)
+	subject, _ = pgo.StrIReplace("DOG", "fox", subject)
+
+	result := "The quick brown cat jumped over the lazy fox"
+
+	if subject != result {
+		t.Fatalf("want %s, got %s", result, subject)
+	}
+}
+
 func TestStrReplaceCount(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy fox or dog"
 
