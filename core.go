@@ -12,7 +12,7 @@ func isOk(ok bool, msg string, args ...interface{}) {
 }
 
 func printError(msg string, args ...interface{}) {
-	fmt.Printf(msg, args...)
+	fmt.Printf(msg, []interface{}(args)) // strange fix but it didn't work on go version go1.11.4 darwin/amd64 with args...
 	if os.Getenv("PGO_ENV") != "dev" {
 		os.Exit(1)
 	}
