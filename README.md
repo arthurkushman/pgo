@@ -17,24 +17,35 @@ Imagine that you need to write Go code every day and also have a convenient func
 You can use date function with similar formatting for PHP e.g.:
 
 ```go
-pgo.Date("Y-m-d H:i:s")
+dateStr := pgo.Date("Y-m-d H:i:s")
 ```
 
 replace sub-strings with StrReplace:
 ```go
 subject := "The quick brown fox jumped over the lazy dog"
 
-pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
+str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
 ```
 
 or read files with offset/limit: 
 ```go
-pgo.FileGetContents("somefile.txt", 0, 1024)
+content, err := pgo.FileGetContents("somefile.txt", 0, 1024)
 ```
 
 reflexively write to files with:
 ```go
-pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
+n, err := pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
+```
+
+Read from context (via http(s)):
+```go
+	content, err := pgo.FileGetContents("http://google.com", &pgo.Context{
+		Headers: map[string]string{
+			"Accept":        "text/html",
+			"Cache-Control": "max-age=0",
+		},
+		RequestMethod: "GET",
+	})
 ```
 
 See more examples from *_test.go files.
