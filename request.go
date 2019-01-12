@@ -2,8 +2,11 @@ package pgo
 
 import (
 	"bytes"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 const (
@@ -39,4 +42,32 @@ func (c *Context) doRequest(path string) (string, error) {
 	}
 
 	return string(content), nil
+}
+
+func (c *Context) uploadFile(fieldName, filePath string) bool {
+	var maxSize = int64(1 << 31)
+	if c.UploadMaxFileSize > 0 {
+		maxSize = c.UploadMaxFileSize
+	}
+
+	c.Req.ParseMultipartForm(maxSize)
+	file, _, err := c.Req.FormFile(fieldName)
+
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	defer file.Close()
+
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	defer f.Close()
+	io.Copy(f, file)
+
+	return true
 }

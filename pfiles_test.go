@@ -180,3 +180,26 @@ func TestFilePutContentsErrors(t *testing.T) {
 		t.Fatal("execution of FilePutContents has not been failed with error")
 	}
 }
+
+// todo: Fix to working version of test for MoveUploadedFile
+//func TestFilePutContents2(t *testing.T) {
+//	fileHeader := make([]*multipart.FileHeader, 10)
+//
+//	req := http.Request{
+//		Method: "POST",
+//		MultipartForm: &multipart.Form{
+//			Value: map[string][]string{
+//				"foo": {"bar"},
+//			},
+//			File: map[string][]*multipart.FileHeader{
+//				"foo": fileHeader,
+//			},
+//		},
+//	}
+//
+//	c := &pgo.Context{
+//		Req: &req,
+//	}
+//
+//	c.MoveUploadedFile("foo", "./baz.txt")
+//}

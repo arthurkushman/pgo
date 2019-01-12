@@ -6,10 +6,10 @@ import (
 )
 
 type replaceParams struct {
-	search  interface{}
-	replace interface{}
-	subject string
-	count   int
+	search      interface{}
+	replace     interface{}
+	subject     string
+	count       int
 	countSlices int
 }
 
@@ -74,7 +74,7 @@ func (params *replaceParams) prepareParams(args ...interface{}) {
 			isOk(ok, "4th parameter must be passed as int")
 			break
 		}
-	}	
+	}
 }
 
 // StrReplace replaces all occurrences of the search string|slice with the replacement string

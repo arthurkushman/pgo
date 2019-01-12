@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"regexp"
 )
@@ -17,8 +18,10 @@ const (
 
 // Context is the opts for http/net requests
 type Context struct {
-	Headers       map[string]string
-	RequestMethod string
+	Headers           map[string]string
+	RequestMethod     string
+	Req               *http.Request
+	UploadMaxFileSize int64
 }
 
 // FileGetContents reads files, http requests streams
@@ -141,4 +144,8 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 	}
 
 	return len(data), ioutil.WriteFile(fileName, []byte(data), os.FileMode(0644))
+}
+
+func (c *Context) MoveUploadedFile(fieldName, filePath string) bool {
+	return c.uploadFile(fieldName, filePath)
 }
