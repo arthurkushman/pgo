@@ -25,6 +25,8 @@ replace sub-strings with StrReplace:
 subject := "The quick brown fox jumped over the lazy dog"
 
 str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
+
+// and if case-insensitive replace needed - pgo.StrIReplace([]string{"DOG", "QuiCK"}, []string{"fox", "slow"}, subject) 
 ```
 
 or read files with offset/limit: 
@@ -46,6 +48,16 @@ Read from context (via http(s)):
 		},
 		RequestMethod: "GET",
 	})
+```
+
+Uploading files from web-forms to your server:
+```go
+c := &pgo.Context{
+	Req: YourReq,
+	UploadMaxFileSize: 10 << 25 
+}
+
+uploaded := c.MoveUploadedFile("foo", "/srv/images/pic123.png")
 ```
 
 See more examples from *_test.go files.
