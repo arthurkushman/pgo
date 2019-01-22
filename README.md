@@ -41,23 +41,16 @@ n, err := pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
 
 Read from context (via http(s)):
 ```go
-	content, err := pgo.FileGetContents("http://google.com", &pgo.Context{
-		Headers: map[string]string{
-			"Accept":        "text/html",
-			"Cache-Control": "max-age=0",
-		},
-		RequestMethod: "GET",
-	})
+	content, err := pgo.FileGetContents("http://google.com", pgo.NewContext())
 ```
 
 Uploading files from web-forms to your server:
 ```go
-c := &pgo.Context{
-	Req: YourReq,
-	UploadMaxFileSize: 10 << 25 
-}
+ctx := pgo.NewContext()
+ctx.Req = YourReq
+ctx.UploadMaxFileSize = 10 << 25
 
-uploaded := c.MoveUploadedFile("foo", "/srv/images/pic123.png")
+uploaded := ctx.MoveUploadedFile("foo", "/srv/images/pic123.png")
 ```
 
 See more examples from *_test.go files.
