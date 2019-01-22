@@ -24,6 +24,17 @@ type Context struct {
 	UploadMaxFileSize int64
 }
 
+// NewContext returns a new Context with preset default headers and request method
+func NewContext() *Context {
+	return &Context{
+		Headers: map[string]string{
+			"Accept":        "text/html",
+			"Cache-Control": "max-age=0",
+		},
+		RequestMethod: "GET",
+	}
+}
+
 // FileGetContents reads files, http requests streams
 // fileName name of file to where put data
 // flags[0] - offset
@@ -34,9 +45,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 	// determine if there is only an http get request
 	match, _ := regexp.MatchString("http(s?)\\:", path)
 	if argsLen == 0 && match {
-		context := &Context{
-			RequestMethod: Get,
-		}
+		context := NewContext()
 
 		return context.doRequest(path)
 	}
@@ -130,7 +139,7 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 		v, ok := flags[0].(int)
 
 		if !ok {
-			return -1, errors.New(fmt.Sprintf("Type of 3d parameter must be an int, got %T", flags[0]))
+			return -1, fmt.Errorf("Type of 3d parameter must be an int, got %T", flags[0])
 		}
 
 		f, err := os.OpenFile(fileName, v|os.O_WRONLY, 0644)
@@ -146,6 +155,7 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 	return len(data), ioutil.WriteFile(fileName, []byte(data), os.FileMode(0644))
 }
 
-func (c *Context) MoveUploadedFile(fieldName, filePath string) bool {
-	return c.uploadFile(fieldName, filePath)
+// MoveUploadedFile uploads file from fieldName to destination path
+func (c *Context) MoveUploadedFile(fieldName, destination string) bool {
+	return c.uploadFile(fieldName, destination)
 }

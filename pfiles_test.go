@@ -107,13 +107,7 @@ func TestFileGetContentsInvalidTypes(t *testing.T) {
 }
 
 func TestFileGetContentsHttpGetRequest(t *testing.T) {
-	content, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
-		Headers: map[string]string{
-			"Accept":        "text/html",
-			"Cache-Control": "max-age=0",
-		},
-		RequestMethod: "GET",
-	})
+	content, err := pgo.FileGetContents(defaultDomain, pgo.NewContext())
 
 	if err != nil {
 		t.Fatalf("Request failed with content: %s", content)
@@ -121,22 +115,17 @@ func TestFileGetContentsHttpGetRequest(t *testing.T) {
 }
 
 func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
-	_, err := pgo.FileGetContents(defaultDomain, &pgo.Context{
-		Headers: map[string]string{
-			"Accept":        "text/html",
-			"Cache-Control": "max-age=0",
-		},
-		RequestMethod: "INVALID()", // put an invalid http method with token hack - to invoke err msg
-	})
+	ctx := pgo.NewContext()
+	ctx.RequestMethod = "INVALID()"
+
+	_, err := pgo.FileGetContents(defaultDomain, ctx)
 
 	if err == nil {
 		t.Fatal("Request has not been failed with error")
 	}
 
-	_, er := pgo.FileGetContents("https://abrakadabra.comz.ru", &pgo.Context{ // providing fake domain with ssl
-		Headers:       map[string]string{},
-		RequestMethod: "OPTIONS",
-	})
+	ctx.RequestMethod = "OPTIONS"
+	_, er := pgo.FileGetContents("https://abrakadabra.comz.ru", ctx)
 
 	if er == nil {
 		t.Fatal("Request has not been failed with error")

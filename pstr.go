@@ -28,13 +28,14 @@ func StrIReplace(args ...interface{}) (string, error) {
 		params.search = search
 
 		return params.doReplaceSlices(), nil
-	} else { // prepare string to lower
-		val, _ := params.search.(string)
-		search := strings.ToLower(val)
-		params.search = search
-
-		return params.doReplace(), nil
 	}
+
+	// prepare string to lower
+	val, _ := params.search.(string)
+	search := strings.ToLower(val)
+	params.search = search
+
+	return params.doReplace(), nil
 }
 
 func (params *replaceParams) prepareParams(args ...interface{}) {
