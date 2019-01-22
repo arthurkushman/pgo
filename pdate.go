@@ -85,6 +85,7 @@ func (date *goDate) convert() {
 	}
 }
 
+// initializes date formats mapping between go and php
 func (date *goDate) initMapping() {
 	date.phpToGoFormat = map[string]string{
 		"Y": "2006",
