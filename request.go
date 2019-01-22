@@ -9,11 +9,6 @@ import (
 	"os"
 )
 
-const (
-	Post = "POST"
-	Get  = "GET"
-)
-
 func (c *Context) doRequest(path string) (string, error) {
 	req, reqErr := http.NewRequest(c.RequestMethod, path, bytes.NewBuffer([]byte{}))
 
