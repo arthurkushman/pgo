@@ -55,10 +55,10 @@ uploaded := ctx.MoveUploadedFile("foo", "/srv/images/pic123.png")
 
 Bulding a http query string:
 ```go
-	queryStr := pgo.HTTPBuildQuery(map[string]string{
-		"foo": "bar",
-		"bar": "baz",
-	}) // bar=baz&foo=bar
+queryStr := pgo.HTTPBuildQuery(map[string]string{
+	"foo": "bar",
+	"bar": "baz",
+}) // bar=baz&foo=bar
 ```
 
 See more examples from *_test.go files.
