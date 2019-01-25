@@ -64,3 +64,22 @@ func TestStrReplaceErrs(t *testing.T) {
 		t.Fatalf("want %s, got %s", subject, str)
 	}
 }
+
+func TestHTTPBuildQuery(t *testing.T) {
+	queryStr := pgo.HTTPBuildQuery(map[string]string{
+		"foo": "bar",
+		"bar": "baz",
+	})
+
+	want := "bar=baz&foo=bar"
+	if queryStr != want {
+		t.Fatalf("want %s, got %s", want, queryStr)
+	}
+
+	queryStr2 := pgo.HTTPBuildQuery(map[string]string{})
+
+	want2 := ""
+	if queryStr2 != want2 {
+		t.Fatalf("want %s, got %s", want2, queryStr)
+	}
+}

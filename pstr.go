@@ -2,6 +2,7 @@ package pgo
 
 import (
 	"errors"
+	"net/url"
 	"strings"
 )
 
@@ -109,4 +110,13 @@ func (params *replaceParams) doReplaceSlices() string {
 	}
 
 	return params.subject
+}
+
+// HTTPBuildQuery Generates a URL-encoded query string from the associative map
+func HTTPBuildQuery(pairs map[string]string) string {
+	q := url.Values{}
+	for k, v := range pairs {
+		q.Add(k, v)
+	}
+	return q.Encode()
 }
