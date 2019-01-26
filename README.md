@@ -62,3 +62,6 @@ queryStr := pgo.HTTPBuildQuery(map[string]string{
 ```
 
 See more examples from *_test.go files.
+
+Go docs can be found here:
+https://godoc.org/github.com/arthurkushman/pgo
