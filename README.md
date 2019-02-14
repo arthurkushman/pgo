@@ -41,7 +41,7 @@ n, err := pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
 
 Read from context (via http(s)):
 ```go
-	content, err := pgo.FileGetContents("http://google.com", pgo.NewContext())
+content, err := pgo.FileGetContents("http://google.com", pgo.NewContext())
 ```
 
 Uploading files from web-forms to your server:
@@ -53,4 +53,15 @@ ctx.UploadMaxFileSize = 10 << 25
 uploaded := ctx.MoveUploadedFile("foo", "/srv/images/pic123.png")
 ```
 
+Bulding a http query string:
+```go
+queryStr := pgo.HTTPBuildQuery(map[string]string{
+	"foo": "bar",
+	"bar": "baz",
+}) // bar=baz&foo=bar
+```
+
 See more examples from *_test.go files.
+
+Go docs can be found here:
+https://godoc.org/github.com/arthurkushman/pgo
