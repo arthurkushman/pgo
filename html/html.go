@@ -21,7 +21,7 @@ import (
 func htmlNospaceEscaper(args ...interface{}) string {
 	s, t := stringify(args...)
 	if t == contentTypeHTML {
-		return htmlReplacer(StripTags(s), htmlNospaceNormReplacementTable, false)
+		return htmlReplacer(StripTags(s, []string{}), htmlNospaceNormReplacementTable, false)
 	}
 	return htmlReplacer(s, htmlNospaceReplacementTable, false)
 }
@@ -30,7 +30,7 @@ func htmlNospaceEscaper(args ...interface{}) string {
 func attrEscaper(args ...interface{}) string {
 	s, t := stringify(args...)
 	if t == contentTypeHTML {
-		return htmlReplacer(StripTags(s), htmlNormReplacementTable, true)
+		return htmlReplacer(StripTags(s, []string{}), htmlNormReplacementTable, true)
 	}
 	return htmlReplacer(s, htmlReplacementTable, true)
 }
