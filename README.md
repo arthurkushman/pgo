@@ -71,6 +71,3 @@ There is a very handy "stripTags" function in html/template, then guys from offi
 That is why libs like `pgo` is appearing and will be move forward/evelove, bypassing strict rules that sometimes looking nonsence.
 
 See more examples from *_test.go files.
-
-Go docs can be found here:
-https://godoc.org/github.com/arthurkushman/pgo
