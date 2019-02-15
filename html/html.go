@@ -21,7 +21,7 @@ import (
 func htmlNospaceEscaper(args ...interface{}) string {
 	s, t := stringify(args...)
 	if t == contentTypeHTML {
-		return htmlReplacer(StripTags(s, []string{}), htmlNospaceNormReplacementTable, false)
+		return htmlReplacer(StripTags(s), htmlNospaceNormReplacementTable, false)
 	}
 	return htmlReplacer(s, htmlNospaceReplacementTable, false)
 }
@@ -30,7 +30,7 @@ func htmlNospaceEscaper(args ...interface{}) string {
 func attrEscaper(args ...interface{}) string {
 	s, t := stringify(args...)
 	if t == contentTypeHTML {
-		return htmlReplacer(StripTags(s, []string{}), htmlNormReplacementTable, true)
+		return htmlReplacer(StripTags(s), htmlNormReplacementTable, true)
 	}
 	return htmlReplacer(s, htmlReplacementTable, true)
 }
@@ -140,6 +140,8 @@ var htmlNospaceNormReplacementTable = []string{
 	'`': "&#96;",
 }
 
+var exclTags []string
+
 // htmlReplacer returns s with runes replaced according to replacementTable
 // and when badRunes is true, certain bad runes are allowed through unescaped.
 func htmlReplacer(s string, replacementTable []string, badRunes bool) string {
@@ -170,9 +172,19 @@ func htmlReplacer(s string, replacementTable []string, badRunes bool) string {
 
 // StripTags takes a snippet of HTML and returns only the text content.
 // For example, `<b>&iexcl;Hi!</b> <script>...</script>` -> `&iexcl;Hi! `.
-func StripTags(html string, excluded []string) string {
+func StripTags(html string, excluded ...interface{}) string {
 	var b bytes.Buffer
 	s, c, i, allText := []byte(html), context{}, 0, true
+	if len(excluded) > 0 {
+		excl, ok := excluded[0].([]string)
+		exclTags = excl
+
+		if !ok {
+			fmt.Printf("Type of 2nd parameter must be a []string, got %T", excluded[0])
+			return html
+		}
+	}
+
 	// Using the transition funcs helps us avoid mangling
 	// `<div title="1>2">` or `I <3 Ponies!`.
 	for i != len(s) {
@@ -182,6 +194,7 @@ func StripTags(html string, excluded []string) string {
 			if c.element != elementNone && !isInTag(st) {
 				st = stateRCDATA
 			}
+
 			d, nread := transitionFunc[st](c, s[i:])
 			i1 := i + nread
 			if c.state == stateText || c.state == stateRCDATA {
@@ -1441,17 +1454,27 @@ func tText(c context, s []byte) (context, int) {
 		}
 		i++
 		end := false
+
 		if s[i] == '/' {
 			if i+1 == len(s) {
 				return c, len(s)
 			}
 			end, i = true, i+1
 		}
+
 		j, e := eatTagName(s, i)
+
 		if j != i {
 			if end {
 				e = elementNone
 			}
+
+			for _, exclTag := range exclTags {
+				if exclTag == string(s[i:j]) { // excluded tag found - skipping
+					return c, i
+				}
+			}
+
 			// We've found an HTML tag.
 			return context{state: stateTag, element: e}, j
 		}
@@ -1471,6 +1494,7 @@ var elementContentType = [...]state{
 func tTag(c context, s []byte) (context, int) {
 	// Find the attribute name.
 	i := eatWhiteSpace(s, 0)
+
 	if i == len(s) {
 		return c, len(s)
 	}
@@ -1499,6 +1523,7 @@ func tTag(c context, s []byte) (context, int) {
 	case contentTypeJS:
 		attr = attrScript
 	}
+
 	if j == len(s) {
 		state = stateAttrName
 	} else {
