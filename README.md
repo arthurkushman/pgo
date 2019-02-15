@@ -4,6 +4,7 @@ Go library for PHP community with convenient functions
 [![Go Report Card](https://goreportcard.com/badge/github.com/arthurkushman/pgo)](https://goreportcard.com/report/github.com/arthurkushman/pgo)
 [![codecov](https://codecov.io/gh/arthurkushman/pgo/branch/master/graph/badge.svg)](https://codecov.io/gh/arthurkushman/pgo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![GoDoc](https://github.com/golang/gddo/blob/c782c79e0a3c3282dacdaaebeff9e6fd99cb2919/gddo-server/assets/status.svg)](https://godoc.org/github.com/arthurkushman/pgo)
 
 #### Installation 
 
@@ -60,6 +61,14 @@ queryStr := pgo.HTTPBuildQuery(map[string]string{
 	"bar": "baz",
 }) // bar=baz&foo=bar
 ```
+
+Strip tags with exclusion rules:
+```go
+str := html.StripTags(test.in, []string{"a", "span"})
+```
+UPD: As had been stated here - https://github.com/golang/go/issues/22639
+There is a very handy "stripTags" function in html/template, then guys from official team as fast as they got dislike on their negative comment, closed the thread.
+That is why libs like `pgo` is appearing and will be move forward/evelove, bypassing strict rules that sometimes looking nonsence.
 
 See more examples from *_test.go files.
 
