@@ -20,7 +20,7 @@ func TestFileGetContents(t *testing.T) {
 	}
 
 	// base case - readAll
-	strBase, er := pgo.FileGetContents(fileName)
+	strBase, _ := pgo.FileGetContents(fileName)
 
 	if len(strBase) != n {
 		t.Fatalf("want %d bytes of data, got %d", n, len(strBase))
