@@ -1,6 +1,7 @@
 # pgo
 Go library for PHP community with convenient functions
 
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/arthurkushman/pgo)](https://goreportcard.com/report/github.com/arthurkushman/pgo)
 [![codecov](https://codecov.io/gh/arthurkushman/pgo/branch/master/graph/badge.svg)](https://codecov.io/gh/arthurkushman/pgo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -64,7 +65,9 @@ queryStr := pgo.HTTPBuildQuery(map[string]string{
 
 Strip tags with exclusion rules:
 ```go
-str := html.StripTags(test.in, []string{"a", "span"})
+html := "<div>Lorem <span>ipsum dolor sit amet</span>, consectetur adipiscing elit, sed do eiusmod <a href=\"http://example.com\">tempor incididunt</a> ut labore <strong>et dolore</strong> magna aliqua.</div>"
+
+str := html.StripTags(html, []string{"a", "span"}) // results in: "Lorem <span>ipsum dolor sit amet</span>, consectetur adipiscing elit, sed do eiusmod <a href=\"http://example.com\">tempor incididunt</a> ut labore et dolore magna aliqua."
 ```
 UPD: As had been stated here - https://github.com/golang/go/issues/22639
 There is a very handy "stripTags" function in html/template, then guys from official team as fast as they got dislike on their negative comment, closed the thread.
