@@ -47,7 +47,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 	if argsLen == 0 && match {
 		context := NewContext()
 
-		return "", context.doRequest(path)
+		return context.doRequest(path)
 	}
 
 	if argsLen > 0 && args[0] != nil { // context has been passed - send http request
@@ -57,7 +57,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 			printError("Context param must be of type Context, %T passed", args[0])
 		}
 
-		return "", context.doRequest(path)
+		return context.doRequest(path)
 	}
 
 	// write with both offset/maxLen
