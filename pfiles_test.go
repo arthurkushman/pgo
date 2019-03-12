@@ -11,6 +11,10 @@ const (
 	strToWrite    = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	fileName      = "example.txt"
 	defaultDomain = "http://localhost"
+	file1         = "file1.txt"
+	file2         = "file2.txt"
+	dir1          = "dir1"
+	dir2          = "dir2"
 )
 
 func TestFileGetContents(t *testing.T) {
@@ -195,16 +199,46 @@ func TestFilePutContentsErrors(t *testing.T) {
 //}
 
 func TestFileExists(t *testing.T) {
-	pgo.FilePutContents("file1.txt", "foo bar baz")
-	defer os.Remove("file1.txt")
+	pgo.FilePutContents(file1, "foo bar baz")
+	defer os.Remove(file1)
 
-	f1 := pgo.FileExists("file1.txt")
+	f1 := pgo.FileExists(file1)
 	if f1 != true {
 		t.Fatalf("File exists and returning %v", f1)
 	}
 
-	f2 := pgo.FileExists("file2.txt")
+	f2 := pgo.FileExists(file2)
 	if f2 != false {
 		t.Fatalf("File doesn't exist and returning %v", f2)
+	}
+}
+
+func TestIsDir(t *testing.T) {
+	os.Mkdir(dir1, 0644)
+	defer os.Remove(dir1)
+
+	isDir := pgo.IsDir(dir1)
+	if isDir != true {
+		t.Fatalf("Directory dir1 is an existent dir but IsDir returned %v", isDir)
+	}
+
+	isDir2 := pgo.IsDir(dir2)
+	if isDir2 != false {
+		t.Fatalf("Directory "+dir2+" is non-existent dir but IsDir returned %v", isDir)
+	}
+}
+
+func TestIsFile(t *testing.T) {
+	pgo.FilePutContents(file1, "foo bar baz")
+	defer os.Remove(file1)
+
+	isFile := pgo.IsFile(file1)
+	if isFile != true {
+		t.Fatalf("File "+file1+" is a regular file, but IsFile returned %v", file1)
+	}
+
+	isFile2 := pgo.IsFile(file2)
+	if isFile2 != false {
+		t.Fatalf("File "+file2+" is not a regular file, but IsFile returned %v", file1)
 	}
 }

@@ -170,3 +170,23 @@ func FileExists(fileName string) bool {
 
 	return err == nil
 }
+
+// IsDir tells whether the filename is a directory
+func IsDir(fileName string) bool {
+	fi, err := os.Stat(fileName)
+	if err != nil {
+		return false
+	}
+
+	return fi.Mode().IsDir()
+}
+
+// IsFile tells whether the filename is a regular file
+func IsFile(fileName string) bool {
+	fi, err := os.Stat(fileName)
+	if err != nil {
+		return false
+	}
+
+	return fi.Mode().IsRegular()
+}
