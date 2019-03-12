@@ -2,6 +2,7 @@ package pgo_test
 
 import (
 	"math"
+	"os"
 	"pgo"
 	"testing"
 )
@@ -192,3 +193,18 @@ func TestFilePutContentsErrors(t *testing.T) {
 //
 //	c.MoveUploadedFile("foo", "./baz.txt")
 //}
+
+func TestFileExists(t *testing.T) {
+	pgo.FilePutContents("file1.txt", "foo bar baz")
+	defer os.Remove("file1.txt")
+
+	f1 := pgo.FileExists("file1.txt")
+	if f1 != true {
+		t.Fatalf("File exists and returning %v", f1)
+	}
+
+	f2 := pgo.FileExists("file2.txt")
+	if f1 != false {
+		t.Fatalf("File doesn't exist and returning %v", f1)
+	}
+}
