@@ -86,7 +86,7 @@ if pgo.IsFile("someFile.txt") {
 	// do something with file
 }
 
-if pgo.IsFile("someDir/") {
+if pgo.IsDir("someDir/") {
 	// do something with dir
 }
 ```
