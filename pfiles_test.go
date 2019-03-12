@@ -204,7 +204,7 @@ func TestFileExists(t *testing.T) {
 	}
 
 	f2 := pgo.FileExists("file2.txt")
-	if f1 != false {
-		t.Fatalf("File doesn't exist and returning %v", f1)
+	if f2 != false {
+		t.Fatalf("File doesn't exist and returning %v", f2)
 	}
 }

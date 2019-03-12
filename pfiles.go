@@ -168,5 +168,5 @@ func FileExists(fileName string) bool {
 		return false
 	}
 
-	return err != nil
+	return err == nil
 }
