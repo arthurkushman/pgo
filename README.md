@@ -80,4 +80,15 @@ if pgo.FileExists("file1.txt") == true {
 }
 ```
 
+Check if it is file/dir 
+```go 
+if pgo.IsFile("someFile.txt") {
+	// do something with file
+}
+
+if pgo.IsFile("someDir/") {
+	// do something with dir
+}
+```
+
 See more examples from *_test.go files.
