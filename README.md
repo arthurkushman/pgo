@@ -73,4 +73,11 @@ UPD: As had been stated here - https://github.com/golang/go/issues/22639
 There is a very handy "stripTags" function in html/template, then guys from official team as fast as they got dislike on their negative comment, closed the thread.
 That is why libs like `pgo` is appearing and will be move forward/evelove, bypassing strict rules that sometimes looking nonsence.
 
+Checking for file existence
+```go
+if pgo.FileExists("file1.txt") == true {
+	// do something with existent file
+}
+```
+
 See more examples from *_test.go files.
