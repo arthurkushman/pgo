@@ -80,7 +80,7 @@ if pgo.FileExists("file1.txt") == true {
 }
 ```
 
-Check if it is file/dir 
+Check if it is file/dir/symlink 
 ```go 
 if pgo.IsFile("someFile.txt") {
 	// do something with file
@@ -88,6 +88,10 @@ if pgo.IsFile("someFile.txt") {
 
 if pgo.IsDir("someDir/") {
 	// do something with dir
+}
+
+if pgo.IsLink("someLink") {
+	// do somthing with symlink
 }
 ```
 

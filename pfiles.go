@@ -190,3 +190,13 @@ func IsFile(fileName string) bool {
 
 	return fi.Mode().IsRegular()
 }
+
+// IsLink tells whether the filename is a symbolic link
+func IsLink(fileName string) bool {
+	_, err := os.Readlink(fileName)
+	if err != nil {
+		return false
+	}
+
+	return true
+}

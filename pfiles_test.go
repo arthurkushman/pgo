@@ -15,6 +15,7 @@ const (
 	file2         = "file2.txt"
 	dir1          = "dir1"
 	dir2          = "dir2"
+	symlink       = "symlink"
 )
 
 func TestFileGetContents(t *testing.T) {
@@ -234,11 +235,28 @@ func TestIsFile(t *testing.T) {
 
 	isFile := pgo.IsFile(file1)
 	if isFile != true {
-		t.Fatalf("File "+file1+" is a regular file, but IsFile returned %v", file1)
+		t.Fatalf("File "+file1+" is a regular file, but IsFile returned %v", isFile)
 	}
 
 	isFile2 := pgo.IsFile(file2)
 	if isFile2 != false {
-		t.Fatalf("File "+file2+" is not a regular file, but IsFile returned %v", file1)
+		t.Fatalf("File "+file2+" is not a regular file, but IsFile returned %v", isFile)
+	}
+}
+
+func TestIsLnik(t *testing.T) {
+	pgo.FilePutContents(file1, "foo bar baz")
+	os.Symlink(file1, symlink)
+	defer os.Remove(file1)
+	defer os.Remove(symlink)
+
+	isSymlink := pgo.IsLink(symlink)
+	if isSymlink != true {
+		t.Fatalf(symlink+" is a symlinkr, but IsLink returned %v", isSymlink)
+	}
+
+	isSymlink2 := pgo.IsLink(file1)
+	if isSymlink2 != false {
+		t.Fatalf(file1+" is a regular file, but IsLink returned %v", isSymlink2)
 	}
 }
