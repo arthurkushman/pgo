@@ -95,4 +95,11 @@ if pgo.IsLink("someLink") {
 }
 ```
 
-See more examples from *_test.go files.
+If an array contains an element
+```go
+pgo.InArray(3, []int{1, 2, 3}) // true
+pgo.InArray("bar33", []string{"foo", "bar", "baz"}) // false
+pgo.InArray(3.14159, []float64{33.12, 12.333, 3.14159, 78.4429}) // true
+```
+
+See more examples in *_test.go files.
