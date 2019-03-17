@@ -102,4 +102,11 @@ pgo.InArray("bar33", []string{"foo", "bar", "baz"}) // false
 pgo.InArray(3.14159, []float64{33.12, 12.333, 3.14159, 78.4429}) // true
 ```
 
+Split an array by chunks (with auto-tailing)
+```go
+pgo.ArrayChunk([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2) // [][]int{[]int{1, 2}, []int{3, 4}, []int{5, 6}, []int{7, 8}}
+
+pgo.ArrayChunk([]string{"foo", "bar", "baz", "fizz", "buzz"}, 3) // [][]string{[]string{"foo", "bar", "baz"}, []string{"fizz", "buzz"}}
+```
+
 See more examples in *_test.go files.

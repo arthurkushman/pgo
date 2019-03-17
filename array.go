@@ -24,3 +24,23 @@ func search(needle interface{}, haystack interface{}) bool {
 
 	return false
 }
+
+// ArrayChunk split an array into chunks
+func ArrayChunk(array interface{}, size int) []interface{} {
+	var chunks []interface{}
+
+	s := reflect.ValueOf(array)
+	len := s.Len()
+
+	var subChunk []interface{}
+	for i := 0; i < len; i++ {
+		subChunk = append(subChunk, s.Index(i).Interface())
+
+		if (i+1)%size == 0 || i+1 == len {
+			chunks = append(chunks, subChunk)
+			subChunk = make([]interface{}, 0)
+		}
+	}
+
+	return chunks
+}
