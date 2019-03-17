@@ -44,3 +44,24 @@ func ArrayChunk(array interface{}, size int) []interface{} {
 
 	return chunks
 }
+
+// ArrayCombine creates an array by using one array for keys and another for its values
+// returns map[key]value if both slices are equal and nil otherwise
+func ArrayCombine(keys interface{}, values interface{}) map[interface{}]interface{} {
+	s := reflect.ValueOf(keys)
+	len := s.Len()
+
+	ss := reflect.ValueOf(values)
+	ssLen := ss.Len()
+
+	if len != ssLen {
+		return nil
+	}
+
+	resultMap := make(map[interface{}]interface{})
+	for i := 0; i < len; i++ {
+		resultMap[s.Index(i).Interface()] = ss.Index(i).Interface()
+	}
+
+	return resultMap
+}

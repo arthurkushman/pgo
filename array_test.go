@@ -57,3 +57,44 @@ func TestArrayChunk(t *testing.T) {
 		}
 	}
 }
+
+// type emptyMap map[interface{}]interface{}
+
+var testArrayCombine = []struct {
+	keys   interface{}
+	values interface{}
+	result interface{}
+}{
+	{[]int{11, 32, 13, 14, 51, 46, 17, 88}, []string{"foo", "bar", "baz", "fizz", "buzz", "mazz", "freez", "lorum"}, map[int]string{
+		11: "foo",
+		32: "bar",
+		13: "baz",
+		14: "fizz",
+		51: "buzz",
+		46: "mazz",
+		17: "freez",
+		88: "lorum",
+	}},
+	{[]string{"foo", "bar", "baz", "fizz", "buzz"}, []float64{11.32, 32.42, 13.246, 14.41, 51.98},
+		map[string]float64{
+			"foo":  11.32,
+			"bar":  32.42,
+			"baz":  13.246,
+			"fizz": 14.41,
+			"buzz": 51.98,
+		}},
+	{[]string{"foo", "bar", "baz", "buzz"}, []float64{11.32, 32.42, 13.246, 14.41, 51.98}, nil},
+}
+
+func TestArrayCombine(t *testing.T) {
+	for _, object := range testArrayCombine {
+		res := pgo.ArrayCombine(object.keys, object.values)
+
+		m := reflect.ValueOf(object.result)
+		for k, v := range res {
+			if m.MapIndex(reflect.ValueOf(k)).Interface() != v {
+				t.Fatalf("want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
+		}
+	}
+}

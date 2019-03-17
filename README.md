@@ -16,7 +16,7 @@ go get github.com/arthurkushman/pgo
 
 Imagine that you need to write Go code every day and also have a convenient functions in memory from PHP experience
 
-You can use date function with similar formatting for PHP e.g.:
+#### You can use date function with similar formatting for PHP e.g.:
 
 ```go
 dateStr := pgo.Date("Y-m-d H:i:s")
@@ -31,7 +31,7 @@ str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, 
 // and if case-insensitive replace needed - pgo.StrIReplace([]string{"DOG", "QuiCK"}, []string{"fox", "slow"}, subject) 
 ```
 
-or read files with offset/limit: 
+#### Read files with offset/limit: 
 ```go
 content, err := pgo.FileGetContents("somefile.txt", 0, 1024)
 ```
@@ -41,12 +41,12 @@ reflexively write to files with:
 n, err := pgo.FilePutContents("somefile.txt", strToWrite, pgo.FileAppend)
 ```
 
-Read from context (via http(s)):
+#### Read from context (via http(s)):
 ```go
 content, err := pgo.FileGetContents("http://google.com", pgo.NewContext())
 ```
 
-Uploading files from web-forms to your server:
+#### Uploading files from web-forms to your server:
 ```go
 ctx := pgo.NewContext()
 ctx.Req = YourReq
@@ -55,7 +55,7 @@ ctx.UploadMaxFileSize = 10 << 25
 uploaded := ctx.MoveUploadedFile("foo", "/srv/images/pic123.png")
 ```
 
-Bulding a http query string:
+#### Bulding a http query string:
 ```go
 queryStr := pgo.HTTPBuildQuery(map[string]string{
 	"foo": "bar",
@@ -63,7 +63,7 @@ queryStr := pgo.HTTPBuildQuery(map[string]string{
 }) // bar=baz&foo=bar
 ```
 
-Strip tags with exclusion rules:
+#### Strip tags with exclusion rules:
 ```go
 html := "<div>Lorem <span>ipsum dolor sit amet</span>, consectetur adipiscing elit, sed do eiusmod <a href=\"http://example.com\">tempor incididunt</a> ut labore <strong>et dolore</strong> magna aliqua.</div>"
 
@@ -73,14 +73,14 @@ UPD: As had been stated here - https://github.com/golang/go/issues/22639
 There is a very handy "stripTags" function in html/template, then guys from official team as fast as they got dislike on their negative comment, closed the thread.
 That is why libs like `pgo` is appearing and will be move forward/evelove, bypassing strict rules that sometimes looking nonsence.
 
-Checking for file existence
+#### Checking for file existence
 ```go
 if pgo.FileExists("file1.txt") == true {
 	// do something with existent file
 }
 ```
 
-Check if it is file/dir/symlink 
+#### Check if it is file/dir/symlink 
 ```go 
 if pgo.IsFile("someFile.txt") {
 	// do something with file
@@ -95,18 +95,35 @@ if pgo.IsLink("someLink") {
 }
 ```
 
-If an array contains an element
+#### Check if an array contains an element
 ```go
 pgo.InArray(3, []int{1, 2, 3}) // true
 pgo.InArray("bar33", []string{"foo", "bar", "baz"}) // false
 pgo.InArray(3.14159, []float64{33.12, 12.333, 3.14159, 78.4429}) // true
 ```
 
-Split an array by chunks (with auto-tailing)
+#### Split an array by chunks (with auto-tailing)
 ```go
 pgo.ArrayChunk([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2) // [][]int{[]int{1, 2}, []int{3, 4}, []int{5, 6}, []int{7, 8}}
 
 pgo.ArrayChunk([]string{"foo", "bar", "baz", "fizz", "buzz"}, 3) // [][]string{[]string{"foo", "bar", "baz"}, []string{"fizz", "buzz"}}
+```
+
+#### Create an array by using one array for keys and another for its values
+```go
+pgo.ArrayCombine([]int{11, 32, 13, 14, 51, 46, 17, 88}, []string{"foo", "bar", "baz", "fizz", "buzz", "mazz", "freez", "lorum"})
+/*
+map[int]string{
+		11: "foo",
+		32: "bar",
+		13: "baz",
+		14: "fizz",
+		51: "buzz",
+		46: "mazz",
+		17: "freez",
+		88: "lorum",
+	}	
+*/
 ```
 
 See more examples in *_test.go files.
