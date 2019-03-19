@@ -139,4 +139,11 @@ map[int]string{
 */
 ```
 
+#### Count all the values of an array/slice
+```go
+pgo.ArrayCountValues([]string{"foo", "bar", "foo", "baz", "bar", "bar"}) // map[string]int{"foo": 2, "bar": 3, "baz": 1}
+
+pgo.ArrayCountValues([]float64{3.14159, 43.03, 8, 3.14159, 43.02, 8}) // map[float64]int{3.14159: 2, 8: 2, 43.03: 1, 43.02: 1}
+```
+
 See more examples in *_test.go files.

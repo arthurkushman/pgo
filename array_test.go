@@ -98,3 +98,25 @@ func TestArrayCombine(t *testing.T) {
 		}
 	}
 }
+
+var testArrayCountValues = []struct {
+	values interface{}
+	result interface{}
+}{
+	{[]string{"foo", "bar", "foo", "baz", "bar", "bar"}, map[string]int{"foo": 2, "bar": 3, "baz": 1}},
+	{[]int{3, 43, 8, 43, 8}, map[int]int{43: 2, 8: 2, 3: 1}},
+	{[]float64{3.14159, 43.03, 8, 3.14159, 43.02, 8}, map[float64]int{3.14159: 2, 8: 2, 43.03: 1, 43.02: 1}},
+}
+
+func TestArrayCountValues(t *testing.T) {
+	for _, object := range testArrayCountValues {
+		res := pgo.ArrayCountValues(object.values)
+
+		m := reflect.ValueOf(object.result)
+		for k, v := range res {
+			if m.MapIndex(reflect.ValueOf(k)).Interface() != v {
+				t.Fatalf("want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
+		}
+	}
+}

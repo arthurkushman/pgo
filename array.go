@@ -65,3 +65,16 @@ func ArrayCombine(keys interface{}, values interface{}) map[interface{}]interfac
 
 	return resultMap
 }
+
+// ArrayCountValues counts all the values of an array/slice
+func ArrayCountValues(array interface{}) map[interface{}]int {
+	res := make(map[interface{}]int)
+
+	s := reflect.ValueOf(array)
+	len := s.Len()
+	for i := 0; i < len; i++ {
+		res[s.Index(i).Interface()]++
+	}
+
+	return res
+}
