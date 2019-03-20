@@ -25,6 +25,7 @@ Go library for PHP community with convenient functions
 	* [ArrayCombine](#user-content-arraycombine)
 	* [ArrayCountValues](#user-content-arraycountvalues)
 	* [ArrayMap](#user-content-arraymap)
+	* [ArrayFilter](#user-content-arrayfilter)
 
 #### Installation 
 
@@ -181,6 +182,14 @@ pgo.ArrayMap([]string{"foo", "bar", "baz"}, func(v string) string {
 pgo.ArrayMap([]float64{1, 2, 3, 4, 5}, func(v float64) float64 {
 		return math.Pow(v, 2)
 	}) // []float64{1, 4, 9, 16, 25}
+```
+
+#### ArrayFilter
+filters elements of an array using a callback function
+```go
+pgo.ArrayFilter([]float64{1, 2, 3, 4, 5}, func(v float64) bool {
+		return v > 2.718
+	}) // []float64{3, 4, 5}
 ```
 
 See more examples in *_test.go files.

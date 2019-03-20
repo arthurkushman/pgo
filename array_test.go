@@ -170,3 +170,28 @@ func TestArrayMap(t *testing.T) {
 		}
 	}
 }
+
+var testArrayFilterFloats = []struct {
+	values   []float64
+	callback func(v float64) bool
+	result   []float64
+}{
+	{[]float64{1, 2, 3, 4, 5}, func(v float64) bool {
+		return v > 2.718
+	}, []float64{3, 4, 5}},
+	{[]float64{1, 2, 3, 4, 5}, func(v float64) bool {
+		return v < 2.718
+	}, []float64{1, 2}},
+}
+
+func TestArrayFilter(t *testing.T) {
+	for _, object := range testArrayFilterFloats {
+		res := pgo.ArrayFilter(object.values, object.callback)
+
+		for k, v := range res {
+			if v != object.result[k] {
+				t.Fatalf("want %v, got %v", v, object.values[k])
+			}
+		}
+	}
+}

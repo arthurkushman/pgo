@@ -93,3 +93,20 @@ func ArrayMap(array interface{}, callback interface{}) []interface{} {
 
 	return result
 }
+
+// ArrayFilter filters elements of an array using a callback function
+func ArrayFilter(array interface{}, callback interface{}) []interface{} {
+	s := reflect.ValueOf(array)
+	len := s.Len()
+
+	funcValue := reflect.ValueOf(callback)
+
+	var result []interface{}
+	for i := 0; i < len; i++ {
+		if funcValue.Call([]reflect.Value{s.Index(i)})[0].Bool() {
+			result = append(result, s.Index(i).Interface())
+		}
+	}
+
+	return result
+}
