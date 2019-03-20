@@ -78,3 +78,18 @@ func ArrayCountValues(array interface{}) map[interface{}]int {
 
 	return res
 }
+
+// ArrayMap applies the callback to the elements of the given arrays
+func ArrayMap(array interface{}, callback interface{}) []interface{} {
+	s := reflect.ValueOf(array)
+	len := s.Len()
+
+	funcValue := reflect.ValueOf(callback)
+
+	var result []interface{}
+	for i := 0; i < len; i++ {
+		result = append(result, funcValue.Call([]reflect.Value{s.Index(i)})[0].Interface())
+	}
+
+	return result
+}

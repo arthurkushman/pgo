@@ -1,8 +1,10 @@
 package pgo_test
 
 import (
+	"math"
 	"pgo"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -116,6 +118,54 @@ func TestArrayCountValues(t *testing.T) {
 		for k, v := range res {
 			if m.MapIndex(reflect.ValueOf(k)).Interface() != v {
 				t.Fatalf("want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
+		}
+	}
+}
+
+var testArrayMapStrings = []struct {
+	values   []string
+	callback func(v string) string
+	result   []string
+}{
+	{[]string{"foo", "bar", "baz"}, func(v string) string {
+		return strings.ToUpper(v)
+	}, []string{"FOO", "BAR", "BAZ"}},
+	{[]string{"FOO", "BAR", "BAZ"}, func(v string) string {
+		return strings.ToLower(v)
+	}, []string{"foo", "bar", "baz"}},
+}
+
+var testArrayMapFloats = []struct {
+	values   []float64
+	callback func(v float64) float64
+	result   []float64
+}{
+	{[]float64{1, 2, 3, 4, 5}, func(v float64) float64 {
+		return math.Pow(v, 2)
+	}, []float64{1, 4, 9, 16, 25}},
+	{[]float64{1, 2, 3, 4, 5}, func(v float64) float64 {
+		return math.Pow(v, 3)
+	}, []float64{1, 8, 27, 64, 125}},
+}
+
+func TestArrayMap(t *testing.T) {
+	for _, object := range testArrayMapStrings {
+		res := pgo.ArrayMap(object.values, object.callback)
+
+		for k, v := range res {
+			if v != object.result[k] {
+				t.Fatalf("want %v, got %v", v, object.values[k])
+			}
+		}
+	}
+
+	for _, object := range testArrayMapStrings {
+		res := pgo.ArrayMap(object.values, object.callback)
+
+		for k, v := range res {
+			if v != object.result[k] {
+				t.Fatalf("want %v, got %v", v, object.values[k])
 			}
 		}
 	}
