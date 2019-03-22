@@ -26,6 +26,7 @@ Go library for PHP community with convenient functions
 	* [ArrayCountValues](#user-content-arraycountvalues)
 	* [ArrayMap](#user-content-arraymap)
 	* [ArrayFilter](#user-content-arrayfilter)
+	* [ArrayDiff](#user-content-arraydiff)
 
 #### Installation 
 
@@ -190,6 +191,13 @@ filters elements of an array using a callback function
 pgo.ArrayFilter([]float64{1, 2, 3, 4, 5}, func(v float64) bool {
 		return v > 2.718
 	}) // []float64{3, 4, 5}
+```
+
+#### ArrayDiff
+returns the values in array1 that are not present in any of the other arrays
+```go
+pgo.ArrayDiff([]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
+pgo.ArrayDiff([]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
 ```
 
 See more examples in *_test.go files.

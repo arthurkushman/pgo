@@ -110,3 +110,39 @@ func ArrayFilter(array interface{}, callback interface{}) []interface{} {
 
 	return result
 }
+
+// ArrayDiff compares array1 against one or more other arrays
+// returns the values in array1 that are not present in any of the other arrays
+func ArrayDiff(arrays ...interface{}) []interface{} {
+	s := reflect.ValueOf(arrays[0])
+	len := s.Len()
+
+	var result []interface{}
+	isFound := false
+
+	for i := 0; i < len; i++ {
+		needle := s.Index(i).Interface()
+
+		for _, v := range arrays[1:] {
+			switch reflect.TypeOf(v).Kind() {
+			case reflect.Slice:
+				ss := reflect.ValueOf(v)
+				sLen := ss.Len()
+
+				for j := 0; j < sLen; j++ {
+					if needle == ss.Index(j).Interface() {
+						isFound = true
+					}
+				}
+			}
+		}
+
+		if isFound == false {
+			result = append(result, needle)
+		}
+
+		isFound = false
+	}
+
+	return result
+}

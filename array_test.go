@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"fmt"
 	"math"
 	"pgo"
 	"reflect"
@@ -191,6 +192,33 @@ func TestArrayFilter(t *testing.T) {
 		for k, v := range res {
 			if v != object.result[k] {
 				t.Fatalf("want %v, got %v", v, object.values[k])
+			}
+		}
+	}
+}
+
+var testArrayDiff = []struct {
+	values interface{}
+	diff   interface{}
+	result interface{}
+}{
+	{[]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}, []string{"fizz", "baz"}},
+	{[]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}, []int{43}},
+	{[]float64{3.14159, 43.03, 3.14159, 43.02, 8.74}, []float64{3.14159, 43.03, 3.14159}, []float64{43.02, 8.74}},
+	{[]int{3, 43, 8, 4, 9}, []int{}, []int{3, 43, 8, 4, 9}},
+	{[]int{}, []int{3, 43, 8, 4, 9}, []int{}},
+}
+
+func TestArrayDiff(t *testing.T) {
+	for _, object := range testArrayDiff {
+		res := pgo.ArrayDiff(object.values, object.diff)
+		fmt.Println(res)
+
+		s := reflect.ValueOf(object.result)
+		len := s.Len()
+		for i := 0; i < len; i++ {
+			if s.Index(i).Interface() != res[i] {
+				t.Fatalf("want %v, got %v", s.Index(i).Interface(), res[i])
 			}
 		}
 	}
