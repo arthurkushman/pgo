@@ -200,4 +200,12 @@ pgo.ArrayDiff([]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // 
 pgo.ArrayDiff([]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
 ```
 
+#### ArrayKeys
+return all the keys or a subset of the keys of an array
+```go
+pgo.ArrayKeys(map[string]int{"foo": 1, "bar": 8, "fizz": 12, "baz": 0}) // []string{"foo", "bar", "fizz", "baz"}
+
+pgo.ArrayKeys(map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}) // []interface{}{3.45, "foo", 8, "bar", 9}
+```
+
 See more examples in *_test.go files.

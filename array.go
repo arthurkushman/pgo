@@ -146,3 +146,15 @@ func ArrayDiff(arrays ...interface{}) []interface{} {
 
 	return result
 }
+
+// ArrayKeys return all the keys or a subset of the keys of an array
+func ArrayKeys(array map[interface{}]interface{}) []interface{} {
+	m := reflect.ValueOf(array)
+
+	var result []interface{}
+	for k := range array {
+		result = append(result, m.MapIndex(reflect.ValueOf(k)).Interface())
+	}
+
+	return result
+}
