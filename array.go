@@ -1,6 +1,7 @@
 package pgo
 
 import (
+	"fmt"
 	"reflect"
 )
 
@@ -157,4 +158,35 @@ func ArrayKeys(array map[interface{}]interface{}) []interface{} {
 	}
 
 	return result
+}
+
+// ArraySum calculate the sum of values in an array
+func ArraySum(array interface{}) (float64, error) {
+	s := reflect.ValueOf(array)
+	len := s.Len()
+
+	var amount float64
+	for i := 0; i < len; i++ {
+		v, err := getFloat(s.Index(i).Interface())
+		if err != nil {
+			return v, err
+		}
+
+		amount += v
+	}
+
+	return amount, nil
+}
+
+func getFloat(unk interface{}) (float64, error) {
+	var floatType = reflect.TypeOf(float64(0))
+
+	v := reflect.ValueOf(unk)
+	v = reflect.Indirect(v)
+	if !v.Type().ConvertibleTo(floatType) {
+		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
+	}
+
+	fv := v.Convert(floatType)
+	return fv.Float(), nil
 }

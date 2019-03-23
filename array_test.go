@@ -247,3 +247,21 @@ func TestArrayKeys(t *testing.T) {
 		}
 	}
 }
+
+var testArraySum = []struct {
+	values interface{}
+	result float64
+}{
+	{[]int{3, 43, 8, 43, 8}, 105},
+	{[]float64{3.14159, 43.03, 8, 3.14159, 43.02, 8}, 108.33318},
+}
+
+func TestArraySum(t *testing.T) {
+	for _, object := range testArraySum {
+		res, _ := pgo.ArraySum(object.values)
+
+		if res != object.result {
+			t.Fatalf("want %v, got %v", object.result, res)
+		}
+	}
+}
