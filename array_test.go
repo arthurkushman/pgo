@@ -223,27 +223,12 @@ func TestArrayDiff(t *testing.T) {
 }
 
 var testArrayKeys = []struct {
-	values interface{}
-	result interface{}
+	values map[string]int
+	result []string
 }{
 	{map[string]int{"foo": 1, "bar": 8, "fizz": 12, "baz": 0}, []string{"foo", "bar", "fizz", "baz"}},
-	{map[int]interface{}{3: 32.4, 43: "foo", 8: "bar", 4: 1, 9: 1}, []int{3, 43, 8, 4, 9}},
-	{map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}, []interface{}{3.45, "foo", 8, "bar", 9}},
-}
-
-func TestArrayKeys(t *testing.T) {
-	for _, object := range testArrayDiff {
-		res := pgo.ArrayDiff(object.values, object.diff)
-
-		s := reflect.ValueOf(object.result)
-		len := s.Len()
-
-		for i := 0; i < len; i++ {
-			if res[i] != s.Index(i).Interface() {
-				t.Fatalf("want %v, got %v", res[i], s.Index(i).Interface())
-			}
-		}
-	}
+	// {map[int]interface{}{3: 32.4, 43: "foo", 8: "bar", 4: 1, 9: 1}, []int{3, 43, 8, 4, 9}},
+	// {map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}, []interface{}{3.45, "foo", 8, "bar", 9}},
 }
 
 var testArraySum = []struct {
@@ -251,6 +236,7 @@ var testArraySum = []struct {
 	result float64
 }{
 	{[]int{3, 43, 8, 43, 8}, 105},
+	{[]interface{}{3, "foo", 8, 43, 8}, 0},
 	{[]float64{3.14159, 43.03, 8, 3.14159, 43.02, 8}, 108.33318},
 }
 
