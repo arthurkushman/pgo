@@ -1,7 +1,6 @@
 package pgo_test
 
 import (
-	"fmt"
 	"math"
 	"pgo"
 	"reflect"
@@ -212,7 +211,6 @@ var testArrayDiff = []struct {
 func TestArrayDiff(t *testing.T) {
 	for _, object := range testArrayDiff {
 		res := pgo.ArrayDiff(object.values, object.diff)
-		fmt.Println(res)
 
 		s := reflect.ValueOf(object.result)
 		len := s.Len()
