@@ -96,7 +96,8 @@ func (date *goDate) initMapping() {
 		"s": "05",
 		"D": "Mon",
 		"M": "Jan",
-		"r": "Mon Jan 02 15:04:05 -0700 2006",
+		"r": time.RubyDate,
+		"c": time.RFC3339,
 	}
 
 	_, isoWeek := date.t.ISOWeek()
