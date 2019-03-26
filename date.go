@@ -101,11 +101,14 @@ func (date *goDate) initMapping() {
 	}
 
 	_, isoWeek := date.t.ISOWeek()
+	zone, offset := date.t.Zone()
 	specCases = map[string]interface{}{
 		"l": date.t.Weekday().String(),
 		"N": int(date.t.Weekday()),
 		"z": date.t.YearDay(),
 		"j": date.t.Day(),
 		"W": isoWeek,
+		"Z": offset,
+		"T": zone,
 	}
 }

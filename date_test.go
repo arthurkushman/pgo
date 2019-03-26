@@ -9,11 +9,12 @@ import (
 
 func TestDate(t *testing.T) {
 	if time.Now().Format("2006-02-01 15:04:05") != pgo.Date("Y-m-d H:i:s") {
-		t.Fatal("Time formats in map doesn't match")
+		t.Fatalf("want %s, got %s", time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"))
 	}
 
-	if time.Now().Format("2006-02-01T15:04:05") != pgo.Date("Y-m-dTH:i:s") {
-		t.Fatal("Time formats in map doesn't match")
+	zone, _ := time.Now().Zone()
+	if time.Now().Format("2006-02-01"+zone+"15:04:05") != pgo.Date("Y-m-dTH:i:s") {
+		t.Fatalf("want %s, got %s", time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"))
 	}
 
 	if time.Now().Format("Mon, Jan") != pgo.Date("D, M") {
