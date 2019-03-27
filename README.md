@@ -42,7 +42,9 @@ Imagine that you need to write Go code every day and also have a convenient func
 You can use date function with similar formatting for PHP e.g.:
 
 ```go
-dateStr := pgo.Date("Y-m-d H:i:s")
+dateStr := pgo.Date("Y-m-d H:i:s") // 2019-03-28 12:23:03
+
+pgo.Date("j D, M") // 27 Wed, Mar
 ```
 
 ### Strings
