@@ -211,4 +211,11 @@ pgo.ArrayKeys(map[string]int{"foo": 1, "bar": 8, "fizz": 12, "baz": 0}) // []str
 pgo.ArrayKeys(map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}) // []interface{}{3.45, "foo", 8, "bar", 9}
 ```
 
+#### ArrayIntersect
+computes the intersection of arrays
+```go
+pgo.ArrayIntersect([]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33, 9}) // []int{12, 54}
+
+pgo.ArrayIntersect([]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"}, []string{"foo", "bar", "hey"}) // []string{"foo", "bar", "fizz"}
+```
 See more examples in *_test.go files.

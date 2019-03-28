@@ -249,3 +249,31 @@ func TestArraySum(t *testing.T) {
 		}
 	}
 }
+
+var testArrayIntersect = []struct {
+	values interface{}
+	diff   interface{}
+	diff2  interface{}
+	result interface{}
+}{
+	{[]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33, 9}, []int{12, 54}},
+	{[]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"},
+		[]string{"foo", "bar", "hey"}, []string{"foo", "bar", "fizz"}},
+}
+
+func TestArrayIntersect(t *testing.T) {
+	for _, object := range testArrayIntersect {
+		res := pgo.ArrayIntersect(object.values, object.diff, object.diff2)
+
+		resVal := reflect.ValueOf(object.result)
+		resLen := resVal.Len()
+
+		s := reflect.ValueOf(object.result)
+
+		for i := 0; i < resLen; i++ {
+			if resVal.Index(i).Interface() != s.Index(i).Interface() {
+				t.Fatalf("want %v, got %v", s.Index(i).Interface(), res[i])
+			}
+		}
+	}
+}

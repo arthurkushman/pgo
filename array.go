@@ -178,3 +178,42 @@ func getFloat(unk interface{}) (float64, error) {
 	fv := v.Convert(floatType)
 	return fv.Float(), nil
 }
+
+// ArrayIntersect computes the intersection of arrays
+func ArrayIntersect(arrays ...interface{}) []interface{} {
+	s := reflect.ValueOf(arrays[0])
+	len := s.Len()
+
+	var result []interface{}
+	isFound := false
+
+	intersected := make(map[interface{}]bool)
+	for i := 0; i < len; i++ {
+		needle := s.Index(i).Interface()
+
+		for _, v := range arrays[1:] {
+			switch reflect.TypeOf(v).Kind() {
+			case reflect.Slice:
+				ss := reflect.ValueOf(v)
+				sLen := ss.Len()
+
+				for j := 0; j < sLen; j++ {
+					if needle == ss.Index(j).Interface() && !intersected[needle] {
+						isFound = true
+						intersected[needle] = true // del op is more expensive for slices
+						goto out                   // it is stupid to iterate O(n^2) if found
+					}
+				}
+			}
+		}
+
+	out:
+		if isFound {
+			result = append(result, needle)
+		}
+
+		isFound = false
+	}
+
+	return result
+}
