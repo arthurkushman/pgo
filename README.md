@@ -28,6 +28,7 @@ Go library for PHP community with convenient functions
 	* [ArrayFilter](#user-content-arrayfilter)
 	* [ArrayDiff](#user-content-arraydiff)
 	* [ArraySum](#user-content-arraysum)
+	* [ArrayIntersect](#user-content-arrayintersect)
 
 #### Installation 
 
