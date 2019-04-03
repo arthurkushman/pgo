@@ -167,6 +167,16 @@ map[int]string{
 		88: "lorum",
 	}	
 */
+pgo.ArrayCombine([]string{"foo", "bar", "baz", "fizz", "buzz"}, []float64{11.32, 32.42, 13.246, 14.41, 51.98})
+/*
+map[string]float64{
+			"foo":  11.32,
+			"bar":  32.42,
+			"baz":  13.246,
+			"fizz": 14.41,
+			"buzz": 51.98,
+		}
+*/
 ```
 
 #### ArrayCountValues
