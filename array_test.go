@@ -256,7 +256,7 @@ var testArrayIntersect = []struct {
 	diff2  interface{}
 	result interface{}
 }{
-	{[]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33, 9}, []int{12, 54}},
+	{[]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33, 9}, []int{12, 54, 33}},
 	{[]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"},
 		[]string{"foo", "bar", "hey"}, []string{"foo", "bar", "fizz"}},
 }
@@ -265,7 +265,7 @@ func TestArrayIntersect(t *testing.T) {
 	for _, object := range testArrayIntersect {
 		res := pgo.ArrayIntersect(object.values, object.diff, object.diff2)
 
-		resVal := reflect.ValueOf(object.result)
+		resVal := reflect.ValueOf(res)
 		resLen := resVal.Len()
 
 		s := reflect.ValueOf(object.result)
