@@ -217,3 +217,15 @@ func ArrayIntersect(arrays ...interface{}) []interface{} {
 
 	return result
 }
+
+// Range creates int slice of min to max range
+func Range(min, max int) []int {
+	var slice []int
+
+	for i := min; i <= max; i++ {
+		fmt.Println(i, min, max)
+		slice = append(slice, i)
+	}
+
+	return slice
+}

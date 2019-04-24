@@ -277,3 +277,24 @@ func TestArrayIntersect(t *testing.T) {
 		}
 	}
 }
+
+var testRange = []struct {
+	min    int
+	max    int
+	result []int
+}{
+	{3, 9, []int{3, 4, 5, 6, 7, 8, 9}},
+	{-3, 7, []int{-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7}},
+}
+
+func TestRange(t *testing.T) {
+	for _, object := range testRange {
+
+		res := pgo.Range(object.min, object.max)
+		for k, v := range res {
+			if v != object.result[k] {
+				t.Fatalf("want %v, got %v", object.result[k], v)
+			}
+		}
+	}
+}
