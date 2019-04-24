@@ -29,6 +29,7 @@ Go library for PHP community with convenient functions
 	* [ArrayDiff](#user-content-arraydiff)
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
+	* [Range](#user-content-range)
 
 #### Installation 
 
@@ -230,7 +231,7 @@ pgo.ArrayIntersect([]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33,
 pgo.ArrayIntersect([]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"}, []string{"foo", "bar", "hey"}) // []string{"foo", "bar", "fizz"}
 ```
 
-#### ArrayIntersect
+#### Range
 creates an int slice of min to max range
 ```go
 pgo.Range(3, 9) // []int{3, 4, 5, 6, 7, 8, 9}
