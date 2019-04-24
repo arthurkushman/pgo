@@ -229,4 +229,12 @@ pgo.ArrayIntersect([]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33,
 
 pgo.ArrayIntersect([]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"}, []string{"foo", "bar", "hey"}) // []string{"foo", "bar", "fizz"}
 ```
+
+#### ArrayIntersect
+creates an int slice of min to max range
+```go
+pgo.Range(3, 9) // []int{3, 4, 5, 6, 7, 8, 9}
+
+pgo.Range(-3, 7) // []int{-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7}
+```
 See more examples in *_test.go files.
