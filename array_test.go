@@ -287,10 +287,30 @@ var testRange = []struct {
 	{-3, 7, []int{-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7}},
 }
 
+var testRangeWithStep = []struct {
+	min    int
+	max    int
+	step   int
+	result []int
+}{
+	{3, 9, 2, []int{3, 5, 7, 9}},
+	{-3, 7, 5, []int{-3, 2, 7}},
+}
+
 func TestRange(t *testing.T) {
 	for _, object := range testRange {
 
 		res := pgo.Range(object.min, object.max)
+		for k, v := range res {
+			if v != object.result[k] {
+				t.Fatalf("want %v, got %v", object.result[k], v)
+			}
+		}
+	}
+
+	for _, object := range testRangeWithStep {
+
+		res := pgo.Range(object.min, object.max, object.step)
 		for k, v := range res {
 			if v != object.result[k] {
 				t.Fatalf("want %v, got %v", object.result[k], v)
