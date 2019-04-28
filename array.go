@@ -218,11 +218,24 @@ func ArrayIntersect(arrays ...interface{}) []interface{} {
 	return result
 }
 
-// Range creates an int slice of min to max range
-func Range(min, max int) []int {
+// Range creates int slice of min to max range
+// If a step value is given, it will be used as the increment between elements in the sequence.
+// step should be given as a positive number.
+// If not specified, step will default to 1.
+func Range(min, max int, step ...interface{}) []int {
 	var slice []int
 
-	for i := min; i <= max; i++ {
+	var argsLen = len(step)
+
+	var stepp = 1
+	if argsLen > 0 && step[0] != nil {
+		st, ok := step[0].(int)
+		if !ok || st > 1 {
+			stepp = st
+		}
+	}
+
+	for i := min; i <= max; i += stepp {
 		slice = append(slice, i)
 	}
 
