@@ -240,3 +240,13 @@ pgo.Range(3, 9) // []int{3, 4, 5, 6, 7, 8, 9}
 pgo.Range(-3, 7, 5) // []int{-3, 2, 7}
 ```
 See more examples in *_test.go files.
+
+### Network
+
+#### IP2Long/Long2Ip
+
+```go
+long, _ := pgo.IP2long("176.59.34.117") // 2956665461
+
+ip := pgo.Long2ip(2956665461) // "176.59.34.117"
+```

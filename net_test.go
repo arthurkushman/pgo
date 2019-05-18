@@ -15,6 +15,8 @@ var testIP2Long = []struct {
 }
 
 func TestIP2long(t *testing.T) {
+
+	// ip to long
 	for _, v := range testIP2Long {
 		long, err := pgo.IP2long(v.ip)
 
@@ -24,6 +26,15 @@ func TestIP2long(t *testing.T) {
 
 		if long != v.long {
 			t.Fatalf("want %d, but got %d", long, v.long)
+		}
+	}
+
+	// long to ip
+	for _, v := range testIP2Long {
+		ip := pgo.Long2ip(v.long)
+
+		if ip != v.ip {
+			t.Fatalf("want %s, but got %s", ip, v.ip)
 		}
 	}
 }
