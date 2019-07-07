@@ -30,6 +30,8 @@ Go library for PHP community with convenient functions
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
+* [Network](#user-content-network)
+    * [IP2Long/Long2Ip](#user-content-io2long/long2ip)	
 
 #### Installation 
 
