@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const DefaultOuterDomain = "google.com"
+
 var testIP2Long = []struct {
 	long uint32
 	ip   string
@@ -21,7 +23,7 @@ func TestIP2long(t *testing.T) {
 		long, err := pgo.IP2long(v.ip)
 
 		if err != nil {
-			t.Fatal(err)
+			t.Error(err)
 		}
 
 		if long != v.long {
@@ -37,4 +39,15 @@ func TestIP2long(t *testing.T) {
 			t.Fatalf("want %s, but got %s", ip, v.ip)
 		}
 	}
+}
+
+func TestGetMxrr(t *testing.T) {
+	isMx, mxs, err := pgo.GetMxrr(DefaultOuterDomain)
+	if err != nil {
+		t.Error(err)
+	}
+	if !isMx && len(mxs) <= 0 {
+		t.Fatalf("want true, got %t and want len(mxs) > 0, got %d", isMx, len(mxs))
+	}
+
 }

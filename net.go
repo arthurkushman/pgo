@@ -23,3 +23,16 @@ func Long2ip(ipLong uint32) string {
 	ip := net.IP(ipByte)
 	return ip.String()
 }
+
+// GetMxrr Get MX records corresponding to a given Internet host name
+// Returns TRUE if any records are found; returns FALSE if no records were found or if an error occurred
+func GetMxrr(domain string) (isMx bool, mxs []*net.MX, err error) {
+	mxs, err = net.LookupMX(domain)
+	if err != nil {
+		return
+	}
+	if len(mxs) > 0 {
+		isMx = true
+	}
+	return
+}

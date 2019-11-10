@@ -31,7 +31,8 @@ Go library for PHP community with convenient functions
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
 * [Network](#user-content-network)
-    * [IP2Long/Long2Ip](#user-content-io2long/long2ip)	
+    * [IP2Long/Long2Ip](#user-content-ip2longlong2ip)
+    * [GetMxrr](#user-content-getmxrr)
 
 #### Installation 
 
@@ -251,4 +252,9 @@ See more examples in *_test.go files.
 long, _ := pgo.IP2long("176.59.34.117") // 2956665461
 
 ip := pgo.Long2ip(2956665461) // "176.59.34.117"
+```
+
+#### GetMxrr
+```go
+isMx, mxs, _ := pgo.GetMxrr("google.com") // e.g.: true, n
 ```
