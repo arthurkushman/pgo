@@ -70,9 +70,12 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 			return "", errors.New(errMsg)
 		}
 
-		reader := initReader(path)
-		_, err := reader.Discard(offset) // skipping an offset from user input
+		reader, err := initReader(path)
+		if err != nil {
+			return "", err
+		}
 
+		_, err = reader.Discard(offset) // skipping an offset from user input
 		if err != nil {
 			return "", err
 		}
@@ -122,13 +125,13 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 	return string(data), err
 }
 
-func initReader(fileName string) *bufio.Reader {
+func initReader(fileName string) (*bufio.Reader, error) {
 	f, err := os.Open(fileName)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return bufio.NewReader(f)
+	return bufio.NewReader(f), err
 }
 
 // FilePutContents write files with offset/limit
