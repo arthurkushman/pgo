@@ -13,7 +13,6 @@ import (
 // const mapping php -> go
 const (
 	FileAppend = os.O_APPEND
-	LockEx     = os.O_EXCL
 )
 
 // Context is the opts for http/net requests
@@ -142,7 +141,7 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 		v, ok := flags[0].(int)
 
 		if !ok {
-			return -1, fmt.Errorf("Type of 3d parameter must be an int, got %T", flags[0])
+			return -1, fmt.Errorf("type of 3d parameter must be an int, got %T", flags[0])
 		}
 
 		f, err := os.OpenFile(fileName, v|os.O_WRONLY, 0644)
