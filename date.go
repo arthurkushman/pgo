@@ -24,8 +24,8 @@ const phpDateFormatSymbols = "[\\D]"
 func Date(args ...interface{}) string {
 	var date goDate
 
-	if len(args) == 0 {
-		panic("At least 1st parameter format must be passed")
+	if len(args) == 0 { // return default "2006-01-02 15:04:05.999999999 -0700 MST" formatted string
+		return date.t.String()
 	}
 
 	for i, p := range args {
