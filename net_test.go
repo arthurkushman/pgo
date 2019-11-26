@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"pgo"
 	"testing"
 )
@@ -21,33 +22,22 @@ func TestIP2long(t *testing.T) {
 	// ip to long
 	for _, v := range testIP2Long {
 		long, err := pgo.IP2long(v.ip)
-
-		if err != nil {
-			t.Error(err)
-		}
-
-		if long != v.long {
-			t.Fatalf("want %d, but got %d", long, v.long)
-		}
+		assert.NoError(t, err)
+		assert.Equal(t, long, v.long, "want %d, but got %d", long, v.long)
 	}
 
 	// long to ip
 	for _, v := range testIP2Long {
 		ip := pgo.Long2ip(v.long)
-
-		if ip != v.ip {
-			t.Fatalf("want %s, but got %s", ip, v.ip)
-		}
+		assert.Equal(t, ip, v.ip, "want %d, but got %d", ip, v.ip)
 	}
 }
 
 func TestGetMxrr(t *testing.T) {
 	isMx, mxs, err := pgo.GetMxrr(DefaultOuterDomain)
-	if err != nil {
-		t.Error(err)
+	assert.NoError(t, err)
+	assert.True(t, isMx)
+	if len(mxs) <= 0 {
+		t.Fatalf("want len(mxs) > 0, got %d", len(mxs))
 	}
-	if !isMx && len(mxs) <= 0 {
-		t.Fatalf("want true, got %t and want len(mxs) > 0, got %d", isMx, len(mxs))
-	}
-
 }
