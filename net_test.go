@@ -18,7 +18,6 @@ var testIP2Long = []struct {
 }
 
 func TestIP2long(t *testing.T) {
-
 	// ip to long
 	for _, v := range testIP2Long {
 		long, err := pgo.IP2long(v.ip)
@@ -37,7 +36,5 @@ func TestGetMxrr(t *testing.T) {
 	isMx, mxs, err := pgo.GetMxrr(DefaultOuterDomain)
 	assert.NoError(t, err)
 	assert.True(t, isMx)
-	if len(mxs) <= 0 {
-		t.Fatalf("want len(mxs) > 0, got %d", len(mxs))
-	}
+	assert.Greaterf(t, len(mxs), 0, "want len(mxs) > 0, got %d", len(mxs))
 }
