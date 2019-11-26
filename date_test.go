@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"pgo"
 	"strconv"
 	"testing"
@@ -8,46 +9,34 @@ import (
 )
 
 func TestDate(t *testing.T) {
-	if time.Now().Format("2006-02-01 15:04:05") != pgo.Date("Y-m-d H:i:s") {
-		t.Fatalf("want %s, got %s", time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"))
-	}
+	assert.Equalf(t, time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"), "want %s, got %s", time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"))
 
 	zone, _ := time.Now().Zone()
-	if time.Now().Format("2006-02-01"+zone+"15:04:05") != pgo.Date("Y-m-dTH:i:s") {
-		t.Fatalf("want %s, got %s", time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"))
-	}
+	assert.Equalf(t, time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"), "want %s, got %s", time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"))
 
-	if time.Now().Format("Mon, Jan") != pgo.Date("D, M") {
-		t.Fatal("Time formats of week days and month in map doesn't match")
-	}
+	assert.Equal(t, time.Now().Format("Mon, Jan"), pgo.Date("D, M"), "Time formats of week days and month in map doesn't match")
 
 	// test with unix timestamp passed as 2nd param
-	if pgo.Date("Y-m-d H:i:s", time.Now().Unix()) == "" {
-		t.Fatal("Time didn't parsed properly with unix timestamp")
-	}
+	assert.NotEmpty(t, pgo.Date("Y-m-d H:i:s", time.Now().Unix()), "Time didn't parsed properly with unix timestamp")
 }
 
 func TestSpecCases(t *testing.T) {
-	if time.Now().Weekday().String() != pgo.Date("l") {
-		t.Fatal("Weekday has not been matched")
-	}
+	assert.Equal(t, time.Now().Weekday().String(), pgo.Date("l"), "Weekday has not been matched")
 
-	yearDay, _ := strconv.Atoi(pgo.Date("z"))
-	if time.Now().YearDay() != yearDay {
-		t.Fatal("Year day has not been matched")
-	}
+	yearDay, err := strconv.Atoi(pgo.Date("z"))
+	assert.NoError(t, err)
+	assert.Equal(t, time.Now().YearDay(), yearDay, "Year day has not been matched")
 
-	monthDay, _ := strconv.Atoi(pgo.Date("j"))
-	if time.Now().Day() != monthDay {
-		t.Fatal("Year day has not been matched")
-	}
+	monthDay, err := strconv.Atoi(pgo.Date("j"))
+	assert.NoError(t, err)
+	assert.Equal(t, time.Now().Day(), monthDay, "Year day has not been matched")
 
-	weekDay, _ := strconv.Atoi(pgo.Date("N"))
-	if int(time.Now().Weekday()) != weekDay {
-		t.Fatal("Weekday has not been matched")
-	}
+	weekDay, err := strconv.Atoi(pgo.Date("N"))
+	assert.NoError(t, err)
+	assert.Equal(t, int(time.Now().Weekday()), weekDay, "Weekday has not been matched")
 
-	quarter, _ := strconv.Atoi(pgo.Date("Q"))
+	quarter, err := strconv.Atoi(pgo.Date("Q"))
+	assert.NoError(t, err)
 	q := 1
 	m := int(time.Now().Month())
 	if m > 3 && m <= 6 {
@@ -57,8 +46,5 @@ func TestSpecCases(t *testing.T) {
 	} else if m > 9 && m <= 12 {
 		q = 4
 	}
-
-	if q != quarter {
-		t.Fatal("Quarter has not been matched")
-	}
+	assert.Equalf(t, q, quarter, "want: %s, got: %s", q, quarter)
 }
