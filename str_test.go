@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"pgo"
 	"testing"
 )
@@ -8,61 +9,51 @@ import (
 func TestStrReplace(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
-	subject, _ = pgo.StrReplace("fox", "cat", subject)
-	subject, _ = pgo.StrReplace("dog", "fox", subject)
+	subject, err := pgo.StrReplace("fox", "cat", subject)
+	assert.NoError(t, err)
+	subject, err = pgo.StrReplace("dog", "fox", subject)
+	assert.NoError(t, err)
 
 	result := "The quick brown cat jumped over the lazy fox"
-
-	if subject != result {
-		t.Fatalf("want %s, got %s", result, subject)
-	}
+	assert.Equalf(t, subject, result, "want %s, got %s", subject, result)
 }
 
 func TestStrIReplace(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
-	subject, _ = pgo.StrIReplace("Fox", "cat", subject)
-	subject, _ = pgo.StrIReplace([]string{"DOG", "QuiCK"}, []string{"fox", "slow"}, subject)
+	subject, err := pgo.StrIReplace("Fox", "cat", subject)
+	assert.NoError(t, err)
+	subject, err = pgo.StrIReplace([]string{"DOG", "QuiCK"}, []string{"fox", "slow"}, subject)
+	assert.NoError(t, err)
 
 	result := "The slow brown cat jumped over the lazy fox"
-
-	if subject != result {
-		t.Fatalf("want %s, got %s", result, subject)
-	}
+	assert.Equalf(t, subject, result, "want %s, got %s", subject, result)
 }
 
 func TestStrReplaceCount(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy fox or dog"
-
-	str, _ := pgo.StrReplace("fox", "cat", subject, 1)
+	str, err := pgo.StrReplace("fox", "cat", subject, 1)
+	assert.NoError(t, err)
 
 	result := "The quick brown cat jumped over the lazy fox or dog"
-
-	if str != result {
-		t.Fatalf("want %s, got %s", result, subject)
-	}
+	assert.Equalf(t, str, result, "want %s, got %s", result, str)
 }
 
 func TestStrReplaceArray(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
-
-	str, _ := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
+	str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
+	assert.NoError(t, err)
 
 	result := "The quick brown cat jumped over the lazy elephant"
-
-	if str != result {
-		t.Fatalf("want %s, got %s", result, subject)
-	}
+	assert.Equalf(t, str, result, "want %s, got %s", result, str)
 }
 
 func TestStrReplaceErrs(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
 	str, err := pgo.StrReplace([]string{"fox", "dog"}, "", subject)
-
-	if err == nil && str != subject {
-		t.Fatalf("want %s, got %s", subject, str)
-	}
+	assert.Error(t, err)
+	assert.Equalf(t, str, subject, "want %s, got %s", subject, str)
 }
 
 func TestHTTPBuildQuery(t *testing.T) {
@@ -72,14 +63,8 @@ func TestHTTPBuildQuery(t *testing.T) {
 	})
 
 	want := "bar=baz&foo=bar"
-	if queryStr != want {
-		t.Fatalf("want %s, got %s", want, queryStr)
-	}
+	assert.Equal(t, queryStr, want, "want %s, got %s", queryStr, want)
 
 	queryStr2 := pgo.HTTPBuildQuery(map[string]string{})
-
-	want2 := ""
-	if queryStr2 != want2 {
-		t.Fatalf("want %s, got %s", want2, queryStr)
-	}
+	assert.Empty(t, queryStr2, "built str from an empty map must be empty")
 }
