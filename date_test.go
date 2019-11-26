@@ -46,4 +46,19 @@ func TestSpecCases(t *testing.T) {
 	if int(time.Now().Weekday()) != weekDay {
 		t.Fatal("Weekday has not been matched")
 	}
+
+	quarter, _ := strconv.Atoi(pgo.Date("Q"))
+	q := 1
+	m := int(time.Now().Month())
+	if m > 3 && m <= 6 {
+		q = 2
+	} else if m > 6 && m <= 9 {
+		q = 3
+	} else if m > 9 && m <= 12 {
+		q = 4
+	}
+
+	if q != quarter {
+		t.Fatal("Quarter has not been matched")
+	}
 }

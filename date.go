@@ -103,8 +103,19 @@ func (date *goDate) initMapping() {
 		"A": "PM",
 	}
 
+	// todo: move all the spec cases to parser, because of waste of the resources
 	_, isoWeek := date.t.ISOWeek()
 	zone, offset := date.t.Zone()
+	// determine quarter of a year
+	q := 1
+	m := int(date.t.Month())
+	if m > 3 && m <= 6 {
+		q = 2
+	} else if m > 6 && m <= 9 {
+		q = 3
+	} else if m > 9 && m <= 12 {
+		q = 4
+	}
 	specCases = map[string]interface{}{
 		"l": date.t.Weekday().String(),
 		"N": int(date.t.Weekday()),
@@ -113,5 +124,6 @@ func (date *goDate) initMapping() {
 		"W": isoWeek,
 		"Z": offset,
 		"T": zone,
+		"Q": q,
 	}
 }
