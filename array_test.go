@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"math"
 	"pgo"
 	"reflect"
@@ -23,9 +24,8 @@ var testInArray = []struct {
 
 func TestInArray(t *testing.T) {
 	for _, object := range testInArray {
-		if pgo.InArray(object.val, object.slice) != object.result {
-			t.Fatalf("Want: %v, got: %v", object.result, pgo.InArray(object.val, object.slice))
-		}
+		isInArray := pgo.InArray(object.val, object.slice)
+		assert.Equalf(t, isInArray, object.result, "Want: %v, got: %v", object.result, isInArray)
 	}
 }
 
@@ -52,9 +52,7 @@ func TestArrayChunk(t *testing.T) {
 
 			result := reflect.ValueOf(res[i])
 			for j := 0; j < arrLen; j++ {
-				if result.Index(j).Interface() != ss.Index(j).Interface() {
-					t.Fatalf("Want: %v, got: %v", result.Index(j).Interface(), ss.Index(j).Interface())
-				}
+				assert.Equalf(t, result.Index(j).Interface(), ss.Index(j).Interface(), "Want: %v, got: %v", result.Index(j).Interface(), ss.Index(j).Interface())
 			}
 		}
 	}
@@ -91,12 +89,9 @@ var testArrayCombine = []struct {
 func TestArrayCombine(t *testing.T) {
 	for _, object := range testArrayCombine {
 		res := pgo.ArrayCombine(object.keys, object.values)
-
 		m := reflect.ValueOf(object.result)
 		for k, v := range res {
-			if m.MapIndex(reflect.ValueOf(k)).Interface() != v {
-				t.Fatalf("want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
-			}
+			assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
 		}
 	}
 }
@@ -116,9 +111,7 @@ func TestArrayCountValues(t *testing.T) {
 
 		m := reflect.ValueOf(object.result)
 		for k, v := range res {
-			if m.MapIndex(reflect.ValueOf(k)).Interface() != v {
-				t.Fatalf("want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
-			}
+			assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
 		}
 	}
 }
@@ -152,21 +145,15 @@ var testArrayMapFloats = []struct {
 func TestArrayMap(t *testing.T) {
 	for _, object := range testArrayMapStrings {
 		res := pgo.ArrayMap(object.values, object.callback)
-
 		for k, v := range res {
-			if v != object.result[k] {
-				t.Fatalf("want %v, got %v", v, object.values[k])
-			}
+			assert.Equalf(t, v, object.result[k], "want %v, got %v", v, object.values[k])
 		}
 	}
 
-	for _, object := range testArrayMapStrings {
+	for _, object := range testArrayMapFloats {
 		res := pgo.ArrayMap(object.values, object.callback)
-
 		for k, v := range res {
-			if v != object.result[k] {
-				t.Fatalf("want %v, got %v", v, object.values[k])
-			}
+			assert.Equalf(t, v, object.result[k], "want %v, got %v", v, object.values[k])
 		}
 	}
 }
