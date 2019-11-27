@@ -176,9 +176,7 @@ func TestArrayFilter(t *testing.T) {
 		res := pgo.ArrayFilter(object.values, object.callback)
 
 		for k, v := range res {
-			if v != object.result[k] {
-				t.Fatalf("want %v, got %v", v, object.values[k])
-			}
+			assert.Equalf(t, v, object.result[k], "want %v, got %v", v, object.values[k])
 		}
 	}
 }
@@ -202,9 +200,7 @@ func TestArrayDiff(t *testing.T) {
 		s := reflect.ValueOf(object.result)
 		len := s.Len()
 		for i := 0; i < len; i++ {
-			if s.Index(i).Interface() != res[i] {
-				t.Fatalf("want %v, got %v", s.Index(i).Interface(), res[i])
-			}
+			assert.Equalf(t, s.Index(i).Interface(), res[i], "want %v, got %v", s.Index(i).Interface(), res[i])
 		}
 	}
 }
@@ -230,10 +226,7 @@ var testArraySum = []struct {
 func TestArraySum(t *testing.T) {
 	for _, object := range testArraySum {
 		res, _ := pgo.ArraySum(object.values)
-
-		if res != object.result {
-			t.Fatalf("want %v, got %v", object.result, res)
-		}
+		assert.Equalf(t, res, object.result, "want %v, got %v", object.result, res)
 	}
 }
 
@@ -256,11 +249,8 @@ func TestArrayIntersect(t *testing.T) {
 		resLen := resVal.Len()
 
 		s := reflect.ValueOf(object.result)
-
 		for i := 0; i < resLen; i++ {
-			if resVal.Index(i).Interface() != s.Index(i).Interface() {
-				t.Fatalf("want %v, got %v", s.Index(i).Interface(), res[i])
-			}
+			assert.Equalf(t, resVal.Index(i).Interface(), s.Index(i).Interface(), "want %v, got %v", s.Index(i).Interface(), res[i])
 		}
 	}
 }
@@ -286,22 +276,16 @@ var testRangeWithStep = []struct {
 
 func TestRange(t *testing.T) {
 	for _, object := range testRange {
-
 		res := pgo.Range(object.min, object.max)
 		for k, v := range res {
-			if v != object.result[k] {
-				t.Fatalf("want %v, got %v", object.result[k], v)
-			}
+			assert.Equalf(t, v, object.result[k], "want %v, got %v", object.result[k], v)
 		}
 	}
 
 	for _, object := range testRangeWithStep {
-
 		res := pgo.Range(object.min, object.max, object.step)
 		for k, v := range res {
-			if v != object.result[k] {
-				t.Fatalf("want %v, got %v", object.result[k], v)
-			}
+			assert.Equalf(t, v, object.result[k], "want %v, got %v", object.result[k], v)
 		}
 	}
 }
