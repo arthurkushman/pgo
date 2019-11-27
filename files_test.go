@@ -1,6 +1,7 @@
 package pgo_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"math"
 	"os"
 	"pgo"
@@ -20,64 +21,34 @@ const (
 
 func TestFileGetContents(t *testing.T) {
 	n, err := pgo.FilePutContents(fileName, strToWrite)
-
-	if err != nil {
-		panic(err)
-	}
+	assert.NoError(t, err)
 
 	// base case - readAll
-	strBase, _ := pgo.FileGetContents(fileName)
-
-	if len(strBase) != n {
-		t.Fatalf("want %d bytes of data, got %d", n, len(strBase))
-	}
+	strBase, err := pgo.FileGetContents(fileName)
+	assert.NoError(t, err)
+	assert.Equalf(t, len(strBase), n, "want %d bytes of data, got %d", n, len(strBase))
 
 	// reading full file with limit
-	str, er := pgo.FileGetContents(fileName, nil, 0, n)
-
-	if er != nil {
-		panic(er)
-	}
-
-	if len(str) != n {
-		t.Fatalf("want %d bytes of data, got %d", n, len(str))
-	}
+	str, err := pgo.FileGetContents(fileName, nil, 0, n)
+	assert.NoError(t, err)
+	assert.Equalf(t, len(str), n, "want %d bytes of data, got %d", n, len(str))
 
 	// reading offset/limit
 	off := n / 3
 	lim := n/2 - off - 1
+	ss, err := pgo.FileGetContents(fileName, nil, off, lim)
+	assert.NoError(t, err)
+	assert.Equalf(t, len(ss), lim, "want %d bytes of data, got %d", n, len(str))
 
-	ss, er := pgo.FileGetContents(fileName, nil, off, lim)
-
-	if er != nil {
-		panic(er)
-	}
-
-	if len(ss) != lim {
-		t.Fatalf("want %d bytes of data, got %d", n, len(str))
-	}
-
-	sOff, errOff := pgo.FileGetContents(fileName, nil, off)
-
-	if errOff != nil {
-		panic(errOff)
-	}
-
-	if len(sOff) != n-off {
-		t.Fatalf("want %d bytes of data, got %d", len(sOff), n-off)
-	}
+	sOff, err := pgo.FileGetContents(fileName, nil, off)
+	assert.NoError(t, err)
+	assert.Equalf(t, len(sOff), n-off, "want %d bytes of data, got %d", n-off, len(sOff))
 }
 
 func TestFileGetContentsHttp(t *testing.T) {
 	str, err := pgo.FileGetContents(defaultDomain)
-
-	if err != nil {
-		panic(err.Error())
-	}
-
-	if str == "" {
-		t.Fatalf("want non-empty string, got %s", str)
-	}
+	assert.NoError(t, err)
+	assert.NotEmpty(t, str)
 }
 
 func TestFileGetContentsPanics(t *testing.T) {
@@ -102,22 +73,18 @@ func TestFileGetContentsPanics(t *testing.T) {
 
 func TestFileGetContentsInvalidTypes(t *testing.T) {
 	content, err := pgo.FileGetContents(fileName, nil, "", "")
-	if content != "" && err.Error() != "Error on passing params with wrong types to FileGetContents: offset string and limit string" {
-		t.Fatalf("Want an empty string, got: %s", content)
-	}
+	assert.Empty(t, content)
+	assert.EqualError(t, err, "Error on passing params with wrong types to FileGetContents: offset string and limit string")
 
 	content2, err2 := pgo.FileGetContents(fileName, nil, "")
-	if content2 != "" && err2.Error() != "Error on passing params to FileGetContents: offset string" {
-		t.Fatalf("Want an empty string, got: %s", content2)
-	}
+	assert.Empty(t, content2)
+	assert.EqualError(t, err2, "Error on passing params to FileGetContents: offset string")
 }
 
 func TestFileGetContentsHttpGetRequest(t *testing.T) {
 	content, err := pgo.FileGetContents(defaultDomain, pgo.NewContext())
-
-	if err != nil {
-		t.Fatalf("Request failed with content: %s", content)
-	}
+	assert.NoError(t, err)
+	assert.NotEmpty(t, content)
 }
 
 func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
@@ -125,55 +92,33 @@ func TestFileGetContentsHttpInvalidRequest(t *testing.T) {
 	ctx.RequestMethod = "INVALID()"
 
 	_, err := pgo.FileGetContents(defaultDomain, ctx)
-
-	if err == nil {
-		t.Fatal("Request has not been failed with error")
-	}
+	assert.Errorf(t, err, "Request has not been failed with error")
 
 	ctx.RequestMethod = "OPTIONS"
 	_, er := pgo.FileGetContents("https://abrakadabra.comz.ru", ctx)
-
-	if er == nil {
-		t.Fatal("Request has not been failed with error")
-	}
+	assert.Errorf(t, er, "Request has not been failed with error")
 }
 
 func TestFilePutContents(t *testing.T) {
 	// test write to file with append without options
 	n1, err := pgo.FilePutContents(fileName, strToWrite)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if n1 != len(strToWrite) {
-		t.Fatalf("want %d bytes of data, got %d", n1, len(strToWrite))
-	}
+	assert.NoError(t, err)
+	assert.Equalf(t, n1, len(strToWrite), "want %d bytes of data, got %d", n1, len(strToWrite))
 
 	// test write to file with append option
-	n2, err2 := pgo.FilePutContents(fileName, strToWrite, pgo.FileAppend)
-
-	if err2 != nil {
-		t.Fatal(err2)
-	}
-
-	if n2 == n1*2 {
-		t.Fatalf("want %d bytes of data, got %d", n2, n1*2)
-	}
+	n2, err := pgo.FilePutContents(fileName, strToWrite, pgo.FileAppend)
+	assert.NoError(t, err)
+	assert.Equalf(t, n2, n1*2, "want %d bytes of data, got %d", n2, n1*2)
 }
 
 func TestFilePutContentsErrors(t *testing.T) {
-	n1, err1 := pgo.FilePutContents(fileName, strToWrite, "")
+	n1, err := pgo.FilePutContents(fileName, strToWrite, "")
+	assert.EqualError(t, err, "Type of 3d parameter must be an int, got string")
+	assert.Equal(t, n1, -1)
 
-	if n1 != -1 && err1.Error() != "Type of 3d parameter must be an int, got string" {
-		t.Fatal("execution of FilePutContents has not been failed with error")
-	}
-
-	n2, err2 := pgo.FilePutContents("fakefile.out", "", 0x1212) // setting fake flags to invoke error from os.OpenFile
-
-	if n2 != -1 && err2 == nil {
-		t.Fatal("execution of FilePutContents has not been failed with error")
-	}
+	n2, err := pgo.FilePutContents("fakefile.out", "", 0x1212) // setting fake flags to invoke error from os.OpenFile
+	assert.Error(t, err)
+	assert.Equal(t, n2, -1)
 }
 
 // todo: Fix to working version of test for MoveUploadedFile
@@ -204,14 +149,10 @@ func TestFileExists(t *testing.T) {
 	defer os.Remove(file1)
 
 	f1 := pgo.FileExists(file1)
-	if f1 != true {
-		t.Fatalf("File exists and returning %v", f1)
-	}
+	assert.Truef(t, f1, "File exists and returning %v", f1)
 
 	f2 := pgo.FileExists(file2)
-	if f2 != false {
-		t.Fatalf("File doesn't exist and returning %v", f2)
-	}
+	assert.Falsef(t, f2, "File doesn't exist and returning %v", f2)
 }
 
 func TestIsDir(t *testing.T) {
@@ -219,14 +160,10 @@ func TestIsDir(t *testing.T) {
 	defer os.Remove(dir1)
 
 	isDir := pgo.IsDir(dir1)
-	if isDir != true {
-		t.Fatalf("Directory dir1 is an existent dir but IsDir returned %v", isDir)
-	}
+	assert.Truef(t, isDir, "Directory dir1 is an existent dir but IsDir returned %v", isDir)
 
 	isDir2 := pgo.IsDir(dir2)
-	if isDir2 != false {
-		t.Fatalf("Directory "+dir2+" is non-existent dir but IsDir returned %v", isDir)
-	}
+	assert.Falsef(t, isDir2, "Directory "+dir2+" is non-existent dir but IsDir returned %v", isDir)
 }
 
 func TestIsFile(t *testing.T) {
@@ -234,14 +171,10 @@ func TestIsFile(t *testing.T) {
 	defer os.Remove(file1)
 
 	isFile := pgo.IsFile(file1)
-	if isFile != true {
-		t.Fatalf("File "+file1+" is a regular file, but IsFile returned %v", isFile)
-	}
+	assert.Truef(t, isFile, "File "+file1+" is a regular file, but IsFile returned %v", isFile)
 
 	isFile2 := pgo.IsFile(file2)
-	if isFile2 != false {
-		t.Fatalf("File "+file2+" is not a regular file, but IsFile returned %v", isFile)
-	}
+	assert.Falsef(t, isFile2, "File "+file2+" is not a regular file, but IsFile returned %v", isFile2)
 }
 
 func TestIsLnik(t *testing.T) {
@@ -251,12 +184,8 @@ func TestIsLnik(t *testing.T) {
 	defer os.Remove(symlink)
 
 	isSymlink := pgo.IsLink(symlink)
-	if isSymlink != true {
-		t.Fatalf(symlink+" is a symlinkr, but IsLink returned %v", isSymlink)
-	}
+	assert.Truef(t, isSymlink, symlink+" is a symlinkr, but IsLink returned %v", isSymlink)
 
 	isSymlink2 := pgo.IsLink(file1)
-	if isSymlink2 != false {
-		t.Fatalf(file1+" is a regular file, but IsLink returned %v", isSymlink2)
-	}
+	assert.Falsef(t, isSymlink2, file1+" is a regular file, but IsLink returned %v", isSymlink2)
 }
