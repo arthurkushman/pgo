@@ -1,8 +1,6 @@
 name: Build and test
 on: [push]
 jobs:
-  env:
-    - PGO_ENV: dev
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -29,7 +27,7 @@ jobs:
       - name: Test
         run: go test
         env:
-          - PGO_ENV: dev
+          PGO_ENV: dev
 
       - name: Code coverage
         run: go test -coverprofile=coverage.out
