@@ -1,7 +1,8 @@
 name: Build and test
 on: [push]
 jobs:
-
+  env:
+    - PGO_ENV: dev
   build:
     name: Build
     runs-on: ubuntu-latest
