@@ -31,6 +31,8 @@ jobs:
 
       - name: Code coverage
         run: go test -coverprofile=coverage.out
+        env:
+          PGO_ENV: dev
 
 #      - name: Push coverage to codecov
 #        run: bash <(curl -s https://codecov.io/bash) -t 489df204-a660-49b8-8ddb-6637ae4c4216
