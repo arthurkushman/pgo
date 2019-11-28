@@ -11,7 +11,7 @@ import (
 const (
 	strToWrite    = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	fileName      = "example.txt"
-	defaultDomain = "http://localhost"
+	defaultDomain = "http://google.com"
 	file1         = "file1.txt"
 	file2         = "file2.txt"
 	dir1          = "dir1"
@@ -108,12 +108,12 @@ func TestFilePutContents(t *testing.T) {
 	// test write to file with append option
 	n2, err := pgo.FilePutContents(fileName, strToWrite, pgo.FileAppend)
 	assert.NoError(t, err)
-	assert.Equalf(t, n2, n1*2, "want %d bytes of data, got %d", n2, n1*2)
+	assert.Equalf(t, n2, len(strToWrite), "want %d bytes of data, got %d", n2, len(strToWrite))
 }
 
 func TestFilePutContentsErrors(t *testing.T) {
 	n1, err := pgo.FilePutContents(fileName, strToWrite, "")
-	assert.EqualError(t, err, "Type of 3d parameter must be an int, got string")
+	assert.EqualError(t, err, "type of 3d parameter must be an int, got string")
 	assert.Equal(t, n1, -1)
 
 	n2, err := pgo.FilePutContents("fakefile.out", "", 0x1212) // setting fake flags to invoke error from os.OpenFile

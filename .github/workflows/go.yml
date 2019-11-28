@@ -27,6 +27,8 @@ jobs:
 
       - name: Test
         run: go test
+        env:
+          - PGO_ENV: dev
 
       - name: Code coverage
         run: go test -coverprofile=coverage.out
