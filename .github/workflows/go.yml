@@ -34,5 +34,5 @@ jobs:
         env:
           PGO_ENV: dev
 
-#      - name: Push coverage to codecov
-#        run: bash <(curl -s https://codecov.io/bash) -t 489df204-a660-49b8-8ddb-6637ae4c4216
+      - name: Push coverage to codecov
+        run: bash <(curl -s https://codecov.io/bash) -t 68108437-8d66-405e-9029-7af7c6998ec6
