@@ -48,3 +48,7 @@ func TestSpecCases(t *testing.T) {
 	}
 	assert.Equalf(t, q, quarter, "want: %s, got: %s", q, quarter)
 }
+
+func TestTime_Milliseconds(t *testing.T) {
+	pgo.Time(time.Now().Add(time.Microsecond * 3)).Microseconds()
+}
