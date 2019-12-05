@@ -9,7 +9,7 @@ Go library for PHP community with convenient functions
 
 * [Installation](#user-content-installation)
 * [Date](#user-content-date)
-    * [Milli/Micro](#user-content-milli--micro)
+    * [Milli/Micro](#user-content-millimicro)
 * [Strings](#user-content-strings)
 	* [StrReplace/StrIReplace](#user-content-strreplace)
 	* [HTTPBuildQuery](#user-content-httpbuildquery)
