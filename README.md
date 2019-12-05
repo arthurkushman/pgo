@@ -9,6 +9,7 @@ Go library for PHP community with convenient functions
 
 * [Installation](#user-content-installation)
 * [Date](#user-content-date)
+    * [Milli/Micro](#user-content-milli--micro)
 * [Strings](#user-content-strings)
 	* [StrReplace/StrIReplace](#user-content-strreplace)
 	* [HTTPBuildQuery](#user-content-httpbuildquery)
@@ -50,6 +51,19 @@ You can use date function with similar formatting for PHP e.g.:
 dateStr := pgo.Date("Y-m-d H:i:s") // 2019-03-28 12:23:03
 
 pgo.Date("j D, M") // 27 Wed, Mar
+
+pgo.Date("Q") // 3 (of 1,2,3,4 quarters)
+```
+
+#### Milli/Micro
+```go
+nowMicro := pgo.UnixMicro() // get current unix microseconds
+nowMilli := pgo.UnixMilli() // get current unix milliseconds
+
+// get current millis + 3ms 
+nowMicroPlusThree := pgo.Time(time.Now().Add(time.Millisecond * 3)).Milliseconds()
+// get current microseconds + 3 
+nowMicro := pgo.Time(now.Add(time.Microsecond * 3)).Microseconds()
 ```
 
 ### Strings
