@@ -66,7 +66,7 @@ func TestTime_Microseconds(t *testing.T) {
 func TestUnixMicro(t *testing.T) {
 	nowUnixMicro := time.Now().UnixNano() / (int64(time.Microsecond) / int64(time.Nanosecond))
 	nowMicro := pgo.UnixMicro()
-	assert.Greater(t, nowMicro, nowUnixMicro)
+	assert.GreaterOrEqual(t, nowMicro, nowUnixMicro)
 }
 
 func TestUnixMilli(t *testing.T) {
