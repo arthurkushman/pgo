@@ -16,6 +16,8 @@ type goDate struct {
 	phpToGoFormat   map[string]string
 }
 
+type Time time.Time
+
 const phpDateFormatSymbols = "[\\D]"
 
 // Date returns formatted output of system data/time
@@ -126,4 +128,24 @@ func (date *goDate) initMapping() {
 		"T": zone,
 		"Q": q,
 	}
+}
+
+// Milliseconds from time.Time Go type
+func (t Time) Milliseconds() int64 {
+	return time.Time(t).UnixNano() / (int64(time.Millisecond)/int64(time.Nanosecond))
+}
+
+// Microsecond from time.Time Go type
+func (t Time) Microseconds() int64 {
+	return time.Time(t).UnixNano() / (int64(time.Microsecond)/int64(time.Nanosecond))
+}
+
+// UnixMilli milliseconds since unix epoch
+func UnixMilli() int64 {
+	return time.Now().UnixNano() / (int64(time.Millisecond)/int64(time.Nanosecond))
+}
+
+// UnixMicro microseconds since unix epoch
+func UnixMicro() int64 {
+	return time.Now().UnixNano() / (int64(time.Microsecond)/int64(time.Nanosecond))
 }

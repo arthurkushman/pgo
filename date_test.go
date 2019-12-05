@@ -48,3 +48,29 @@ func TestSpecCases(t *testing.T) {
 	}
 	assert.Equalf(t, q, quarter, "want: %s, got: %s", q, quarter)
 }
+
+func TestTime_Milliseconds(t *testing.T) {
+	now := time.Now()
+	nowMicro := pgo.Time(now.Add(time.Millisecond * 3)).Milliseconds()
+	nowPlus := (now.UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))) + 3
+	assert.Equal(t, nowMicro, nowPlus)
+}
+
+func TestTime_Microseconds(t *testing.T) {
+	now := time.Now()
+	nowMicro := pgo.Time(now.Add(time.Microsecond * 3)).Microseconds()
+	nowPlus := (now.UnixNano() / (int64(time.Microsecond) / int64(time.Nanosecond))) + 3
+	assert.Equal(t, nowMicro, nowPlus)
+}
+
+func TestUnixMicro(t *testing.T) {
+	nowUnixMicro := time.Now().UnixNano() / (int64(time.Microsecond) / int64(time.Nanosecond))
+	nowMicro := pgo.UnixMicro()
+	assert.GreaterOrEqual(t, nowMicro, nowUnixMicro)
+}
+
+func TestUnixMilli(t *testing.T) {
+	nowUnixMilli := time.Now().UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))
+	nowMilli := pgo.UnixMilli()
+	assert.GreaterOrEqual(t, int64(nowMilli-nowUnixMilli), int64(0))
+}
