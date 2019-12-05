@@ -61,9 +61,9 @@ nowMicro := pgo.UnixMicro() // get current unix microseconds
 nowMilli := pgo.UnixMilli() // get current unix milliseconds
 
 // get current millis + 3ms 
-nowMicroPlusThree := pgo.Time(time.Now().Add(time.Millisecond * 3)).Milliseconds()
-// get current microseconds + 3 
-nowMicro := pgo.Time(now.Add(time.Microsecond * 3)).Microseconds()
+nowMillisPlusThree := pgo.Time(time.Now().Add(time.Millisecond * 3)).Milliseconds()
+// get current microseconds + 7μs 
+nowMicroPlusSeven := pgo.Time(now.Add(time.Microsecond * 7)).Microseconds()
 ```
 
 ### Strings

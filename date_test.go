@@ -51,9 +51,9 @@ func TestSpecCases(t *testing.T) {
 
 func TestTime_Milliseconds(t *testing.T) {
 	now := time.Now()
-	nowMicro := pgo.Time(now.Add(time.Millisecond * 3)).Milliseconds()
+	nowMillis := pgo.Time(now.Add(time.Millisecond * 3)).Milliseconds()
 	nowPlus := (now.UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))) + 3
-	assert.Equal(t, nowMicro, nowPlus)
+	assert.Equal(t, nowMillis, nowPlus)
 }
 
 func TestTime_Microseconds(t *testing.T) {
