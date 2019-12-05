@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+const (
+	DivideMicroseconds = 1e3
+	DivideMilliseconds = 1e6
+)
+
 var specCases map[string]interface{}
 
 type goDate struct {
@@ -132,20 +137,20 @@ func (date *goDate) initMapping() {
 
 // Milliseconds from time.Time Go type
 func (t Time) Milliseconds() int64 {
-	return time.Time(t).UnixNano() / (int64(time.Millisecond)/int64(time.Nanosecond))
+	return time.Time(t).UnixNano() / DivideMilliseconds
 }
 
 // Microsecond from time.Time Go type
 func (t Time) Microseconds() int64 {
-	return time.Time(t).UnixNano() / (int64(time.Microsecond)/int64(time.Nanosecond))
+	return time.Time(t).UnixNano() / DivideMicroseconds
 }
 
 // UnixMilli milliseconds since unix epoch
 func UnixMilli() int64 {
-	return time.Now().UnixNano() / (int64(time.Millisecond)/int64(time.Nanosecond))
+	return time.Now().UnixNano() / DivideMilliseconds
 }
 
 // UnixMicro microseconds since unix epoch
 func UnixMicro() int64 {
-	return time.Now().UnixNano() / (int64(time.Microsecond)/int64(time.Nanosecond))
+	return time.Now().UnixNano() / DivideMicroseconds
 }
