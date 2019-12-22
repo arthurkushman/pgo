@@ -28,7 +28,6 @@ Go library for PHP community with convenient functions
 	* [ArrayMap](#user-content-arraymap)
 	* [ArrayFilter](#user-content-arrayfilter)
 	* [ArrayDiff](#user-content-arraydiff)
-	* [ArrayKeys](#user-content-arraykeys)
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
@@ -231,14 +230,6 @@ returns the values in array1 that are not present in any of the other arrays
 ```go
 pgo.ArrayDiff([]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
 pgo.ArrayDiff([]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
-```
-
-#### ArrayKeys
-returns an array using the keys of another array
-```go
-pgo.ArrayKeys(map[string]int{"foo": 1, "bar": 8, "fizz": 12, "baz": 0}) // []string{"foo", "bar", "fizz", "baz"}
-
-pgo.ArrayKeys(map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}) // []interface{}{3.45, "foo", 8, "bar", 9}
 ```
 
 #### ArraySum
