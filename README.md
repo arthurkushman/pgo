@@ -32,7 +32,7 @@ Go library for PHP community with convenient functions
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
 * [Collections](#user-content-collections)
-    * [PriorityQueue](#user-content-priotity-queue)
+    * [PriorityQueue](#user-content-priority-queue)
 * [Network](#user-content-network)
     * [IP2Long/Long2Ip](#user-content-ip2longlong2ip)
     * [GetMxrr](#user-content-getmxrr)
