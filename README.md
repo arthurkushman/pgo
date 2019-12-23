@@ -31,6 +31,8 @@ Go library for PHP community with convenient functions
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
+* [Collections](#user-content-collections)
+    * [PriorityQueue](#user-content-priotity-queue)
 * [Network](#user-content-network)
     * [IP2Long/Long2Ip](#user-content-ip2longlong2ip)
     * [GetMxrr](#user-content-getmxrr)
@@ -255,6 +257,44 @@ pgo.Range(3, 9) // []int{3, 4, 5, 6, 7, 8, 9}
 pgo.Range(-3, 7, 5) // []int{-3, 2, 7}
 ```
 See more examples in *_test.go files.
+
+### Collections
+
+#### Priority Queue
+```go
+	// Some items and their priorities.
+	items := map[string]int{
+		"banana": 3, "apple": 2, "pear": 4, "peach": 1, "plum": 6,
+	}
+
+	// Create a Priority queue, put the items in it, and
+	// establish the Priority queue (heap) invariants.
+	pq := make(pgo.PriorityQueue, len(items))
+	i := 0
+	for value, priority := range items {
+		pq[i] = &pgo.Item{
+			Value:    value,
+			Priority: priority,
+			Index:    i,
+		}
+		i++
+	}
+	pq.Init()
+
+	// Insert a new item and then modify its Priority.
+	item := &pgo.Item{
+		Value:    "orange",
+		Priority: 1,
+	}
+	pq.Push(item)
+	pq.Update(item, item.Value, 5)
+	
+	item := pq.Pop().(*pgo.Item) // 06:plum
+	item := pq.Pop().(*pgo.Item) // 05:orange
+	item := pq.Pop().(*pgo.Item) // 04:pear
+	item := pq.Pop().(*pgo.Item) // 03:banana
+	// ... 
+```
 
 ### Network
 
