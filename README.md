@@ -36,6 +36,8 @@ Go library for PHP community with convenient functions
 * [Network](#user-content-network)
     * [IP2Long/Long2Ip](#user-content-ip2longlong2ip)
     * [GetMxrr](#user-content-getmxrr)
+* [Math](#user-content-math)
+    * [Rand](#user-content-rand)    
 
 #### Installation 
 
@@ -309,4 +311,11 @@ ip := pgo.Long2ip(2956665461) // "176.59.34.117"
 #### GetMxrr
 ```go
 isMx, mxs, _ := pgo.GetMxrr("google.com") // e.g.: true, n
+```
+
+### Math
+
+#### Rand
+```go
+rand := pgo.Rand(1, 100)
 ```
