@@ -37,7 +37,11 @@ Go library for PHP community with convenient functions
     * [IP2Long/Long2Ip](#user-content-ip2longlong2ip)
     * [GetMxrr](#user-content-getmxrr)
 * [Math](#user-content-math)
-    * [Rand](#user-content-rand)    
+    * [Rand](#user-content-rand)
+* [Crypto](#user-content-crypt)
+    * [Md5](#user-content-md5)
+    * [Sha1](#user-content-sha1)
+    * [Sha2](#user-content-sha2)
 
 #### Installation 
 
@@ -318,4 +322,19 @@ isMx, mxs, _ := pgo.GetMxrr("google.com") // e.g.: true, n
 #### Rand
 ```go
 rand := pgo.Rand(1, 100)
+```
+
+### Crypto
+
+#### Md5
+```go
+pgo.Md5("abc123") // e99a18c428cb38d5f260853678922e03
+```
+#### Sha1
+```go
+pgo.Sha1("abc123") // 6367c48dd193d56ea7b0baad25b19455e529f5ee
+```
+#### Sha2
+```go
+pgo.Sha2("abc123") // 6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090
 ```
