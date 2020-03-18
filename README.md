@@ -339,3 +339,7 @@ pgo.Sha1("abc123") // 6367c48dd193d56ea7b0baad25b19455e529f5ee
 ```go
 pgo.Sha2("abc123") // 6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090
 ```
+#### HashFile
+```go
+hex, err := pgo.HashFile("sha1", "example.txt") // 6367c48dd193d56ea7b0baad25b19455e529f5ee
+```
