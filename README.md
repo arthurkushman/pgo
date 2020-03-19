@@ -43,6 +43,7 @@ Go library for PHP community with convenient functions
     * [Md5](#user-content-md5)
     * [Sha1](#user-content-sha1)
     * [Sha2](#user-content-sha2)
+    * [HashFile](#user-content-hashfile)
 
 #### Installation 
 
