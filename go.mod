@@ -1,4 +1,4 @@
-module pgo
+module github.com/arthurkushman/pgo
 
 go 1.13
 

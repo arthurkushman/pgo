@@ -2,8 +2,8 @@ package pgo_test
 
 import (
 	"fmt"
+	"github.com/arthurkushman/pgo"
 	"github.com/stretchr/testify/assert"
-	"pgo"
 	"testing"
 )
 

@@ -1,10 +1,10 @@
 package pgo_test
 
 import (
+	"github.com/arthurkushman/pgo"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"os"
-	"pgo"
 	"testing"
 )
 

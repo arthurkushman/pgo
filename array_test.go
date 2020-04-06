@@ -1,9 +1,9 @@
 package pgo_test
 
 import (
+	"github.com/arthurkushman/pgo"
 	"github.com/stretchr/testify/assert"
 	"math"
-	"pgo"
 	"reflect"
 	"strings"
 	"testing"

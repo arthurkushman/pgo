@@ -1,7 +1,7 @@
 package pgo_test
 
 import (
-	"pgo"
+	"github.com/arthurkushman/pgo"
 	"testing"
 )
 
