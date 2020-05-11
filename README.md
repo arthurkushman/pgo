@@ -9,6 +9,8 @@ Go library for PHP community with convenient functions
 [![GoDoc](https://github.com/golang/gddo/blob/c782c79e0a3c3282dacdaaebeff9e6fd99cb2919/gddo-server/assets/status.svg)](https://godoc.org/github.com/arthurkushman/pgo)
 
 * [Installation](#user-content-installation)
+* [Core](#user-content-core)
+	* [Serialize/Unserialize](#user-content-serializeunserialize)
 * [Date](#user-content-date)
     * [Milli/Micro](#user-content-millimicro)
 * [Strings](#user-content-strings)
@@ -53,6 +55,20 @@ go get github.com/arthurkushman/pgo
 ```
 
 Imagine that you need to write Go code every day and also have a convenient functions in memory from PHP experience
+
+### Core
+
+#### Serialize/Unserialize
+For instance, to store Go code data in storage engines like rdbms, no-sql, key-value etc, you can use serialization functions to serialize Go code to string and unserialize it back from string to Go code:
+```go
+	m := make(map[int]string, 0)
+	m[0] = "abc"
+
+	str, err := pgo.Serialize(m) // str -> "Dv+BBAEC/4IAAQQBDAAACf+CAAEAA2FiYw=="
+
+	unserMap := make(map[int]string, 0)
+	err = pgo.Unserialize(str, &unserMap) // unserMap -> map[int]string{0: "abc"}
+```
 
 ### Date
 You can use date function with similar formatting for PHP e.g.:

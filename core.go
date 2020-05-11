@@ -24,8 +24,7 @@ func printError(msg string, args ...interface{}) {
 // Serialize encodes Go code entities to string for e.g.: later storage
 func Serialize(val interface{}) (string, error) {
 	b := bytes.Buffer{}
-	e := gob.NewEncoder(&b)
-	err := e.Encode(val)
+	err := gob.NewEncoder(&b).Encode(val)
 	if err != nil {
 		return "", err
 	}
