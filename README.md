@@ -61,13 +61,13 @@ Imagine that you need to write Go code every day and also have a convenient func
 #### Serialize/Unserialize
 For instance, to store Go code data in storage engines like rdbms, no-sql, key-value etc, you can use serialization functions to serialize Go code to string and unserialize it back from string to Go code:
 ```go
-	m := make(map[int]string, 0)
-	m[0] = "abc"
+m := make(map[int]string, 0)
+m[0] = "abc"
 
-	str, err := pgo.Serialize(m) // str -> "Dv+BBAEC/4IAAQQBDAAACf+CAAEAA2FiYw=="
+str, err := pgo.Serialize(m) // str -> "Dv+BBAEC/4IAAQQBDAAACf+CAAEAA2FiYw=="
 
-	unserMap := make(map[int]string, 0)
-	err = pgo.Unserialize(str, &unserMap) // unserMap -> map[int]string{0: "abc"}
+unserMap := make(map[int]string, 0)
+err = pgo.Unserialize(str, &unserMap) // unserMap -> map[int]string{0: "abc"}
 ```
 
 ### Date
