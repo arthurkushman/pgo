@@ -360,3 +360,7 @@ pgo.Sha2("abc123") // 6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84
 ```go
 hex, err := pgo.HashFile("sha1", "example.txt") // 6367c48dd193d56ea7b0baad25b19455e529f5ee
 ```
+
+Supporters gratitude:
+
+<img src="https://github.com/SoliDry/laravel-api/blob/master/tests/images/jetbrains-logo.png" alt="JetBrains logo" width="200" height="166" />
