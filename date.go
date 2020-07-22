@@ -96,8 +96,8 @@ func (date *goDate) convert() {
 func (date *goDate) initMapping() {
 	date.phpToGoFormat = map[string]string{
 		"Y": "2006",
-		"m": "02",
-		"d": "01",
+		"m": "01",
+		"d": "02",
 		"H": "15",
 		"i": "04",
 		"s": "05",
