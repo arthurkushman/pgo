@@ -1,6 +1,8 @@
 package pgo
 
 import (
+	"crypto/md5"
+	"crypto/sha256"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -28,4 +30,12 @@ func TestHashFile(t *testing.T) {
 	assert.Equal(t, "c7567e8b39e2428e38bf9c9226ac68de4c67dc39", hex)
 	err = os.Remove(hashFileName)
 	assert.NoError(t, err)
+}
+
+func TestHashHmac(t *testing.T) {
+	hmac := HashHmac("foo bar baz", "secret", sha256.New)
+	assert.True(t, IsValidMac("foo bar baz", hmac, "secret", sha256.New))
+
+	hmacMd5 := HashHmac("foo bar baz", "secret", md5.New)
+	assert.True(t, IsValidMac("foo bar baz", hmacMd5, "secret", md5.New))
 }

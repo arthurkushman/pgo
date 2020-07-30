@@ -46,6 +46,8 @@ Go library for PHP community with convenient functions
     * [Sha1](#user-content-sha1)
     * [Sha2](#user-content-sha2)
     * [HashFile](#user-content-hashfile)
+    * [HashHmac](#user-content-hashhmac)
+    * [IsValidMac](#user-content-isvalidmac)    
 
 #### Installation 
 
@@ -359,6 +361,14 @@ pgo.Sha2("abc123") // 6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84
 #### HashFile
 ```go
 hex, err := pgo.HashFile("sha1", "example.txt") // 6367c48dd193d56ea7b0baad25b19455e529f5ee
+```
+#### HashHmac
+```go
+hmac := HashHmac("foo bar baz", "secret", sha256.New) // 9efc4f86917b454deae37c869521f88dee79305303fa2283df0b480e3cc8104c
+```
+#### IsValidMac
+```go
+IsValidMac("foo bar baz", hmac, "secret", sha256.New) // true/false
 ```
 
 Supporters gratitude:

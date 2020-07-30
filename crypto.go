@@ -1,6 +1,7 @@
 package pgo
 
 import (
+	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
@@ -54,4 +55,19 @@ func HashFile(algo, fileName string) (string, error) {
 	}
 
 	return fmt.Sprintf("%x", h.Sum(nil)), nil
+}
+
+// HashHmac generates new HMAC based hash returning relevant string
+func HashHmac(message, secret string, hashAlgo func() hash.Hash) string {
+	h := hmac.New(hashAlgo, []byte(secret))
+	h.Write([]byte(message))
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+// IsValidMac validates HMAC based hash returning true if it is valid or false otherwise
+func IsValidMac(message, messageMAC, key string, hashAlgo func() hash.Hash) bool {
+	mac := hmac.New(hashAlgo, []byte(key))
+	mac.Write([]byte(message))
+	expectedMAC := fmt.Sprintf("%x", mac.Sum(nil))
+	return hmac.Equal([]byte(messageMAC), []byte(expectedMAC))
 }
