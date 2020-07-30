@@ -371,6 +371,7 @@ hmac := HashHmac("foo bar baz", "secret", sha256.New) // 9efc4f86917b454deae37c8
 IsValidMac("foo bar baz", hmac, "secret", sha256.New) // true/false
 ```
 
+
 Supporters gratitude:
 
 <img src="https://github.com/SoliDry/laravel-api/blob/master/tests/images/jetbrains-logo.png" alt="JetBrains logo" width="200" height="166" />
