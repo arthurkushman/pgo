@@ -9,10 +9,10 @@ import (
 )
 
 func TestDate(t *testing.T) {
-	assert.Equalf(t, time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"), "want %s, got %s", time.Now().Format("2006-02-01 15:04:05"), pgo.Date("Y-m-d H:i:s"))
+	assert.Equalf(t, time.Now().Format("2006-01-02 15:04:05"), pgo.Date("Y-m-d H:i:s"), "want %s, got %s", time.Now().Format("2006-01-02 15:04:05"), pgo.Date("Y-m-d H:i:s"))
 
 	zone, _ := time.Now().Zone()
-	assert.Equalf(t, time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"), "want %s, got %s", time.Now().Format("2006-02-01"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"))
+	assert.Equalf(t, time.Now().Format("2006-01-02"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"), "want %s, got %s", time.Now().Format("2006-01-02"+zone+"15:04:05"), pgo.Date("Y-m-dTH:i:s"))
 
 	assert.Equal(t, time.Now().Format("Mon, Jan"), pgo.Date("D, M"), "Time formats of week days and month in map doesn't match")
 
