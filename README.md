@@ -375,3 +375,11 @@ IsValidMac("foo bar baz", hmac, "secret", sha256.New) // true/false
 Supporters gratitude:
 
 <img src="https://github.com/SoliDry/laravel-api/blob/master/tests/images/jetbrains-logo.png" alt="JetBrains logo" width="200" height="166" />
+
+Contributing
+------------
+1. Fork it
+2. Create your feature branch (``git checkout -b my-new-feature``)
+3. Commit your changes (``git commit -am 'Add some feature'``)
+4. Push to the branch (``git push origin my-new-feature``)
+5. Create new Pull Request
