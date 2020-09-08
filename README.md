@@ -31,6 +31,7 @@ Go library for PHP community with convenient functions
 	* [ArrayMap](#user-content-arraymap)
 	* [ArrayFilter](#user-content-arrayfilter)
 	* [ArrayDiff](#user-content-arraydiff)
+	* [ArrayUdiff](#user-content-arrayudiff)
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
@@ -258,6 +259,17 @@ returns the values in array1 that are not present in any of the other arrays
 ```go
 pgo.ArrayDiff([]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
 pgo.ArrayDiff([]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
+```
+
+#### ArrayUdiff
+computes the difference of arrays by using a callback function for data comparison
+```go
+pgo.ArrayUdiff(func(a interface{}, b interface{}) bool {
+    return a == b
+}, []string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
+pgo.ArrayUdiff(func(a interface{}, b interface{}) bool {
+    return a == b
+}, []int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
 ```
 
 #### ArraySum

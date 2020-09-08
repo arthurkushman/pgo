@@ -210,9 +210,7 @@ func TestArrayUDiff(t *testing.T) {
 		ov := object.values
 		od := object.diff
 		res := pgo.ArrayUdiff(func(a interface{}, b interface{}) bool {
-			aa := a
-			bb := b
-			return aa == bb
+			return a == b
 		}, ov, od)
 
 		s := reflect.ValueOf(object.result)
