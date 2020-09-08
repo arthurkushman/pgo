@@ -148,6 +148,42 @@ func ArrayDiff(arrays ...interface{}) []interface{} {
 	return result
 }
 
+// ArrayUdiff computes the difference of arrays by using a callback function for data comparison
+func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) []interface{} {
+	var result []interface{}
+	first := reflect.ValueOf(arrays[0])
+	firstLen := first.Len()
+
+	for i := 0; i < firstLen; i++ {
+		needle := first.Index(i).Interface()
+		isFound := false
+
+		for _, v := range arrays[1:] {
+			second := reflect.ValueOf(v)
+			secondLen := second.Len()
+
+			for j := 0; j < secondLen; j++ {
+				compareResult := uf(needle, second.Index(j).Interface())
+
+				if compareResult == true {
+					isFound = true
+					break
+				}
+			}
+
+			if isFound == true {
+				break
+			}
+		}
+
+		if isFound == false {
+			result = append(result, needle)
+		}
+	}
+
+	return result
+}
+
 // ArraySum calculate the sum of values in an array
 func ArraySum(array interface{}) (float64, error) {
 	s := reflect.ValueOf(array)

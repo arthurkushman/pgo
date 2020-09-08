@@ -205,6 +205,24 @@ func TestArrayDiff(t *testing.T) {
 	}
 }
 
+func TestArrayUDiff(t *testing.T) {
+	for _, object := range testArrayDiff {
+		ov := object.values
+		od := object.diff
+		res := pgo.ArrayUdiff(func(a interface{}, b interface{}) bool {
+			aa := a
+			bb := b
+			return aa == bb
+		}, ov, od)
+
+		s := reflect.ValueOf(object.result)
+		len := s.Len()
+		for i := 0; i < len; i++ {
+			assert.Equalf(t, s.Index(i).Interface(), res[i], "want %v, got %v", s.Index(i).Interface(), res[i])
+		}
+	}
+}
+
 var testArrayKeys = []struct {
 	values map[string]int
 	result []string
