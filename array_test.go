@@ -58,8 +58,6 @@ func TestArrayChunk(t *testing.T) {
 	}
 }
 
-// type emptyMap map[interface{}]interface{}
-
 var testArrayCombine = []struct {
 	keys   interface{}
 	values interface{}

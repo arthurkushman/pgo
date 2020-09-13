@@ -181,11 +181,11 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 				valSecond := second.Index(j).Interface()
 				compareResult := uf(needle, valSecond)
 
-				if 0 > compareResult {
+				if compareResult < 0 {
 					break
 				}
 
-				if 0 == compareResult {
+				if compareResult == 0 {
 					isFound = true
 					break
 				}
