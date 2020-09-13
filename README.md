@@ -376,7 +376,7 @@ Supporters gratitude:
 
 <img src="https://github.com/SoliDry/laravel-api/blob/master/tests/images/jetbrains-logo.png" alt="JetBrains logo" width="200" height="166" />
 
-Contributing
+Contributing (demo)
 ------------
 1. Fork it
 2. Create your feature branch (``git checkout -b my-new-feature``)
