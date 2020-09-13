@@ -9,5 +9,5 @@ import (
 // !! for random numbers suitable for security-sensitive work, use the crypto/rand package instead
 func Rand(min, max int64) int64 {
 	rand.Seed(time.Now().UnixNano())
-	return rand.Int63n(max - min + 1) + min
+	return rand.Int63n(max-min+1) + min
 }

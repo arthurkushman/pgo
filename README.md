@@ -31,6 +31,7 @@ Go library for PHP community with convenient functions
 	* [ArrayMap](#user-content-arraymap)
 	* [ArrayFilter](#user-content-arrayfilter)
 	* [ArrayDiff](#user-content-arraydiff)
+	* [ArrayUdiff](#user-content-arrayudiff)
 	* [ArraySum](#user-content-arraysum)
 	* [ArrayIntersect](#user-content-arrayintersect)
 	* [Range](#user-content-range)
@@ -258,6 +259,78 @@ returns the values in array1 that are not present in any of the other arrays
 ```go
 pgo.ArrayDiff([]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
 pgo.ArrayDiff([]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
+```
+
+#### ArrayUdiff
+computes the difference of arrays by using a callback function for data comparison
+```go
+pgo.ArrayUdiff(func(a interface{}, b interface{}) int {
+    if a.(string) > b.(string) {
+        return 1
+    } else if a.(string) < b.(string) {
+        return -1
+    }
+
+    return 0
+}, []string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
+
+pgo.ArrayUdiff(func(a interface{}, b interface{}) int {
+    if a.(int) > b.(int) {
+        return 1
+    } else if a.(int) < b.(int) {
+        return -1
+    }
+
+    return 0
+}, []int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
+```
+```go
+type TestUdiffComparing interface {ComparingValue() string}
+
+type A struct {valueA string}
+func (a A) ComparingValue() string  {return a.valueA}
+
+type B struct {valueB string}
+func (b B) ComparingValue() string  {return b.valueB}
+
+type C struct {valueC string}
+func (c C) ComparingValue() string  {return c.valueC}
+
+func main() {
+	a := []A {{valueA: "q"}, {valueA: "e"}, {valueA: "t"}, {valueA: "k"}, {valueA: "g"}, {valueA: "o"}, {valueA: "j"}}
+	b := []B {{valueB: "q"}, {valueB: "g"}, {valueB: "b"}, {valueB: "h"}, {valueB: "j"}, {valueB: "k"}, {valueB: "l"}}
+	c := []C {{valueC: "o"}, {valueC: "q"}, {valueC: "e"}, {valueC: "x"}, {valueC: "c"}, {valueC: "v"}, {valueC: "b"}}
+
+	s1 := pgo.ArrayUdiff(func (arr1 interface{}, arr2 interface{}) int {
+		if arr1.(TestUdiffComparing).ComparingValue() > arr2.(TestUdiffComparing).ComparingValue() {
+			return 1
+		} else if arr1.(TestUdiffComparing).ComparingValue() < arr2.(TestUdiffComparing).ComparingValue() {
+			return -1
+		}
+
+		return 0
+	}, a, b, c)
+
+	fmt.Print(s1) // [{t}]
+
+
+	a2 := []string {"a", "b", "c"}
+	b2 := []string {"a", "d", "g"}
+	c2 := []string {"b", "x", "y"}
+
+	s2 := pgo.ArrayUdiff(func (arr1 interface{}, arr2 interface{}) int {
+		if arr1.(string) > arr2.(string) {
+			return 1
+		} else if arr1.(string) < arr2.(string) {
+			return -1
+		}
+
+		return 0
+	}, a2, b2, c2)
+
+	fmt.Print(s2) // [c]
+}
+
 ```
 
 #### ArraySum

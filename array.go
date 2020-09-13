@@ -3,6 +3,7 @@ package pgo
 import (
 	"fmt"
 	"reflect"
+	"sort"
 )
 
 // InArray checks if a value exists in an array
@@ -149,10 +150,24 @@ func ArrayDiff(arrays ...interface{}) []interface{} {
 }
 
 // ArrayUdiff computes the difference of arrays by using a callback function for data comparison
-func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) []interface{} {
+func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []interface{} {
 	var result []interface{}
+
 	first := reflect.ValueOf(arrays[0])
 	firstLen := first.Len()
+	elementType := reflect.TypeOf(arrays[0]).Elem()
+
+	originFirst := reflect.MakeSlice(reflect.SliceOf(elementType), firstLen, firstLen)
+	reflect.Copy(originFirst, first)
+
+	for _, ar := range arrays {
+		sort.Slice(ar, func(i, j int) bool {
+			first := reflect.ValueOf(ar)
+			return 0 > uf(first.Index(i).Interface(), first.Index(j).Interface())
+		})
+	}
+
+	tempResult := make(map[interface{}]interface{})
 
 	for i := 0; i < firstLen; i++ {
 		needle := first.Index(i).Interface()
@@ -163,9 +178,14 @@ func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) [
 			secondLen := second.Len()
 
 			for j := 0; j < secondLen; j++ {
-				compareResult := uf(needle, second.Index(j).Interface())
+				valSecond := second.Index(j).Interface()
+				compareResult := uf(needle, valSecond)
 
-				if compareResult == true {
+				if 0 > compareResult {
+					break
+				}
+
+				if 0 == compareResult {
 					isFound = true
 					break
 				}
@@ -177,8 +197,19 @@ func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) [
 		}
 
 		if isFound == false {
-			result = append(result, needle)
+			tempResult[needle] = needle
 		}
+	}
+
+	originFirstLen := originFirst.Len()
+	for i := 0; i < originFirstLen; i++ {
+		needle := originFirst.Index(i).Interface()
+
+		val, ok := tempResult[needle]
+		if ok {
+			result = append(result, val)
+		}
+
 	}
 
 	return result
