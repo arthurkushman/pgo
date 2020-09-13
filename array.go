@@ -3,6 +3,7 @@ package pgo
 import (
 	"fmt"
 	"reflect"
+	"sort"
 )
 
 // InArray checks if a value exists in an array
@@ -149,8 +150,16 @@ func ArrayDiff(arrays ...interface{}) []interface{} {
 }
 
 // ArrayUdiff computes the difference of arrays by using a callback function for data comparison
-func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) []interface{} {
+func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []interface{} {
 	var result []interface{}
+
+	for _, ar := range arrays {
+		sort.Slice(ar, func(i, j int) bool {
+			first := reflect.ValueOf(ar)
+			return 0 > uf(first.Index(i).Interface(), first.Index(j).Interface())
+		})
+	}
+
 	first := reflect.ValueOf(arrays[0])
 	firstLen := first.Len()
 
@@ -163,9 +172,14 @@ func ArrayUdiff(uf func(interface{}, interface{}) bool, arrays ...interface{}) [
 			secondLen := second.Len()
 
 			for j := 0; j < secondLen; j++ {
-				compareResult := uf(needle, second.Index(j).Interface())
+				valSecond := second.Index(j).Interface()
+				compareResult := uf(needle, valSecond)
 
-				if compareResult == true {
+				if 0 > compareResult {
+					break
+				}
+
+				if 0 == compareResult {
 					isFound = true
 					break
 				}
