@@ -58,8 +58,6 @@ func TestArrayChunk(t *testing.T) {
 	}
 }
 
-// type emptyMap map[interface{}]interface{}
-
 var testArrayCombine = []struct {
 	keys   interface{}
 	values interface{}
@@ -193,6 +191,59 @@ var testArrayDiff = []struct {
 	{[]int{}, []int{3, 43, 8, 4, 9}, []int{}},
 }
 
+var testArrayUdiff = []struct {
+	values interface{}
+	diff   interface{}
+	result interface{}
+	uf     func(a interface{}, b interface{}) int
+}{
+	{[]string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}, []string{"fizz", "baz"}, func(a interface{}, b interface{}) int {
+		if a.(string) > b.(string) {
+			return 1
+		} else if a.(string) < b.(string) {
+			return -1
+		}
+
+		return 0
+	}},
+	{[]int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}, []int{43}, func(a interface{}, b interface{}) int {
+		if a.(int) > b.(int) {
+			return 1
+		} else if a.(int) < b.(int) {
+			return -1
+		}
+
+		return 0
+	}},
+	{[]float64{3.14159, 43.03, 3.14159, 43.02, 8.74}, []float64{3.14159, 43.03, 3.14159}, []float64{43.02, 8.74}, func(a interface{}, b interface{}) int {
+		if a.(float64) > b.(float64) {
+			return 1
+		} else if a.(float64) < b.(float64) {
+			return -1
+		}
+
+		return 0
+	}},
+	{[]int{3, 43, 8, 4, 9}, []int{}, []int{3, 43, 8, 4, 9}, func(a interface{}, b interface{}) int {
+		if a.(int) > b.(int) {
+			return 1
+		} else if a.(int) < b.(int) {
+			return -1
+		}
+
+		return 0
+	}},
+	{[]int{}, []int{3, 43, 8, 4, 9}, []int{}, func(a interface{}, b interface{}) int {
+		if a.(int) > b.(int) {
+			return 1
+		} else if a.(int) < b.(int) {
+			return -1
+		}
+
+		return 0
+	}},
+}
+
 func TestArrayDiff(t *testing.T) {
 	for _, object := range testArrayDiff {
 		res := pgo.ArrayDiff(object.values, object.diff)
@@ -206,12 +257,11 @@ func TestArrayDiff(t *testing.T) {
 }
 
 func TestArrayUDiff(t *testing.T) {
-	for _, object := range testArrayDiff {
+	for _, object := range testArrayUdiff {
 		ov := object.values
 		od := object.diff
-		res := pgo.ArrayUdiff(func(a interface{}, b interface{}) bool {
-			return a == b
-		}, ov, od)
+		uf := object.uf
+		res := pgo.ArrayUdiff(uf, ov, od)
 
 		s := reflect.ValueOf(object.result)
 		len := s.Len()
