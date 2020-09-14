@@ -202,12 +202,14 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 	}
 
 	originFirstLen := originFirst.Len()
-	for i := 0; i < originFirstLen; i++ {
+
+	for i := 0; i < originFirstLen && len(tempResult) > 0; i++ {
 		needle := originFirst.Index(i).Interface()
 
 		val, ok := tempResult[needle]
 		if ok {
 			result = append(result, val)
+			delete(tempResult, needle)
 		}
 
 	}
