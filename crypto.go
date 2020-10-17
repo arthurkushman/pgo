@@ -14,20 +14,17 @@ import (
 
 // Md5 returns simple md5 in hex generated from string s
 func Md5(s string) string {
-	h := md5.New()
-	return hashing(h, s)
+	return hashing(md5.New(), s)
 }
 
 // Sha1 returns simple sha1 in hex generated from string s
 func Sha1(s string) string {
-	h := sha1.New()
-	return hashing(h, s)
+	return hashing(sha1.New(), s)
 }
 
 // Sha2 returns simple sha1 in hex generated from string s
 func Sha2(s string) string {
-	h := sha256.New()
-	return hashing(h, s)
+	return hashing(sha256.New(), s)
 }
 
 func hashing(h hash.Hash, s string) string {

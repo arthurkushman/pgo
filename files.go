@@ -35,7 +35,7 @@ func NewContext() *Context {
 }
 
 // FileGetContents reads files, http requests streams
-// fileName name of file to where put data
+// path name of a file or domain from where to read data
 // flags[0] - offset
 // flags[1] - maxLen
 func FileGetContents(path string, args ...interface{}) (string, error) {
