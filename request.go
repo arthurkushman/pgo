@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -30,7 +29,7 @@ func (c *Context) doRequest(path string) (string, error) {
 
 	defer resp.Body.Close()
 
-	content, cErr := ioutil.ReadAll(resp.Body)
+	content, cErr := io.ReadAll(resp.Body)
 
 	if cErr != nil {
 		return string(content), cErr

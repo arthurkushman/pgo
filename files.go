@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -120,7 +119,7 @@ func FileGetContents(path string, args ...interface{}) (string, error) {
 		return string(buf), e
 	}
 
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	return string(data), err
 }
 
@@ -154,7 +153,7 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 		return f.WriteString(data)
 	}
 
-	return len(data), ioutil.WriteFile(fileName, []byte(data), os.FileMode(0644))
+	return len(data), os.WriteFile(fileName, []byte(data), os.FileMode(0644))
 }
 
 // MoveUploadedFile uploads file from fieldName to destination path
