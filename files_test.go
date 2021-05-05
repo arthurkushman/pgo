@@ -145,7 +145,8 @@ func TestFilePutContentsErrors(t *testing.T) {
 //}
 
 func TestFileExists(t *testing.T) {
-	pgo.FilePutContents(file1, "foo bar baz")
+	_, err := pgo.FilePutContents(file1, "foo bar baz")
+	assert.NoError(t, err)
 	defer os.Remove(file1)
 
 	f1 := pgo.FileExists(file1)
@@ -156,7 +157,8 @@ func TestFileExists(t *testing.T) {
 }
 
 func TestIsDir(t *testing.T) {
-	os.Mkdir(dir1, 0644)
+	err := os.Mkdir(dir1, 0644)
+	assert.NoError(t, err)
 	defer os.Remove(dir1)
 
 	isDir := pgo.IsDir(dir1)
@@ -167,7 +169,8 @@ func TestIsDir(t *testing.T) {
 }
 
 func TestIsFile(t *testing.T) {
-	pgo.FilePutContents(file1, "foo bar baz")
+	_, err := pgo.FilePutContents(file1, "foo bar baz")
+	assert.NoError(t, err)
 	defer os.Remove(file1)
 
 	isFile := pgo.IsFile(file1)
@@ -178,8 +181,11 @@ func TestIsFile(t *testing.T) {
 }
 
 func TestIsLnik(t *testing.T) {
-	pgo.FilePutContents(file1, "foo bar baz")
-	os.Symlink(file1, symlink)
+	_, err := pgo.FilePutContents(file1, "foo bar baz")
+	assert.NoError(t, err)
+	err = os.Symlink(file1, symlink)
+	assert.NoError(t, err)
+
 	defer os.Remove(file1)
 	defer os.Remove(symlink)
 

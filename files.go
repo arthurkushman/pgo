@@ -9,7 +9,7 @@ import (
 	"regexp"
 )
 
-// const mapping php -> go
+// FileAppend const mapping php -> go
 const (
 	FileAppend = os.O_APPEND
 )
