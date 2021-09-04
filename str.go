@@ -113,10 +113,16 @@ func (params *replaceParams) doReplaceSlices() string {
 }
 
 // HTTPBuildQuery Generates a URL-encoded query string from the associative map
-func HTTPBuildQuery(pairs map[string]string) string {
+func HTTPBuildQuery(pairs map[string]interface{}) string {
 	q := url.Values{}
 	for k, v := range pairs {
-		q.Add(k, v)
+		switch v.(type) {
+		case string:
+			q.Add(k, v.(string))
+			break
+		case []string:
+			q[k] = v.([]string)
+		}
 	}
 	return q.Encode()
 }

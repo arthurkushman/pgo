@@ -1,9 +1,10 @@
 package pgo_test
 
 import (
+	"testing"
+
 	"github.com/arthurkushman/pgo"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestStrReplace(t *testing.T) {
@@ -57,14 +58,15 @@ func TestStrReplaceErrs(t *testing.T) {
 }
 
 func TestHTTPBuildQuery(t *testing.T) {
-	queryStr := pgo.HTTPBuildQuery(map[string]string{
+	queryStr := pgo.HTTPBuildQuery(map[string]interface{}{
 		"foo": "bar",
 		"bar": "baz",
+		"s":   []string{"1", "foo", "2", "bar", "3", "baz"},
 	})
 
-	want := "bar=baz&foo=bar"
+	want := "bar=baz&foo=bar&s=1&s=foo&s=2&s=bar&s=3&s=baz"
 	assert.Equal(t, queryStr, want, "want %s, got %s", queryStr, want)
 
-	queryStr2 := pgo.HTTPBuildQuery(map[string]string{})
+	queryStr2 := pgo.HTTPBuildQuery(map[string]interface{}{})
 	assert.Empty(t, queryStr2, "built str from an empty map must be empty")
 }

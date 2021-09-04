@@ -110,10 +110,11 @@ str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, 
 #### HTTPBuildQuery
 Bulding a http query string:
 ```go
-queryStr := pgo.HTTPBuildQuery(map[string]string{
+queryStr := pgo.HTTPBuildQuery(map[string]interface{}{
 	"foo": "bar",
 	"bar": "baz",
-}) // bar=baz&foo=bar
+	"s": []string{"1", "foo", "2", "bar", "3", "baz"},
+}) // bar=baz&foo=bar&s=1&s=foo&s=2&s=bar&s=3&s=baz
 ```
 
 #### StripTags
