@@ -140,7 +140,7 @@ func (t Time) Milliseconds() int64 {
 	return time.Time(t).UnixNano() / DivideMilliseconds
 }
 
-// Microsecond from time.Time Go type
+// Microseconds from time.Time Go type
 func (t Time) Microseconds() int64 {
 	return time.Time(t).UnixNano() / DivideMicroseconds
 }

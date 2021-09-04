@@ -67,7 +67,7 @@ func (pq *PriorityQueue) down(i0, n int) bool {
 	return i > i0
 }
 
-// update modifies the Priority and Value of an Item in the queue.
+//Update modifies the Priority and Value of an Item in the queue.
 func (pq *PriorityQueue) Update(item *Item, value string, priority int) {
 	item.Value = value
 	item.Priority = priority
