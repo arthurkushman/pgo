@@ -1,12 +1,13 @@
 package pgo_test
 
 import (
-	"github.com/arthurkushman/pgo"
-	"github.com/stretchr/testify/assert"
 	"math"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/arthurkushman/pgo"
+	"github.com/stretchr/testify/assert"
 )
 
 var testInArray = []struct {
@@ -354,4 +355,37 @@ func TestRange(t *testing.T) {
 			assert.Equalf(t, v, object.result[k], "want %v, got %v", object.result[k], v)
 		}
 	}
+}
+
+var testEqual = []struct {
+	a   interface{}
+	b   interface{}
+	res bool
+}{
+	{[]int{1, 2, 3}, []int{1, 2, 3}, true},
+	{[]int{1, 2, 3}, []int{1, 3, 2}, false},
+	{[]int{1, 2, 3}, []int{}, false},
+	{[]int{}, []int{}, true},
+	{[]string{"foo"}, []string{"bar"}, false},
+	{[]string{"foo"}, []string{"foo"}, true},
+	{[]float64{123.33, 22}, []float64{123.33, 22}, true},
+	{[]float64{123.33, 22}, []float64{123.33, 22.1111}, false},
+	{[]bool{true, false}, []bool{true, false}, true},
+	{[]bool{true, false}, []bool{false, false}, false},
+	{[]byte{0, 123, 1}, []byte{0, 123, 1}, true},
+	{[]byte{0, 123, 1}, []byte{0, 123, 133}, false},
+}
+
+func TestEqual(t *testing.T) {
+	for _, v := range testEqual {
+		res, err := pgo.EqualSlices(v.a, v.b)
+		assert.NoError(t, err)
+		assert.Equal(t, v.res, res)
+	}
+
+	// check err non-slice type
+	res, err := pgo.EqualSlices([]int{}, 123)
+	assert.Error(t, err)
+	assert.Equal(t, err.Error(), "only slice arguments allowed")
+	assert.Equal(t, false, res)
 }

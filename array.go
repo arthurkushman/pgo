@@ -310,3 +310,29 @@ func Range(min, max int, step ...interface{}) []int {
 
 	return slice
 }
+
+// EqualSlices compares two slices and returns true if they are equal, false otherwise
+// in case of passing wrong (non-slice) arguments error will be returned
+func EqualSlices(a, b interface{}) (bool, error) {
+	if reflect.TypeOf(a).Kind() != reflect.Slice || reflect.TypeOf(b).Kind() != reflect.Slice {
+		return false, fmt.Errorf("only slice arguments allowed")
+	}
+
+	sa := reflect.ValueOf(a)
+	la := sa.Len()
+
+	sb := reflect.ValueOf(b)
+	lb := sb.Len()
+
+	if la != lb {
+		return false, nil
+	}
+
+	for i := 0; i < la; i++ {
+		if sa.Index(i).Interface() != sb.Index(i).Interface() {
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
