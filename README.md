@@ -411,9 +411,9 @@ pgo.Range(-3, 7, 5) // []int{-3, 2, 7}
 Compares two slices and returns true if they are equal, false otherwise (any type of slices support)
 
 ```go
-res, err := pgo.EqualSlices([]int{1, 2, 3}, []int{1, 2, 3}, true) // true
+res, err := pgo.EqualSlices([]int{1, 2, 3}, []int{1, 2, 3}) // true
 
-res, err := pgo.EqualSlices([]string{"foo"}, []string{"bar"}, false) // false
+res, err := pgo.EqualSlices([]string{"foo"}, []string{"bar"}) // false
 ```
 
 See more examples in *_test.go files.
