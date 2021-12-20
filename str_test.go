@@ -59,12 +59,16 @@ func TestStrReplaceErrs(t *testing.T) {
 
 func TestHTTPBuildQuery(t *testing.T) {
 	queryStr := pgo.HTTPBuildQuery(map[string]interface{}{
-		"foo": "bar",
-		"bar": "baz",
-		"s":   []string{"1", "foo", "2", "bar", "3", "baz"},
+		"foo":      "bar",
+		"bar":      "baz",
+		"s":        []string{"1", "foo", "2", "bar", "3", "baz"},
+		"num":      123,
+		"bigNum":   int64(1238873737737737373),
+		"amount":   623.937,
+		"isActive": true,
 	})
 
-	want := "bar=baz&foo=bar&s=1&s=foo&s=2&s=bar&s=3&s=baz"
+	want := "amount=623.937&bar=baz&bigNum=1238873737737737373&foo=bar&isActive=true&num=123&s=1&s=foo&s=2&s=bar&s=3&s=baz"
 	assert.Equal(t, queryStr, want, "want %s, got %s", queryStr, want)
 
 	queryStr2 := pgo.HTTPBuildQuery(map[string]interface{}{})

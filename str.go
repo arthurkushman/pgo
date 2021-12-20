@@ -2,6 +2,7 @@ package pgo
 
 import (
 	"errors"
+	"fmt"
 	"net/url"
 	"strings"
 )
@@ -122,7 +123,14 @@ func HTTPBuildQuery(pairs map[string]interface{}) string {
 			break
 		case []string:
 			q[k] = v.([]string)
+		case uint, uint8, uint16, uint32, uint64, int, int8, int16, int32, int64:
+			q.Add(k, fmt.Sprintf("%d", v))
+		case float32, float64:
+			q.Add(k, fmt.Sprintf("%v", v))
+		case bool:
+			q.Add(k, fmt.Sprintf("%t", v))
 		}
 	}
+
 	return q.Encode()
 }
