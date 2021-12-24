@@ -70,12 +70,12 @@ For instance, to store Go code data in storage engines like rdbms, no-sql, key-v
 functions to serialize Go code to string and unserialize it back from string to Go code:
 
 ```go
-m := make(map[int]string, 0)
+m := make(map[int]string)
 m[0] = "abc"
 
 str, err := pgo.Serialize(m) // str -> "Dv+BBAEC/4IAAQQBDAAACf+CAAEAA2FiYw=="
 
-unserMap := make(map[int]string, 0)
+unserMap := make(map[int]string)
 err = pgo.Unserialize(str, &unserMap) // unserMap -> map[int]string{0: "abc"}
 ```
 
@@ -145,7 +145,7 @@ str := html.StripTags(html, []string{"a", "span"}) // results in: "Lorem <span>i
 
 UPD: As had been stated here - https://github.com/golang/go/issues/22639
 There is a very handy "stripTags" function in html/template, then guys from official team as fast as they got dislike on
-their negative comment, closed the thread. That is why libs like `pgo` is appearing and will be move forward/evelove,
+their negative comment, closed the thread. That is why libs like `pgo` is appearing and will be move forward/evolve,
 bypassing strict rules that sometimes looking nonsence.
 
 ### Files

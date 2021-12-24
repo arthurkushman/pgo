@@ -12,14 +12,14 @@ func TestIsOk(t *testing.T) {
 }
 
 func TestSerialize(t *testing.T) {
-	m := make(map[int]string, 0)
+	m := make(map[int]string)
 	m[0] = "abc"
 
 	str, err := pgo.Serialize(m)
 	assert.NoError(t, err)
 	assert.Equal(t, str, "Dv+BBAEC/4IAAQQBDAAACf+CAAEAA2FiYw==")
 
-	unserMap := make(map[int]string, 0)
+	unserMap := make(map[int]string)
 	err = pgo.Unserialize(str, &unserMap)
 	assert.NoError(t, err)
 	assert.Equal(t, m, map[int]string{
