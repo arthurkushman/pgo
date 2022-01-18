@@ -61,11 +61,11 @@ func TestFileGetContentsPanics(t *testing.T) {
 
 	// panic with non existent file
 	_, err := pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64)
-	assert.NoError(t, err)
+	assert.Error(t, err)
 
 	// panic with non existent, but with limit
 	_, err = pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64, math.MaxInt64)
-	assert.NoError(t, err)
+	assert.Error(t, err)
 
 	// panic with existent but out of range offset
 	_, err = pgo.FileGetContents(fileName, nil, math.MaxInt64)
