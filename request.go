@@ -44,9 +44,13 @@ func (c *Context) uploadFile(fieldName, filePath string) bool {
 		maxSize = c.UploadMaxFileSize
 	}
 
-	c.Req.ParseMultipartForm(maxSize)
-	file, _, err := c.Req.FormFile(fieldName)
+	err := c.Req.ParseMultipartForm(maxSize)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 
+	file, _, err := c.Req.FormFile(fieldName)
 	if err != nil {
 		fmt.Println(err)
 		return false
@@ -61,7 +65,11 @@ func (c *Context) uploadFile(fieldName, filePath string) bool {
 	}
 
 	defer f.Close()
-	io.Copy(f, file)
+	_, err = io.Copy(f, file)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 
 	return true
 }

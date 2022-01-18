@@ -41,12 +41,10 @@ func Date(args ...interface{}) string {
 			param, ok := p.(string)
 			isOk(ok, "You must provide format string parameter as string")
 			date.inputDateFormat = param
-			break
 		case 1:
 			param, ok := p.(int64)
 			isOk(ok, "You must provide timestamp as int64 type")
 			date.unix = param
-			break
 		}
 	}
 
@@ -86,9 +84,7 @@ func (date *goDate) convert() {
 	r, _ := regexp.Compile(phpDateFormatSymbols)
 
 	for _, chSlice := range r.FindAllStringSubmatch(date.inputDateFormat, -1) {
-		for _, ch := range chSlice {
-			date.parsedSymbols = append(date.parsedSymbols, ch)
-		}
+		date.parsedSymbols = append(date.parsedSymbols, chSlice...)
 	}
 }
 

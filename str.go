@@ -55,7 +55,6 @@ func (params *replaceParams) prepareParams(args ...interface{}) {
 				params.countSlices++
 				params.search = param
 			}
-			break
 		case 1:
 			param, ok := p.(string)
 			params.replace = param
@@ -65,17 +64,14 @@ func (params *replaceParams) prepareParams(args ...interface{}) {
 				params.countSlices++
 				params.replace = param
 			}
-			break
 		case 2:
 			param, ok := p.(string)
 			params.subject = param
 			isOk(ok, "3d parameter must be passed as string")
-			break
 		case 3:
 			param, ok := p.(int)
 			params.count = param
 			isOk(ok, "4th parameter must be passed as int")
-			break
 		}
 	}
 }
@@ -117,18 +113,17 @@ func (params *replaceParams) doReplaceSlices() string {
 func HTTPBuildQuery(pairs map[string]interface{}) string {
 	q := url.Values{}
 	for k, v := range pairs {
-		switch v.(type) {
+		switch val := v.(type) {
 		case string:
 			q.Add(k, v.(string))
-			break
 		case []string:
 			q[k] = v.([]string)
 		case uint, uint8, uint16, uint32, uint64, int, int8, int16, int32, int64:
-			q.Add(k, fmt.Sprintf("%d", v))
+			q.Add(k, fmt.Sprintf("%d", val))
 		case float32, float64:
-			q.Add(k, fmt.Sprintf("%v", v))
+			q.Add(k, fmt.Sprintf("%v", val))
 		case bool:
-			q.Add(k, fmt.Sprintf("%t", v))
+			q.Add(k, fmt.Sprintf("%t", val))
 		}
 	}
 

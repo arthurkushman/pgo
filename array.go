@@ -139,7 +139,7 @@ func ArrayDiff(arrays ...interface{}) []interface{} {
 			}
 		}
 
-		if isFound == false {
+		if !isFound {
 			result = append(result, needle)
 		}
 
@@ -191,12 +191,12 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 				}
 			}
 
-			if isFound == true {
+			if isFound {
 				break
 			}
 		}
 
-		if isFound == false {
+		if !isFound {
 			tempResult[needle] = needle
 		}
 	}

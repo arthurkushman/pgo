@@ -1,11 +1,12 @@
 package pgo_test
 
 import (
-	"github.com/arthurkushman/pgo"
-	"github.com/stretchr/testify/assert"
 	"math"
 	"os"
 	"testing"
+
+	"github.com/arthurkushman/pgo"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -59,16 +60,20 @@ func TestFileGetContentsPanics(t *testing.T) {
 	}()
 
 	// panic with non existent file
-	pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64)
+	_, err := pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64)
+	assert.NoError(t, err)
 
 	// panic with non existent, but with limit
-	pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64, math.MaxInt64)
+	_, err = pgo.FileGetContents("non-existent.txt", nil, math.MaxInt64, math.MaxInt64)
+	assert.NoError(t, err)
 
 	// panic with existent but out of range offset
-	pgo.FileGetContents(fileName, nil, math.MaxInt64)
+	_, err = pgo.FileGetContents(fileName, nil, math.MaxInt64)
+	assert.NoError(t, err)
 
 	// panic with existent but out of range offset and limit
-	pgo.FileGetContents(fileName, nil, math.MaxInt64, math.MaxInt64)
+	_, err = pgo.FileGetContents(fileName, nil, math.MaxInt64, math.MaxInt64)
+	assert.NoError(t, err)
 }
 
 func TestFileGetContentsInvalidTypes(t *testing.T) {
