@@ -1224,7 +1224,7 @@ func (e *escaper) escapeText(c context, n *parse.TextNode) context {
 				// the entire comment is considered to be a
 				// LineTerminator for purposes of parsing by
 				// the syntactic grammar."
-				if bytes.IndexAny(s[written:i1], "\n\r\u2028\u2029") != -1 {
+				if bytes.ContainsAny(s[written:i1], "\n\r\u2028\u2029") {
 					b.WriteByte('\n')
 				} else {
 					b.WriteByte(' ')
@@ -1619,7 +1619,7 @@ func tAttr(c context, s []byte) (context, int) {
 
 // tURL is the context transition function for the URL state.
 func tURL(c context, s []byte) (context, int) {
-	if bytes.IndexAny(s, "#?") >= 0 {
+	if bytes.ContainsAny(s, "#?") {
 		c.urlPart = urlPartQueryOrFrag
 	} else if len(s) != eatWhiteSpace(s, 0) && c.urlPart == urlPartNone {
 		// HTML5 uses "Valid URL potentially surrounded by spaces" for
@@ -2690,7 +2690,7 @@ func cssValueFilter(args ...interface{}) string {
 		}
 	}
 	id = bytes.ToLower(id)
-	if bytes.Index(id, expressionBytes) != -1 || bytes.Index(id, mozBindingBytes) != -1 {
+	if bytes.Contains(id, expressionBytes) || bytes.Contains(id, mozBindingBytes) {
 		return filterFailsafe
 	}
 	return string(b)

@@ -272,15 +272,6 @@ func TestArrayUDiff(t *testing.T) {
 	}
 }
 
-var testArrayKeys = []struct {
-	values map[string]int
-	result []string
-}{
-	{map[string]int{"foo": 1, "bar": 8, "fizz": 12, "baz": 0}, []string{"foo", "bar", "fizz", "baz"}},
-	// {map[int]interface{}{3: 32.4, 43: "foo", 8: "bar", 4: 1, 9: 1}, []int{3, 43, 8, 4, 9}},
-	// {map[interface{}]int{3.45: 32, "foo": 33, 8: 53, "bar": 1, 9: 1}, []interface{}{3.45, "foo", 8, "bar", 9}},
-}
-
 var testArraySum = []struct {
 	values interface{}
 	result float64
