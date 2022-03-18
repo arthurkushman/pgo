@@ -262,17 +262,14 @@ func ArrayIntersect(arrays ...interface{}) []interface{} {
 // If a step value is given, it will be used as the increment between elements in the sequence.
 // step should be given as a positive number.
 // If not specified, step will default to 1.
-func Range(min, max int, step ...interface{}) []int {
+func Range(min, max int, step ...int) []int {
 	var slice []int
 
 	var argsLen = len(step)
 
 	var stepp = 1
-	if argsLen > 0 && step[0] != nil {
-		st, ok := step[0].(int)
-		if !ok || st > 1 {
-			stepp = st
-		}
+	if argsLen > 0 && step[0] > 1 {
+		stepp = step[0]
 	}
 
 	for i := min; i <= max; i += stepp {
