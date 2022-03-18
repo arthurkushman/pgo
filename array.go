@@ -1,26 +1,16 @@
 package pgo
 
 import (
-	"fmt"
+	"constraints"
 	"reflect"
 	"sort"
 )
 
 // InArray checks if a value exists in an array
-func InArray(needle interface{}, haystack interface{}) bool {
-	return search(needle, haystack)
-}
-
-func search(needle interface{}, haystack interface{}) bool {
-	switch reflect.TypeOf(haystack).Kind() {
-	case reflect.Slice:
-		s := reflect.ValueOf(haystack)
-		l := s.Len()
-
-		for i := 0; i < l; i++ {
-			if needle == s.Index(i).Interface() {
-				return true
-			}
+func InArray[T comparable](needle T, haystack []T) bool {
+	for _, v := range haystack {
+		if v == needle {
+			return true
 		}
 	}
 
@@ -218,34 +208,15 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 }
 
 // ArraySum calculate the sum of values in an array
-func ArraySum(array interface{}) (float64, error) {
-	s := reflect.ValueOf(array)
-	l := s.Len()
+func ArraySum[T constraints.Integer | constraints.Float](array []T) (T, error) {
+	l := len(array)
 
-	var amount float64
+	var amount T
 	for i := 0; i < l; i++ {
-		v, err := getFloat(s.Index(i).Interface())
-		if err != nil {
-			return v, err
-		}
-
-		amount += v
+		amount += array[i]
 	}
 
 	return amount, nil
-}
-
-func getFloat(unk interface{}) (float64, error) {
-	var floatType = reflect.TypeOf(float64(0))
-
-	v := reflect.ValueOf(unk)
-	v = reflect.Indirect(v)
-	if !v.Type().ConvertibleTo(floatType) {
-		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
-	}
-
-	fv := v.Convert(floatType)
-	return fv.Float(), nil
 }
 
 // ArrayIntersect computes the intersection of arrays
@@ -313,23 +284,15 @@ func Range(min, max int, step ...interface{}) []int {
 
 // EqualSlices compares two slices and returns true if they are equal, false otherwise
 // in case of passing wrong (non-slice) arguments error will be returned
-func EqualSlices(a, b interface{}) (bool, error) {
-	if reflect.TypeOf(a).Kind() != reflect.Slice || reflect.TypeOf(b).Kind() != reflect.Slice {
-		return false, fmt.Errorf("only slice arguments allowed")
-	}
-
-	sa := reflect.ValueOf(a)
-	la := sa.Len()
-
-	sb := reflect.ValueOf(b)
-	lb := sb.Len()
-
+func EqualSlices[T comparable](a, b []T) (bool, error) {
+	la := len(a)
+	lb := len(b)
 	if la != lb {
 		return false, nil
 	}
 
 	for i := 0; i < la; i++ {
-		if sa.Index(i).Interface() != sb.Index(i).Interface() {
+		if a[i] != b[i] {
 			return false, nil
 		}
 	}

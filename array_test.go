@@ -25,8 +25,17 @@ var testInArray = []struct {
 
 func TestInArray(t *testing.T) {
 	for _, object := range testInArray {
-		isInArray := pgo.InArray(object.val, object.slice)
-		assert.Equalf(t, isInArray, object.result, "Want: %v, got: %v", object.result, isInArray)
+		switch object.slice.(type) {
+		case []int:
+			isInArray := pgo.InArray(object.val.(int), object.slice.([]int))
+			assert.Equalf(t, isInArray, object.result, "Want: %v, got: %v", object.result, isInArray)
+		case []float64:
+			isInArray := pgo.InArray(object.val.(float64), object.slice.([]float64))
+			assert.Equalf(t, isInArray, object.result, "Want: %v, got: %v", object.result, isInArray)
+		case []string:
+			isInArray := pgo.InArray(object.val.(string), object.slice.([]string))
+			assert.Equalf(t, isInArray, object.result, "Want: %v, got: %v", object.result, isInArray)
+		}
 	}
 }
 
@@ -35,8 +44,8 @@ var testArrayChunk = []struct {
 	size   int
 	result interface{}
 }{
-	{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, [][]int{[]int{1, 2}, []int{3, 4}, []int{5, 6}, []int{7, 8}}},
-	{[]string{"foo", "bar", "baz", "fizz", "buzz"}, 3, [][]string{[]string{"foo", "bar", "baz"}, []string{"fizz", "buzz"}}},
+	{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, [][]int{{1, 2}, {3, 4}, {5, 6}, {7, 8}}},
+	{[]string{"foo", "bar", "baz", "fizz", "buzz"}, 3, [][]string{{"foo", "bar", "baz"}, {"fizz", "buzz"}}},
 }
 
 func TestArrayChunk(t *testing.T) {
@@ -277,14 +286,19 @@ var testArraySum = []struct {
 	result float64
 }{
 	{[]int{3, 43, 8, 43, 8}, 105},
-	{[]interface{}{3, "foo", 8, 43, 8}, 0},
 	{[]float64{3.14159, 43.03, 8, 3.14159, 43.02, 8}, 108.33318},
 }
 
 func TestArraySum(t *testing.T) {
 	for _, object := range testArraySum {
-		res, _ := pgo.ArraySum(object.values)
-		assert.Equalf(t, res, object.result, "want %v, got %v", object.result, res)
+		switch object.values.(type) {
+		case []int:
+			res, _ := pgo.ArraySum(object.values.([]int))
+			assert.Equalf(t, res, int(object.result), "want %v, got %v", object.result, res)
+		case []float64:
+			res, _ := pgo.ArraySum(object.values.([]float64))
+			assert.Equalf(t, res, object.result, "want %v, got %v", object.result, res)
+		}
 	}
 }
 
@@ -369,14 +383,27 @@ var testEqual = []struct {
 
 func TestEqual(t *testing.T) {
 	for _, v := range testEqual {
-		res, err := pgo.EqualSlices(v.a, v.b)
-		assert.NoError(t, err)
-		assert.Equal(t, v.res, res)
+		switch v.a.(type) {
+		case []int:
+			res, err := pgo.EqualSlices(v.a.([]int), v.b.([]int))
+			assert.NoError(t, err)
+			assert.Equal(t, v.res, res)
+		case []bool:
+			res, err := pgo.EqualSlices(v.a.([]bool), v.b.([]bool))
+			assert.NoError(t, err)
+			assert.Equal(t, v.res, res)
+		case []float64:
+			res, err := pgo.EqualSlices(v.a.([]float64), v.b.([]float64))
+			assert.NoError(t, err)
+			assert.Equal(t, v.res, res)
+		case []string:
+			res, err := pgo.EqualSlices(v.a.([]string), v.b.([]string))
+			assert.NoError(t, err)
+			assert.Equal(t, v.res, res)
+		case []byte:
+			res, err := pgo.EqualSlices(v.a.([]byte), v.b.([]byte))
+			assert.NoError(t, err)
+			assert.Equal(t, v.res, res)
+		}
 	}
-
-	// check err non-slice type
-	res, err := pgo.EqualSlices([]int{}, 123)
-	assert.Error(t, err)
-	assert.Equal(t, err.Error(), "only slice arguments allowed")
-	assert.Equal(t, false, res)
 }
