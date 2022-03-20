@@ -18,19 +18,17 @@ func InArray[T comparable](needle T, haystack []T) bool {
 }
 
 // ArrayChunk split an array into chunks
-func ArrayChunk(array interface{}, size int) []interface{} {
-	var chunks []interface{}
+func ArrayChunk[T comparable](array []T, size int) [][]T {
+	var chunks [][]T
 
-	s := reflect.ValueOf(array)
-	l := s.Len()
-
-	var subChunk []interface{}
+	l := len(array)
+	var subChunk []T
 	for i := 0; i < l; i++ {
-		subChunk = append(subChunk, s.Index(i).Interface())
+		subChunk = append(subChunk, array[i])
 
 		if (i+1)%size == 0 || i+1 == l {
 			chunks = append(chunks, subChunk)
-			subChunk = make([]interface{}, 0)
+			subChunk = make([]T, 0)
 		}
 	}
 

@@ -39,31 +39,34 @@ func TestInArray(t *testing.T) {
 	}
 }
 
-var testArrayChunk = []struct {
-	array  interface{}
-	size   int
-	result interface{}
-}{
-	{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, [][]int{{1, 2}, {3, 4}, {5, 6}, {7, 8}}},
-	{[]string{"foo", "bar", "baz", "fizz", "buzz"}, 3, [][]string{{"foo", "bar", "baz"}, {"fizz", "buzz"}}},
+func TestArrayChunkInts(t *testing.T) {
+	res := pgo.ArrayChunk([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2)
+
+	s := [][]int{{1, 2}, {3, 4}, {5, 6}, {7, 8}}
+	l := len(s)
+	for i := 0; i < l; i++ {
+		array := s[i]
+		arrLen := len(array)
+
+		result := res[i]
+		for j := 0; j < arrLen; j++ {
+			assert.Equalf(t, result[j], array[j], "Want: %v, got: %v", result, array[j])
+		}
+	}
 }
 
-func TestArrayChunk(t *testing.T) {
-	for _, object := range testArrayChunk {
-		res := pgo.ArrayChunk(object.array, object.size)
+func TestArrayChunkStrings(t *testing.T) {
+	res := pgo.ArrayChunk([]string{"foo", "bar", "baz", "fizz", "buzz"}, 3)
 
-		s := reflect.ValueOf(object.result)
-		len := s.Len()
-		for i := 0; i < len; i++ {
-			array := s.Index(i).Interface()
+	s := [][]string{{"foo", "bar", "baz"}, {"fizz", "buzz"}}
+	l := len(s)
+	for i := 0; i < l; i++ {
+		array := s[i]
+		arrLen := len(array)
 
-			ss := reflect.ValueOf(array)
-			arrLen := ss.Len()
-
-			result := reflect.ValueOf(res[i])
-			for j := 0; j < arrLen; j++ {
-				assert.Equalf(t, result.Index(j).Interface(), ss.Index(j).Interface(), "Want: %v, got: %v", result.Index(j).Interface(), ss.Index(j).Interface())
-			}
+		result := res[i]
+		for j := 0; j < arrLen; j++ {
+			assert.Equalf(t, result[j], array[j], "Want: %v, got: %v", result, array[j])
 		}
 	}
 }
