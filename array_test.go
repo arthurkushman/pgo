@@ -118,11 +118,25 @@ var testArrayCountValues = []struct {
 
 func TestArrayCountValues(t *testing.T) {
 	for _, object := range testArrayCountValues {
-		res := pgo.ArrayCountValues(object.values)
-
-		m := reflect.ValueOf(object.result)
-		for k, v := range res {
-			assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+		switch object.values.(type) {
+		case []int:
+			res := pgo.ArrayCountValues(object.values.([]int))
+			m := reflect.ValueOf(object.result)
+			for k, v := range res {
+				assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
+		case []float64:
+			res := pgo.ArrayCountValues(object.values.([]float64))
+			m := reflect.ValueOf(object.result)
+			for k, v := range res {
+				assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
+		case []string:
+			res := pgo.ArrayCountValues(object.values.([]string))
+			m := reflect.ValueOf(object.result)
+			for k, v := range res {
+				assert.Equalf(t, m.MapIndex(reflect.ValueOf(k)).Interface(), v, "want %d, got %d", m.MapIndex(reflect.ValueOf(k)).Interface(), v)
+			}
 		}
 	}
 }
@@ -388,24 +402,19 @@ func TestEqual(t *testing.T) {
 	for _, v := range testEqual {
 		switch v.a.(type) {
 		case []int:
-			res, err := pgo.EqualSlices(v.a.([]int), v.b.([]int))
-			assert.NoError(t, err)
+			res := pgo.EqualSlices(v.a.([]int), v.b.([]int))
 			assert.Equal(t, v.res, res)
 		case []bool:
-			res, err := pgo.EqualSlices(v.a.([]bool), v.b.([]bool))
-			assert.NoError(t, err)
+			res := pgo.EqualSlices(v.a.([]bool), v.b.([]bool))
 			assert.Equal(t, v.res, res)
 		case []float64:
-			res, err := pgo.EqualSlices(v.a.([]float64), v.b.([]float64))
-			assert.NoError(t, err)
+			res := pgo.EqualSlices(v.a.([]float64), v.b.([]float64))
 			assert.Equal(t, v.res, res)
 		case []string:
-			res, err := pgo.EqualSlices(v.a.([]string), v.b.([]string))
-			assert.NoError(t, err)
+			res := pgo.EqualSlices(v.a.([]string), v.b.([]string))
 			assert.Equal(t, v.res, res)
 		case []byte:
-			res, err := pgo.EqualSlices(v.a.([]byte), v.b.([]byte))
-			assert.NoError(t, err)
+			res := pgo.EqualSlices(v.a.([]byte), v.b.([]byte))
 			assert.Equal(t, v.res, res)
 		}
 	}

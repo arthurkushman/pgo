@@ -57,13 +57,11 @@ func ArrayCombine(keys interface{}, values interface{}) map[interface{}]interfac
 }
 
 // ArrayCountValues counts all the values of an array/slice
-func ArrayCountValues(array interface{}) map[interface{}]int {
-	res := make(map[interface{}]int)
-
-	s := reflect.ValueOf(array)
-	l := s.Len()
+func ArrayCountValues[T comparable](array []T) map[T]int {
+	res := make(map[T]int)
+	l := len(array)
 	for i := 0; i < l; i++ {
-		res[s.Index(i).Interface()]++
+		res[array[i]]++
 	}
 
 	return res
@@ -279,18 +277,18 @@ func Range(min, max int, step ...int) []int {
 
 // EqualSlices compares two slices and returns true if they are equal, false otherwise
 // in case of passing wrong (non-slice) arguments error will be returned
-func EqualSlices[T comparable](a, b []T) (bool, error) {
+func EqualSlices[T comparable](a, b []T) bool {
 	la := len(a)
 	lb := len(b)
 	if la != lb {
-		return false, nil
+		return false
 	}
 
 	for i := 0; i < la; i++ {
 		if a[i] != b[i] {
-			return false, nil
+			return false
 		}
 	}
 
-	return true, nil
+	return true
 }
