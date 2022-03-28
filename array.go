@@ -1,9 +1,10 @@
 package pgo
 
 import (
-	"constraints"
 	"reflect"
 	"sort"
+
+	"github.com/arthurkushman/pgo/constraints"
 )
 
 // InArray checks if a value exists in an array
@@ -204,7 +205,7 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 }
 
 // ArraySum calculate the sum of values in an array
-func ArraySum[T constraints.Integer | constraints.Float](array []T) (T, error) {
+func ArraySum[T constraints.IntFloat](array []T) (T, error) {
 	l := len(array)
 
 	var amount T
