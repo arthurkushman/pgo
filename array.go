@@ -38,20 +38,16 @@ func ArrayChunk[T comparable](array []T, size int) [][]T {
 
 // ArrayCombine creates an array by using one array for keys and another for its values
 // returns map[key]value if both slices are equal and nil otherwise
-func ArrayCombine(keys interface{}, values interface{}) map[interface{}]interface{} {
-	s := reflect.ValueOf(keys)
-	l := s.Len()
-
-	ss := reflect.ValueOf(values)
-	ssLen := ss.Len()
-
-	if l != ssLen {
+func ArrayCombine[K, V comparable](keys []K, values []V) map[K]V {
+	kLen := len(keys)
+	vLen := len(values)
+	if kLen != vLen {
 		return nil
 	}
 
-	resultMap := make(map[interface{}]interface{})
-	for i := 0; i < l; i++ {
-		resultMap[s.Index(i).Interface()] = ss.Index(i).Interface()
+	resultMap := make(map[K]V)
+	for i := 0; i < kLen; i++ {
+		resultMap[keys[i]] = values[i]
 	}
 
 	return resultMap
