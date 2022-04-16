@@ -1,26 +1,17 @@
 package pgo
 
 import (
-	"fmt"
 	"reflect"
 	"sort"
+
+	"github.com/arthurkushman/pgo/constraints"
 )
 
 // InArray checks if a value exists in an array
-func InArray(needle interface{}, haystack interface{}) bool {
-	return search(needle, haystack)
-}
-
-func search(needle interface{}, haystack interface{}) bool {
-	switch reflect.TypeOf(haystack).Kind() {
-	case reflect.Slice:
-		s := reflect.ValueOf(haystack)
-		l := s.Len()
-
-		for i := 0; i < l; i++ {
-			if needle == s.Index(i).Interface() {
-				return true
-			}
+func InArray[T comparable](needle T, haystack []T) bool {
+	for _, v := range haystack {
+		if v == needle {
+			return true
 		}
 	}
 
@@ -28,19 +19,17 @@ func search(needle interface{}, haystack interface{}) bool {
 }
 
 // ArrayChunk split an array into chunks
-func ArrayChunk(array interface{}, size int) []interface{} {
-	var chunks []interface{}
+func ArrayChunk[T comparable](array []T, size int) [][]T {
+	var chunks [][]T
 
-	s := reflect.ValueOf(array)
-	l := s.Len()
-
-	var subChunk []interface{}
+	l := len(array)
+	var subChunk []T
 	for i := 0; i < l; i++ {
-		subChunk = append(subChunk, s.Index(i).Interface())
+		subChunk = append(subChunk, array[i])
 
 		if (i+1)%size == 0 || i+1 == l {
 			chunks = append(chunks, subChunk)
-			subChunk = make([]interface{}, 0)
+			subChunk = make([]T, 0)
 		}
 	}
 
@@ -49,33 +38,27 @@ func ArrayChunk(array interface{}, size int) []interface{} {
 
 // ArrayCombine creates an array by using one array for keys and another for its values
 // returns map[key]value if both slices are equal and nil otherwise
-func ArrayCombine(keys interface{}, values interface{}) map[interface{}]interface{} {
-	s := reflect.ValueOf(keys)
-	l := s.Len()
-
-	ss := reflect.ValueOf(values)
-	ssLen := ss.Len()
-
-	if l != ssLen {
+func ArrayCombine[K, V comparable](keys []K, values []V) map[K]V {
+	kLen := len(keys)
+	vLen := len(values)
+	if kLen != vLen {
 		return nil
 	}
 
-	resultMap := make(map[interface{}]interface{})
-	for i := 0; i < l; i++ {
-		resultMap[s.Index(i).Interface()] = ss.Index(i).Interface()
+	resultMap := make(map[K]V)
+	for i := 0; i < kLen; i++ {
+		resultMap[keys[i]] = values[i]
 	}
 
 	return resultMap
 }
 
 // ArrayCountValues counts all the values of an array/slice
-func ArrayCountValues(array interface{}) map[interface{}]int {
-	res := make(map[interface{}]int)
-
-	s := reflect.ValueOf(array)
-	l := s.Len()
+func ArrayCountValues[T comparable](array []T) map[T]int {
+	res := make(map[T]int)
+	l := len(array)
 	for i := 0; i < l; i++ {
-		res[s.Index(i).Interface()]++
+		res[array[i]]++
 	}
 
 	return res
@@ -218,34 +201,15 @@ func ArrayUdiff(uf func(interface{}, interface{}) int, arrays ...interface{}) []
 }
 
 // ArraySum calculate the sum of values in an array
-func ArraySum(array interface{}) (float64, error) {
-	s := reflect.ValueOf(array)
-	l := s.Len()
+func ArraySum[T constraints.IntFloat](array []T) (T, error) {
+	l := len(array)
 
-	var amount float64
+	var amount T
 	for i := 0; i < l; i++ {
-		v, err := getFloat(s.Index(i).Interface())
-		if err != nil {
-			return v, err
-		}
-
-		amount += v
+		amount += array[i]
 	}
 
 	return amount, nil
-}
-
-func getFloat(unk interface{}) (float64, error) {
-	var floatType = reflect.TypeOf(float64(0))
-
-	v := reflect.ValueOf(unk)
-	v = reflect.Indirect(v)
-	if !v.Type().ConvertibleTo(floatType) {
-		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
-	}
-
-	fv := v.Convert(floatType)
-	return fv.Float(), nil
 }
 
 // ArrayIntersect computes the intersection of arrays
@@ -291,17 +255,14 @@ func ArrayIntersect(arrays ...interface{}) []interface{} {
 // If a step value is given, it will be used as the increment between elements in the sequence.
 // step should be given as a positive number.
 // If not specified, step will default to 1.
-func Range(min, max int, step ...interface{}) []int {
+func Range(min, max int, step ...int) []int {
 	var slice []int
 
 	var argsLen = len(step)
 
 	var stepp = 1
-	if argsLen > 0 && step[0] != nil {
-		st, ok := step[0].(int)
-		if !ok || st > 1 {
-			stepp = st
-		}
+	if argsLen > 0 && step[0] > 1 {
+		stepp = step[0]
 	}
 
 	for i := min; i <= max; i += stepp {
@@ -313,26 +274,18 @@ func Range(min, max int, step ...interface{}) []int {
 
 // EqualSlices compares two slices and returns true if they are equal, false otherwise
 // in case of passing wrong (non-slice) arguments error will be returned
-func EqualSlices(a, b interface{}) (bool, error) {
-	if reflect.TypeOf(a).Kind() != reflect.Slice || reflect.TypeOf(b).Kind() != reflect.Slice {
-		return false, fmt.Errorf("only slice arguments allowed")
-	}
-
-	sa := reflect.ValueOf(a)
-	la := sa.Len()
-
-	sb := reflect.ValueOf(b)
-	lb := sb.Len()
-
+func EqualSlices[T comparable](a, b []T) bool {
+	la := len(a)
+	lb := len(b)
 	if la != lb {
-		return false, nil
+		return false
 	}
 
 	for i := 0; i < la; i++ {
-		if sa.Index(i).Interface() != sb.Index(i).Interface() {
-			return false, nil
+		if a[i] != b[i] {
+			return false
 		}
 	}
 
-	return true, nil
+	return true
 }
