@@ -289,3 +289,35 @@ func EqualSlices[T comparable](a, b []T) bool {
 
 	return true
 }
+
+// ArrayMax finds maximum value from []T
+func ArrayMax[T constraints.IntFloat](a []T) T {
+	var max T
+	if len(a) > 0 {
+		max = a[0]
+	}
+
+	for _, v := range a {
+		if max < v {
+			max = v
+		}
+	}
+
+	return max
+}
+
+// ArrayMin finds minimum value from []T
+func ArrayMin[T constraints.IntFloat](a []T) T {
+	var min T
+	if len(a) > 0 {
+		min = a[0]
+	}
+
+	for _, v := range a {
+		if min > v {
+			min = v
+		}
+	}
+
+	return min
+}

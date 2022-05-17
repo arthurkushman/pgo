@@ -418,3 +418,55 @@ func TestEqual(t *testing.T) {
 		}
 	}
 }
+
+func TestArrayMax(t *testing.T) {
+	res := pgo.ArrayMax([]int{})
+	assert.Equal(t, 0, res)
+
+	res = pgo.ArrayMax([]int{3, 1, 2, 9})
+	assert.Equal(t, 9, res)
+
+	res = pgo.ArrayMax([]int{-3, -1, -2, -9})
+	assert.Equal(t, -1, res)
+
+	res = pgo.ArrayMax([]int{-3, -1, -2, -9, 3, 1, 2, 9})
+	assert.Equal(t, 9, res)
+
+	resF := pgo.ArrayMax([]float64{})
+	assert.Equal(t, float64(0), resF)
+
+	resF = pgo.ArrayMax([]float64{3.2, 1.0837, 2.123, 9.87})
+	assert.Equal(t, 9.87, resF)
+
+	resF = pgo.ArrayMax([]float64{-3.12, -1.678, -2.01, -9.007})
+	assert.Equal(t, -1.678, resF)
+
+	resF = pgo.ArrayMax([]float64{3.2, 1.0837, 2.123, 9.87, -3.12, -1.678, -2.01, -9.007})
+	assert.Equal(t, 9.87, resF)
+}
+
+func TestArrayMin(t *testing.T) {
+	res := pgo.ArrayMin([]int{})
+	assert.Equal(t, 0, res)
+
+	res = pgo.ArrayMin([]int{3, 1, 2, 9})
+	assert.Equal(t, 1, res)
+
+	res = pgo.ArrayMin([]int{-3, -1, -2, -9})
+	assert.Equal(t, -9, res)
+
+	res = pgo.ArrayMin([]int{-3, -1, -2, -9, 3, 1, 2, 9})
+	assert.Equal(t, -9, res)
+
+	resF := pgo.ArrayMin([]float64{})
+	assert.Equal(t, float64(0), resF)
+
+	resF = pgo.ArrayMin([]float64{3.2, 1.0837, 2.123, 9.87})
+	assert.Equal(t, 1.0837, resF)
+
+	resF = pgo.ArrayMin([]float64{-3.12, -1.678, -2.01, -9.007})
+	assert.Equal(t, -9.007, resF)
+
+	resF = pgo.ArrayMin([]float64{-3.12, -1.678, -2.01, -9.007, 3.2, 1.0837, 2.123, 9.87})
+	assert.Equal(t, -9.007, resF)
+}
