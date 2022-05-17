@@ -35,6 +35,7 @@ Go library for PHP community with convenient functions
     * [ArrayUdiff](#user-content-arrayudiff)
     * [ArraySum](#user-content-arraysum)
     * [ArrayIntersect](#user-content-arrayintersect)
+    * [ArrayMin/ArrayMax](#user-content-arrayminarraymax)
     * [Range](#user-content-range)
     * [EqualSlices](#user-content-equalslices)
 * [Collections](#user-content-collections)
@@ -397,6 +398,17 @@ computes the intersection of arrays
 pgo.ArrayIntersect([]int{12, 54, 32, 12, 33}, []int{3, 12, 54, 9}, []int{12, 33, 9}) // []int{12, 54, 33}
 
 pgo.ArrayIntersect([]string{"foo", "bar", "baz", "fizz", "bazz", "fizz", "fizz"}, []string{"bar", "fizz"}, []string{"foo", "bar", "hey"}) // []string{"foo", "bar", "fizz"}
+```
+
+#### ArrayMin/ArrayMax
+
+finds minimum/maximum value from []T
+
+```go
+res = pgo.ArrayMax([]int{3, 1, 2, 9}) // res == 9
+res = pgo.ArrayMax([]float64{-3.12, -1.678, -2.01, -9.007}) // res == -1.678
+res = pgo.ArrayMin([]int{3, 1, 2, 9}) // res == 1
+res = pgo.ArrayMin([]float64{3.2, 1.0837, 2.123, 9.87}) // res == 1.0837
 ```
 
 #### Range
