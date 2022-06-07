@@ -321,3 +321,22 @@ func ArrayMin[T constraints.IntFloat](a []T) T {
 
 	return min
 }
+
+// ArrayUnique returns unique values form []T
+func ArrayUnique[T comparable](a []T) []T {
+	m := map[T]struct{}{}
+	for _, v := range a {
+		if _, ok := m[v]; !ok {
+			m[v] = struct{}{}
+		}
+	}
+
+	s := make([]T, len(m))
+	i := 0
+	for k := range m {
+		s[i] = k
+		i++
+	}
+
+	return s
+}

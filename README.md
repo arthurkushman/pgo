@@ -36,6 +36,7 @@ Go library for PHP community with convenient functions
     * [ArraySum](#user-content-arraysum)
     * [ArrayIntersect](#user-content-arrayintersect)
     * [ArrayMin/ArrayMax](#user-content-arrayminarraymax)
+    * [ArrayUnique](#user-content-arrayunique)
     * [Range](#user-content-range)
     * [EqualSlices](#user-content-equalslices)
 * [Collections](#user-content-collections)
@@ -314,72 +315,24 @@ computes the difference of arrays by using a callback function for data comparis
 
 ```go
 pgo.ArrayUdiff(func (a interface{}, b interface{}) int {
-if a.(string) > b.(string) {
-return 1
-} else if a.(string) < b.(string) {
-return -1
-}
+  if a.(string) > b.(string) {
+    return 1
+  } else if a.(string) < b.(string) {
+    return -1
+  }
 
-return 0
+  return 0
 }, []string{"foo", "bar", "fizz", "baz"}, []string{"foo", "bar"}) // []string{"fizz", "baz"}
 
 pgo.ArrayUdiff(func (a interface{}, b interface{}) int {
-if a.(int) > b.(int) {
-return 1
-} else if a.(int) < b.(int) {
-return -1
-}
-
-return 0
+  if a.(int) > b.(int) {
+      return 1
+  } else if a.(int) < b.(int) {
+      return -1
+  }
+  
+  return 0
 }, []int{3, 43, 8, 4, 9}, []int{3, 8, 9, 4}) // []int{43}
-```
-
-```go
-type TestUdiffComparing interface {ComparingValue() string}
-
-type A struct {valueA string}
-func (a A) ComparingValue() string  {return a.valueA}
-
-type B struct {valueB string}
-func (b B) ComparingValue() string  {return b.valueB}
-
-type C struct {valueC string}
-func (c C) ComparingValue() string  {return c.valueC}
-
-func main() {
-a := []A {{valueA: "q"}, {valueA: "e"}, {valueA: "t"}, {valueA: "k"}, {valueA: "g"}, {valueA: "o"}, {valueA: "j"}}
-b := []B {{valueB: "q"}, {valueB: "g"}, {valueB: "b"}, {valueB: "h"}, {valueB: "j"}, {valueB: "k"}, {valueB: "l"}}
-c := []C {{valueC: "o"}, {valueC: "q"}, {valueC: "e"}, {valueC: "x"}, {valueC: "c"}, {valueC: "v"}, {valueC: "b"}}
-
-s1 := pgo.ArrayUdiff(func (arr1 interface{}, arr2 interface{}) int {
-if arr1.(TestUdiffComparing).ComparingValue() > arr2.(TestUdiffComparing).ComparingValue() {
-return 1
-} else if arr1.(TestUdiffComparing).ComparingValue() < arr2.(TestUdiffComparing).ComparingValue() {
-return -1
-}
-
-return 0
-}, a, b, c)
-
-fmt.Print(s1) // [{t}]
-
-a2 := []string {"a", "b", "c"}
-b2 := []string {"a", "d", "g"}
-c2 := []string {"b", "x", "y"}
-
-s2 := pgo.ArrayUdiff(func (arr1 interface{}, arr2 interface{}) int {
-if arr1.(string) > arr2.(string) {
-return 1
-} else if arr1.(string) < arr2.(string) {
-return -1
-}
-
-return 0
-}, a2, b2, c2)
-
-fmt.Print(s2) // [c]
-}
-
 ```
 
 #### ArraySum
@@ -410,6 +363,17 @@ res = pgo.ArrayMax([]float64{-3.12, -1.678, -2.01, -9.007}) // res == -1.678
 res = pgo.ArrayMin([]int{3, 1, 2, 9}) // res == 1
 res = pgo.ArrayMin([]float64{3.2, 1.0837, 2.123, 9.87}) // res == 1.0837
 ```
+
+#### ArrayUnique
+
+returns unique values form []T
+
+```go
+res = pgo.ArrayUnique([]int{1, 2, 2, 3, 2, 4, 4}) // []int{1, 2, 3, 4}
+
+res = pgo.ArrayUnique([]string{"foo", "bar", "foo", "bar"}) // []string{"bar", "foo"}
+```
+Note: order is not guaranteed 
 
 #### Range
 

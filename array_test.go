@@ -3,6 +3,7 @@ package pgo_test
 import (
 	"math"
 	"reflect"
+	"sort"
 	"strings"
 	"testing"
 
@@ -469,4 +470,33 @@ func TestArrayMin(t *testing.T) {
 
 	resF = pgo.ArrayMin([]float64{-3.12, -1.678, -2.01, -9.007, 3.2, 1.0837, 2.123, 9.87})
 	assert.Equal(t, -9.007, resF)
+}
+
+var testArrayUnique = []struct {
+	a   interface{}
+	res interface{}
+}{
+	{[]int{1, 2, 3}, []int{1, 2, 3}},
+	{[]int{1, 2, 2, 3, 2, 4, 4}, []int{1, 2, 3, 4}},
+	{[]string{"foo", "bar", "foo", "bar"}, []string{"bar", "foo"}},
+	{[]float64{123.33, 22, 123.33}, []float64{22, 123.33}},
+	{[]float64{}, []float64{}},
+}
+
+func TestUnique(t *testing.T) {
+	for _, v := range testArrayUnique {
+		var res interface{}
+		switch v.a.(type) {
+		case []int:
+			res = pgo.ArrayUnique(v.a.([]int))
+			sort.Ints(res.([]int))
+		case []float64:
+			res = pgo.ArrayUnique(v.a.([]float64))
+			sort.Float64s(res.([]float64))
+		case []string:
+			res = pgo.ArrayUnique(v.a.([]string))
+			sort.Strings(res.([]string))
+		}
+		assert.Equal(t, res, v.res)
+	}
 }
