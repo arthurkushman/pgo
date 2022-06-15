@@ -340,3 +340,15 @@ func ArrayUnique[T comparable](a []T) []T {
 
 	return s
 }
+
+// ArrayValues Return all the values of map as a slice of values with corresponding type
+func ArrayValues[K, V comparable](a map[K]V) []V {
+	s := make([]V, len(a))
+	var i uint64
+	for _, v := range a {
+		s[i] = v
+		i++
+	}
+
+	return s
+}
