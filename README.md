@@ -37,6 +37,7 @@ Go library for PHP community with convenient functions
     * [ArrayIntersect](#user-content-arrayintersect)
     * [ArrayMin/ArrayMax](#user-content-arrayminarraymax)
     * [ArrayUnique](#user-content-arrayunique)
+    * [ArrayValues](#user-content-arrayvalues)
     * [Range](#user-content-range)
     * [EqualSlices](#user-content-equalslices)
 * [Collections](#user-content-collections)
@@ -374,6 +375,16 @@ res = pgo.ArrayUnique([]int{1, 2, 2, 3, 2, 4, 4}) // []int{1, 2, 3, 4}
 res = pgo.ArrayUnique([]string{"foo", "bar", "foo", "bar"}) // []string{"bar", "foo"}
 ```
 Note: order is not guaranteed 
+
+#### ArrayValues
+
+return all the values of map as a slice of values with corresponding type
+
+```go
+res = pgo.ArrayValues(map[string]int{"a": 1, "b": 2, "c": 3}) // []int{1, 2, 3}
+
+res = pgo.ArrayValues(map[int]float64{1: 123.33, 2: 22, 3: 123.33}) // []float64{22, 123.33, 123.33}
+```
 
 #### Range
 

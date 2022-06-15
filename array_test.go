@@ -500,3 +500,33 @@ func TestUnique(t *testing.T) {
 		assert.Equal(t, res, v.res)
 	}
 }
+
+var testArrayValues = []struct {
+	a   interface{}
+	res interface{}
+}{
+	{map[string]int{"a": 1, "b": 2, "c": 3}, []int{1, 2, 3}},
+	{map[string]int{"a": 1, "b": 2, "c": 2, "d": 3, "e": 4, "f": 4}, []int{1, 2, 2, 3, 4, 4}},
+	{map[int]string{2: "foo", 1: "bar", 123: "foo", -12: "bar"}, []string{"bar", "bar", "foo", "foo"}},
+	{map[int]float64{1: 123.33, 2: 22, 3: 123.33}, []float64{22, 123.33, 123.33}},
+	{map[int]float64{}, []float64{}},
+}
+
+func TestArrayValues(t *testing.T) {
+	for _, v := range testArrayValues {
+		var res interface{}
+		switch v.a.(type) {
+		case map[string]int:
+			res = pgo.ArrayValues(v.a.(map[string]int))
+			sort.Ints(res.([]int))
+		case map[int]float64:
+			res = pgo.ArrayValues(v.a.(map[int]float64))
+			sort.Float64s(res.([]float64))
+		case map[int]string:
+			res = pgo.ArrayValues(v.a.(map[int]string))
+			sort.Strings(res.([]string))
+		}
+
+		assert.Equal(t, res, v.res)
+	}
+}
