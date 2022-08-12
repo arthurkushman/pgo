@@ -38,6 +38,7 @@ Go library for PHP community with convenient functions
     * [ArrayMin/ArrayMax](#user-content-arrayminarraymax)
     * [ArrayUnique](#user-content-arrayunique)
     * [ArrayValues](#user-content-arrayvalues)
+    * [ArrayReverse](#user-content-arrayreverse)
     * [Range](#user-content-range)
     * [EqualSlices](#user-content-equalslices)
 * [Collections](#user-content-collections)
@@ -384,6 +385,16 @@ return all the values of map as a slice of values with corresponding type
 res = pgo.ArrayValues(map[string]int{"a": 1, "b": 2, "c": 3}) // []int{1, 2, 3}
 
 res = pgo.ArrayValues(map[int]float64{1: 123.33, 2: 22, 3: 123.33}) // []float64{22, 123.33, 123.33}
+```
+
+### ArrayReverse
+
+reverse slice passed as an argument
+
+```go
+toReverse := []int{-3, 0, 4, 9, 13}
+pgo.ArrayReverse(toReverse) 
+fmt.Println(toReverse) // []int{13, 9, 4, 0, -3}
 ```
 
 #### Range
