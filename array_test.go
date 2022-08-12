@@ -530,3 +530,55 @@ func TestArrayValues(t *testing.T) {
 		assert.Equal(t, res, v.res)
 	}
 }
+
+func TestArrayReverse(t *testing.T) {
+	testInts := map[string]struct {
+		toReverse []int
+		reversed  []int
+	}{
+		"ok ints": {
+			toReverse: []int{-3, 0, 4, 9, 13},
+			reversed:  []int{13, 9, 4, 0, -3},
+		},
+		"ok empty ints": {
+			toReverse: []int{},
+			reversed:  []int{},
+		},
+		"ok one ints": {
+			toReverse: []int{},
+			reversed:  []int{},
+		},
+	}
+
+	for n, tt := range testInts {
+		t.Run(n, func(t *testing.T) {
+			pgo.ArrayReverse(tt.toReverse)
+			assert.Equal(t, tt.toReverse, tt.reversed)
+		})
+	}
+
+	testStr := map[string]struct {
+		toReverse []string
+		reversed  []string
+	}{
+		"ok strings": {
+			toReverse: []string{"foo", "bar", "baz", "ipsum"},
+			reversed:  []string{"ipsum", "baz", "bar", "foo"},
+		},
+		"ok empty strings": {
+			toReverse: []string{},
+			reversed:  []string{},
+		},
+		"ok one string": {
+			toReverse: []string{"bark"},
+			reversed:  []string{"bark"},
+		},
+	}
+
+	for n, tt := range testStr {
+		t.Run(n, func(t *testing.T) {
+			pgo.ArrayReverse(tt.toReverse)
+			assert.Equal(t, tt.toReverse, tt.reversed)
+		})
+	}
+}
