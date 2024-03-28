@@ -12,6 +12,16 @@ import (
 	"github.com/arthurkushman/pgo"
 )
 
+// TestStrReplace is a unit test function that tests the StrReplace function.
+//
+// It replaces "fox" with "cat" and "dog" with "fox" in the given subject string.
+// The function asserts that the resulting string is equal to the expected result.
+//
+// Parameters:
+//
+//	t: *testing.T - the testing object used for assertion.
+//
+// Return type: None.
 func TestStrReplace(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
@@ -24,6 +34,9 @@ func TestStrReplace(t *testing.T) {
 	assert.Equalf(t, subject, result, "want %s, got %s", subject, result)
 }
 
+// TestStrIReplace tests the StrIReplace function.
+//
+// This function takes input strings and replaces specified substrings case-insensitively.
 func TestStrIReplace(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
@@ -36,6 +49,10 @@ func TestStrIReplace(t *testing.T) {
 	assert.Equalf(t, subject, result, "want %s, got %s", subject, result)
 }
 
+// TestStrReplaceCount description of the Go function.
+//
+// It tests the StrReplace function by replacing a specified number of occurrences of a substring in a given string.
+// Error is returned if the replacement fails.
 func TestStrReplaceCount(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy fox or dog"
 	str, err := pgo.StrReplace("fox", "cat", subject, 1)
@@ -45,6 +62,9 @@ func TestStrReplaceCount(t *testing.T) {
 	assert.Equalf(t, str, result, "want %s, got %s", result, str)
 }
 
+// TestStrReplaceArray description of the Go function.
+//
+// It tests the StrReplace function by replacing occurrences of strings in the subject with new strings.
 func TestStrReplaceArray(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 	str, err := pgo.StrReplace([]string{"fox", "dog"}, []string{"cat", "elephant"}, subject)
@@ -54,6 +74,9 @@ func TestStrReplaceArray(t *testing.T) {
 	assert.Equalf(t, str, result, "want %s, got %s", result, str)
 }
 
+// TestStrReplaceErrs tests the StrReplace function.
+//
+// It checks the behavior of StrReplace when replacing substrings in a given subject string.
 func TestStrReplaceErrs(t *testing.T) {
 	subject := "The quick brown fox jumped over the lazy dog"
 
@@ -62,6 +85,9 @@ func TestStrReplaceErrs(t *testing.T) {
 	assert.Equalf(t, str, subject, "want %s, got %s", subject, str)
 }
 
+// TestHTTPBuildQuery is a Go test function for testing the HTTPBuildQuery function.
+//
+// It does not take any parameters and does not return any values.
 func TestHTTPBuildQuery(t *testing.T) {
 	queryStr := pgo.HTTPBuildQuery(map[string]interface{}{
 		"foo":      "bar",
@@ -80,6 +106,9 @@ func TestHTTPBuildQuery(t *testing.T) {
 	assert.Empty(t, queryStr2, "built str from an empty map must be empty")
 }
 
+// TestConcatFast is a Go function to test the ConcatFast function.
+//
+// It takes a slice of structs with name, s (a slice of strings), and result fields, and it runs tests for the ConcatFast function.
 func TestConcatFast(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -127,15 +156,19 @@ func BenchmarkConcatFast2(b *testing.B) {
 	}
 }
 
+// generateRandomSliceOfStrings generates a slice of 15 random strings.
+//
+// No parameters.
+// Returns a slice of strings.
 func generateRandomSliceOfStrings() []string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-	rand.Seed(time.Now().UnixNano())
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	s := make([]string, 15)
 	for i := range s {
 		bt := make([]byte, 10)
 		for j := range bt {
-			bt[j] = letterBytes[rand.Intn(len(letterBytes))]
+			bt[j] = letterBytes[r.Intn(len(letterBytes))]
 		}
 		s[i] = string(bt)
 	}
@@ -143,6 +176,10 @@ func generateRandomSliceOfStrings() []string {
 	return s
 }
 
+// stringBuilder concatenates multiple strings into a single string.
+//
+// It takes in a variadic parameter `s` of type string.
+// Returns a string.
 func stringBuilder(s ...string) string {
 	l := len(s)
 	if l == 0 {
