@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"os"
 )
@@ -27,7 +28,12 @@ func (c *Context) doRequest(path string) (string, error) {
 		return "", err
 	}
 
-	defer resp.Body.Close()
+	defer func(body io.ReadCloser) {
+		err = body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(resp.Body)
 
 	content, cErr := io.ReadAll(resp.Body)
 
@@ -56,7 +62,12 @@ func (c *Context) uploadFile(fieldName, filePath string) bool {
 		return false
 	}
 
-	defer file.Close()
+	defer func(file multipart.File) {
+		err = file.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(file)
 
 	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
@@ -64,7 +75,13 @@ func (c *Context) uploadFile(fieldName, filePath string) bool {
 		return false
 	}
 
-	defer f.Close()
+	defer func(f *os.File) {
+		err = f.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(f)
+
 	_, err = io.Copy(f, file)
 	if err != nil {
 		fmt.Println(err)

@@ -144,7 +144,12 @@ func FilePutContents(fileName, data string, flags ...interface{}) (int, error) {
 		}
 
 		f, err := os.OpenFile(fileName, v|os.O_WRONLY, 0644)
-		defer f.Close()
+		defer func(f *os.File) {
+			err = f.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
+		}(f)
 
 		if err != nil {
 			return -1, err
