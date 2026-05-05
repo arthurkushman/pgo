@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"unsafe"
 )
 
 type replaceParams struct {
@@ -131,22 +130,22 @@ func HTTPBuildQuery(pairs map[string]interface{}) string {
 	return q.Encode()
 }
 
-// ConcatFast concatenates strings faster than strings.Builder (see benchmarks)
+// ConcatFast concatenates strings using strings.Builder which is safe and idiomatic.
 func ConcatFast(s ...string) string {
-	l := len(s)
-	if l == 0 {
+	if len(s) == 0 {
 		return ""
 	}
 
 	n := 0
-	for i := 0; i < l; i++ {
-		n += len(s[i])
+	for _, str := range s {
+		n += len(str)
 	}
 
-	b := make([]byte, 0, n)
-	for i := 0; i < l; i++ {
-		b = append(b, s[i]...)
+	var b strings.Builder
+	b.Grow(n)
+	for _, str := range s {
+		b.WriteString(str)
 	}
 
-	return *(*string)(unsafe.Pointer(&b))
+	return b.String()
 }

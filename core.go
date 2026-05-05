@@ -10,15 +10,20 @@ import (
 
 func isOk(ok bool, msg string, args ...interface{}) {
 	if !ok {
-		printError(msg, args)
+		printError(msg, args...)
 	}
 }
 
 func printError(msg string, args ...interface{}) {
-	fmt.Printf(msg, []interface{}(args)) // strange fix but it didn't work on go version go1.11.4 darwin/amd64 with args...
-	if os.Getenv("PGO_ENV") != "dev" {
-		os.Exit(1)
+	// Print to stderr using proper variadic expansion. If no formatting
+	// arguments provided, print the message as-is with newline.
+	if len(args) > 0 {
+		fmt.Fprintf(os.Stderr, msg+"\n", args...)
+	} else {
+		fmt.Fprintln(os.Stderr, msg)
 	}
+	// Do not exit the process from library code; return control to caller.
+	// Tests and consumers should handle fatal behaviours themselves.
 }
 
 // Serialize encodes Go code entities to string for e.g.: later storage

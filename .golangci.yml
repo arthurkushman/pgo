@@ -1,0 +1,16 @@
+run:
+  timeout: 5m
+  go: "1.26"
+
+linters:
+  enable:
+    - govet
+    - gofumpt
+    - staticcheck
+    - gofmt
+    - revive
+
+linters-settings:
+  gofumpt: {}
+  revive:
+    ignore-generated-header: true
