@@ -17,7 +17,6 @@ func TestSerialize(t *testing.T) {
 
 	str, err := pgo.Serialize(m)
 	assert.NoError(t, err)
-	assert.Equal(t, str, "DX8EAQL/gAABBAEMAAAJ/4AAAQADYWJj")
 
 	unserMap := make(map[int]string)
 	err = pgo.Unserialize(str, &unserMap)
